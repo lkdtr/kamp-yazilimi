@@ -1,4 +1,4 @@
-# ab-kurs-kayit
+# mudur
 [![License (GPL version 3)](https://img.shields.io/badge/license-GNU%20GPL%20version%203-red.svg?style=flat-square)](https://www.gnu.org/licenses/gpl-3.0.en.html) [![Language (Python)](https://img.shields.io/badge/powered_by-Python-blue.svg?style=flat-square)](https://www.python.org/) [![Platform (GNU/Linux)](https://img.shields.io/badge/platform-GNU/Linux-yellow.svg?style=flat-square)](http://www.kernel.org)
 
 ## Başlangıç
