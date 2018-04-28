@@ -1,9 +1,8 @@
-# -*- coding:utf-8  -*-
 
 import logging
 from userprofile.forms import StuProfileForm, UserProfileBySiteForm
 from django.utils.translation import ugettext_lazy as _
-from userprofileops import UserProfileOPS
+from .userprofileops import UserProfileOPS
 from userprofile.models import UserProfile, Accommodation, UserAccomodationPref, UserProfileBySite
 
 log = logging.getLogger(__name__)

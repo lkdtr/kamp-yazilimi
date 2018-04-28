@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 from django.contrib import admin
 from mudur.models import Site, Content, Menu, Answer, Question, TextBoxQuestions, ApprovalDate
 from ckeditor.widgets import CKEditorWidget

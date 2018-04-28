@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# !-*- coding:utf-8 -*-
 
 from userprofile.models import UserAccomodationPref
 from training.models import TrainessCourseRecord
@@ -7,9 +6,9 @@ from training.models import TrainessCourseRecord
 
 def sayilar():
     countO = TrainessCourseRecord.objects.filter(approved=True)
-    print "Onaylananlarin sayisi", len(countO)
+    print("Onaylananlarin sayisi", len(countO))
     countT = TrainessCourseRecord.objects.filter(trainess_approved=True)
-    print "Teyit edenlerin sayisi", len(countT)
+    print("Teyit edenlerin sayisi", len(countT))
     target = open("son_sayilar", 'w')
     for ct in countO:
         ctas = UserAccomodationPref.objects.filter(user=ct.trainess)

@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 
 from datetime import datetime
 
@@ -34,7 +33,7 @@ class Site(models.Model):
     evening = models.FloatField(verbose_name=_("Total course hours at evening for one day"), default=2.5)
     needs_document = models.BooleanField(verbose_name=_("Site requires document"), default=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s %s" % (self.name, self.year)
 
 
@@ -43,7 +42,7 @@ class Menu(models.Model):
     order = models.IntegerField(verbose_name=_("Order"))
     site = models.ForeignKey(Site)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -55,7 +54,7 @@ class Content(models.Model):
     content = RichTextField(verbose_name=_("HTML Content"))
     menu = models.OneToOneField(Menu, related_name="+", null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -73,7 +72,7 @@ class Question(models.Model):
         verbose_name = _("Question")
         verbose_name_plural = _("Questions")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.detail
 
 
@@ -86,7 +85,7 @@ class Answer(models.Model):
         verbose_name = _("Answer")
         verbose_name_plural = _("Answers")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.detail
 
 
@@ -101,7 +100,7 @@ class TextBoxQuestions(models.Model):
         verbose_name = _("Classic Question")
         verbose_name_plural = _("Classic Questions")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.detail
 
 
@@ -113,7 +112,7 @@ class ApprovalDate(models.Model):
     for_instructor = models.BooleanField(verbose_name=_("For Instructor?"), default=True)
     for_trainess = models.BooleanField(verbose_name=_("For Trainess?"), default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.end_date.strftime("%Y-%m-%d %H:%M:%S")
 
     class Meta:

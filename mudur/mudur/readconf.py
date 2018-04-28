@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-import ConfigParser
+import configparser as ConfigParser
 from mudur.settings import COMMON_CONFIG_FILE
 
 

@@ -1,6 +1,3 @@
-#!-*- coding-utf8 -*-
-# coding=utf-8
-
 import logging
 
 from django import template
@@ -39,7 +36,7 @@ def getanswers(context, tuser, ruser, courseid):
                 try:
                     answers.append(TrainessClassicTestAnswers.objects.get(question=q, user=tuser))
                 except:
-                    print "answers couldnt find"
+                    print("answers couldnt find")
             answers.extend(TrainessClassicTestAnswers.objects.filter(user=tuser, question__site=context["request"].site,
                                                                      question__is_sitewide=True))
 

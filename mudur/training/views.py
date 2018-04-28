@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import sys
 import json
 import logging
@@ -610,13 +609,13 @@ def submitandregister(request):
     data = {'note': "Kurs onerisi olustur:"}
     curinstprofform = InstProfileForm(prefix="cur")
     forms = {}
-    for x in xrange(4):
+    for x in range(4):
         forms[x] = [CreateInstForm(prefix=str(x) + "inst"), InstProfileForm(prefix=str(x) + "instprof")]
     form = CreateCourseForm()
     if "submit" in request.POST:
         allf = []
         forms = {}
-        for x in xrange(4):
+        for x in range(4):
             if str(x) + "inst-email" in request.POST:
                 forms[x] = [CreateInstForm(request.POST, prefix=str(x) + "inst"),
                             InstProfileForm(request.POST, prefix=str(x) + "instprof")]

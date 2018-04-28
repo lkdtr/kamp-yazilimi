@@ -1,4 +1,3 @@
-# -*- coding:utf-8  -*-
 """
 Django settings for mudur project.
 
@@ -13,6 +12,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 import sys
 
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 sys.path.insert(0, os.path.join(BASE_DIR, "mudur"))
 
@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.join(BASE_DIR, "mudur"))
     COMMON_CONFIG_FILE: Veri tabani ayarlari ve secret key bu dosyada yer alir.
 '''
 COMMON_CONFIG_FILE = '/opt/kampyazilim.conf'
-from readconf import *
+from .readconf import *
 
 '''
     EMAIL_FROM_ADDRESS: Sistemden gonderilecek maillerin from adresi
@@ -114,7 +114,6 @@ ALLOWED_HOSTS = ['*']
 REQUIRE_UNIQUE_EMAIL = False
 
 INSTALLED_APPS = (
-    'longerusernameandemail',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -152,7 +151,9 @@ MIDDLEWARE_CLASSES = (
     'mudur.middleware.site.CurrentSiteMiddleware',
 )
 ROOT_URLCONF = 'mudur.urls'
-
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+X_FRAME_OPTIONS = "DENY"
 WSGI_APPLICATION = 'mudur.wsgi.application'
 
 # Database
@@ -238,7 +239,7 @@ LOGGING = {
     'handlers': {
         'null': {
             'level': 'DEBUG',
-            'class': 'django.utils.log.NullHandler',
+            'class': 'logging.NullHandler',
         },
         'logfile': {
             'level': 'DEBUG',

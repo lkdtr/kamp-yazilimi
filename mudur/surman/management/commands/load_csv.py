@@ -1,4 +1,3 @@
-# coding=utf-8
 import argparse
 
 from datetime import datetime
@@ -78,7 +77,7 @@ class Command(BaseCommand):
             newdt = dt.replace(tzinfo=pytz.FixedOffset(int(tz) * 60))
             token = row[token_index]
             if token not in keys or token in used_keys:
-                print "Reused token {}".format(row)
+                print("Reused token {}".format(row))
                 continue
             used_keys.append(token)
             answer_group = AnswerGroup.objects.create(
