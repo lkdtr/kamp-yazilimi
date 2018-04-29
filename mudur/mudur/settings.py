@@ -151,8 +151,8 @@ MIDDLEWARE_CLASSES = (
     'mudur.middleware.site.CurrentSiteMiddleware',
 )
 ROOT_URLCONF = 'mudur.urls'
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SECURE = not DEBUG
 X_FRAME_OPTIONS = "DENY"
 WSGI_APPLICATION = 'mudur.wsgi.application'
 
