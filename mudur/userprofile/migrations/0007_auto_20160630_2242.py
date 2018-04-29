@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
             name='job',
             field=models.CharField(max_length=40, null=True, verbose_name='Job', blank=True),
         ),
-        migrations.AddField(
+        migrations.AlterField(
             model_name='userprofile',
             name='organization',
             field=models.CharField(max_length=200, null=True, verbose_name='Organization', blank=True),
