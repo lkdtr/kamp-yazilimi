@@ -71,6 +71,7 @@ class UserProfile(models.Model):
     website = models.CharField(verbose_name=_("Website"), max_length=300, null=True, blank=True)
     experience = models.CharField(verbose_name=_("Work Experience"), max_length=1000, null=True, blank=True)
     profilephoto = models.ImageField(upload_to=user_directory_path, verbose_name=_("Profile Picture"))
+    emergency_contact_information = models.TextField(verbose_name=_("Emergency Contact Information"), null=True, blank=True)
 
     def __str__(self):
         if self.user.get_full_name():
