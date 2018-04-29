@@ -26,12 +26,12 @@ class Migration(migrations.Migration):
             name='website',
             field=models.CharField(max_length=300, null=True, verbose_name='Website', blank=True),
         ),
-        migrations.AlterField(
+        migrations.AddField(
             model_name='userprofile',
             name='job',
             field=models.CharField(max_length=40, null=True, verbose_name='Job', blank=True),
         ),
-        migrations.AlterField(
+        migrations.AddField(
             model_name='userprofile',
             name='organization',
             field=models.CharField(max_length=200, null=True, verbose_name='Organization', blank=True),
