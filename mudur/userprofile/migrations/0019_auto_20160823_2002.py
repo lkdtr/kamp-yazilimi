@@ -32,20 +32,4 @@ class Migration(migrations.Migration):
                 'verbose_name_plural': 'User Profiles By Sites',
             },
         ),
-        migrations.RemoveField(
-            model_name='userprofile',
-            name='additional_information',
-        ),
-        migrations.RemoveField(
-            model_name='userprofile',
-            name='document',
-        ),
-        migrations.RemoveField(
-            model_name='userprofile',
-            name='needs_document',
-        ),
-        migrations.RemoveField(
-            model_name='userprofile',
-            name='userpassedtest',
-        ),
     ]
