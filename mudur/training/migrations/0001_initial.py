@@ -14,12 +14,12 @@ class Migration(migrations.Migration):
             name='Course',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('no', models.CharField(max_length=b'4', verbose_name='Course No')),
-                ('name', models.CharField(max_length=b'255', verbose_name='Course Name')),
+                ('no', models.CharField(max_length='4', verbose_name='Course No')),
+                ('name', models.CharField(max_length='255', verbose_name='Course Name')),
                 ('description', models.TextField(verbose_name='Description')),
                 ('approved', models.BooleanField(default=False)),
                 ('application_is_open', models.BooleanField(default=True)),
-                ('url', models.CharField(max_length=b'350', verbose_name='URL')),
+                ('url', models.CharField(max_length='350', verbose_name='URL')),
                 ('site', models.ForeignKey(to='mudur.Site')),
                 ('trainer', models.ManyToManyField(related_name='trainer', to='userprofile.UserProfile')),
                 ('trainess', models.ManyToManyField(related_name='trainess', to='userprofile.UserProfile', blank=True)),
@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
             name='Keyword',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=b'64', verbose_name='Anahtar Kelimeler')),
+                ('name', models.CharField(max_length='64', verbose_name='Anahtar Kelimeler')),
             ],
         ),
         migrations.CreateModel(

@@ -14,8 +14,8 @@ class Migration(migrations.Migration):
             name='TrainessClassicTestAnswers',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('answer', models.CharField(max_length=1000, verbose_name=b'Cevap')),
-                ('question', models.ForeignKey(verbose_name=b'Soru', to='mudur.TextBoxQuestions')),
+                ('answer', models.CharField(max_length=1000, verbose_name='Cevap')),
+                ('question', models.ForeignKey(verbose_name='Soru', to='mudur.TextBoxQuestions')),
                 ('user', models.ForeignKey(to='userprofile.UserProfile')),
             ],
             options={

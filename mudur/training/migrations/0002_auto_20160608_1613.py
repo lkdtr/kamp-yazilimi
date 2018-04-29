@@ -14,10 +14,10 @@ class Migration(migrations.Migration):
             name='TrainessParticipation',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('morning', models.CharField(default=b'0', max_length=3, verbose_name='Sabah', choices=[(b'-1', b'Kurs Yap\xc4\xb1lmad\xc4\xb1'), (b'0', b'Kat\xc4\xb1lmad\xc4\xb1'), (b'1', b'Yar\xc4\xb1s\xc4\xb1na Kat\xc4\xb1ld\xc4\xb1'), (b'2', b'Kat\xc4\xb1ld\xc4\xb1')])),
-                ('afternoon', models.CharField(default=b'0', max_length=3, verbose_name='Ogleden Sonra', choices=[(b'-1', b'Kurs Yap\xc4\xb1lmad\xc4\xb1'), (b'0', b'Kat\xc4\xb1lmad\xc4\xb1'), (b'1', b'Yar\xc4\xb1s\xc4\xb1na Kat\xc4\xb1ld\xc4\xb1'), (b'2', b'Kat\xc4\xb1ld\xc4\xb1')])),
-                ('evening', models.CharField(default=b'0', max_length=3, verbose_name='Aksam', choices=[(b'-1', b'Kurs Yap\xc4\xb1lmad\xc4\xb1'), (b'0', b'Kat\xc4\xb1lmad\xc4\xb1'), (b'1', b'Yar\xc4\xb1s\xc4\xb1na Kat\xc4\xb1ld\xc4\xb1'), (b'2', b'Kat\xc4\xb1ld\xc4\xb1')])),
-                ('day', models.CharField(default=b'1', max_length=20, verbose_name='Gun')),
+                ('morning', models.CharField(default='0', max_length=3, verbose_name='Sabah', choices=[('-1', 'Kurs Yap\xc4\xb1lmad\xc4\xb1'), ('0', 'Kat\xc4\xb1lmad\xc4\xb1'), ('1', 'Yar\xc4\xb1s\xc4\xb1na Kat\xc4\xb1ld\xc4\xb1'), ('2', 'Kat\xc4\xb1ld\xc4\xb1')])),
+                ('afternoon', models.CharField(default='0', max_length=3, verbose_name='Ogleden Sonra', choices=[('-1', 'Kurs Yap\xc4\xb1lmad\xc4\xb1'), ('0', 'Kat\xc4\xb1lmad\xc4\xb1'), ('1', 'Yar\xc4\xb1s\xc4\xb1na Kat\xc4\xb1ld\xc4\xb1'), ('2', 'Kat\xc4\xb1ld\xc4\xb1')])),
+                ('evening', models.CharField(default='0', max_length=3, verbose_name='Aksam', choices=[('-1', 'Kurs Yap\xc4\xb1lmad\xc4\xb1'), ('0', 'Kat\xc4\xb1lmad\xc4\xb1'), ('1', 'Yar\xc4\xb1s\xc4\xb1na Kat\xc4\xb1ld\xc4\xb1'), ('2', 'Kat\xc4\xb1ld\xc4\xb1')])),
+                ('day', models.CharField(default='1', max_length=20, verbose_name='Gun')),
             ],
         ),
         migrations.AddField(

@@ -27,21 +27,21 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='trainessparticipation',
             name='afternoon',
-            field=models.CharField(default=b'0', max_length=3, verbose_name='Afternoon', choices=[(b'-1', b'Kurs Yap\xc4\xb1lmad\xc4\xb1'), (b'0', b'Kat\xc4\xb1lmad\xc4\xb1'), (b'1', b'Yar\xc4\xb1s\xc4\xb1na Kat\xc4\xb1ld\xc4\xb1'), (b'2', b'Kat\xc4\xb1ld\xc4\xb1')]),
+            field=models.CharField(default='0', max_length=3, verbose_name='Afternoon', choices=[('-1', 'Kurs Yap\xc4\xb1lmad\xc4\xb1'), ('0', 'Kat\xc4\xb1lmad\xc4\xb1'), ('1', 'Yar\xc4\xb1s\xc4\xb1na Kat\xc4\xb1ld\xc4\xb1'), ('2', 'Kat\xc4\xb1ld\xc4\xb1')]),
         ),
         migrations.AlterField(
             model_name='trainessparticipation',
             name='day',
-            field=models.CharField(default=b'1', max_length=20, verbose_name='Day'),
+            field=models.CharField(default='1', max_length=20, verbose_name='Day'),
         ),
         migrations.AlterField(
             model_name='trainessparticipation',
             name='evening',
-            field=models.CharField(default=b'0', max_length=3, verbose_name='Evening', choices=[(b'-1', b'Kurs Yap\xc4\xb1lmad\xc4\xb1'), (b'0', b'Kat\xc4\xb1lmad\xc4\xb1'), (b'1', b'Yar\xc4\xb1s\xc4\xb1na Kat\xc4\xb1ld\xc4\xb1'), (b'2', b'Kat\xc4\xb1ld\xc4\xb1')]),
+            field=models.CharField(default='0', max_length=3, verbose_name='Evening', choices=[('-1', 'Kurs Yap\xc4\xb1lmad\xc4\xb1'), ('0', 'Kat\xc4\xb1lmad\xc4\xb1'), ('1', 'Yar\xc4\xb1s\xc4\xb1na Kat\xc4\xb1ld\xc4\xb1'), ('2', 'Kat\xc4\xb1ld\xc4\xb1')]),
         ),
         migrations.AlterField(
             model_name='trainessparticipation',
             name='morning',
-            field=models.CharField(default=b'0', max_length=3, verbose_name='Morning', choices=[(b'-1', b'Kurs Yap\xc4\xb1lmad\xc4\xb1'), (b'0', b'Kat\xc4\xb1lmad\xc4\xb1'), (b'1', b'Yar\xc4\xb1s\xc4\xb1na Kat\xc4\xb1ld\xc4\xb1'), (b'2', b'Kat\xc4\xb1ld\xc4\xb1')]),
+            field=models.CharField(default='0', max_length=3, verbose_name='Morning', choices=[('-1', 'Kurs Yap\xc4\xb1lmad\xc4\xb1'), ('0', 'Kat\xc4\xb1lmad\xc4\xb1'), ('1', 'Yar\xc4\xb1s\xc4\xb1na Kat\xc4\xb1ld\xc4\xb1'), ('2', 'Kat\xc4\xb1ld\xc4\xb1')]),
         ),
     ]

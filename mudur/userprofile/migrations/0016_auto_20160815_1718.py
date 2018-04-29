@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='userprofile',
             name='country',
-            field=django_countries.fields.CountryField(default=b'TR', max_length=2, verbose_name='Nationality'),
+            field=django_countries.fields.CountryField(default='TR', max_length=2, verbose_name='Nationality'),
         ),
     ]

@@ -12,13 +12,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='userprofile',
             name='current_education',
-            field=models.CharField(default='none', max_length=4, verbose_name='Current Education', choices=[(b'orta', 'Middle School'), (b'lise', 'High School'), (b'univ', 'University'), (b'yksk', 'Master'), (b'dktr', 'Doctorate'), (b'none', 'Not a Student')]),
+            field=models.CharField(default='none', max_length=4, verbose_name='Current Education', choices=[('orta', 'Middle School'), ('lise', 'High School'), ('univ', 'University'), ('yksk', 'Master'), ('dktr', 'Doctorate'), ('none', 'Not a Student')]),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='userprofile',
             name='occupation',
-            field=models.CharField(default='none', max_length=4, verbose_name='Occupation', choices=[(b'kamu', 'Public'), (b'ozel', 'Private'), (b'akdm', 'Academic'), (b'none', 'Unoccupied')]),
+            field=models.CharField(default='none', max_length=4, verbose_name='Occupation', choices=[('kamu', 'Public'), ('ozel', 'Private'), ('akdm', 'Academic'), ('none', 'Unoccupied')]),
             preserve_default=False,
         ),
     ]

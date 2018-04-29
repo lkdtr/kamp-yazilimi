@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
             name='Answer',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('detail', models.CharField(max_length=b'500', verbose_name='Detail')),
+                ('detail', models.CharField(max_length='500', verbose_name='Detail')),
             ],
             options={
                 'verbose_name': 'Answer',
@@ -39,7 +39,7 @@ class Migration(migrations.Migration):
             name='Content',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=b'255', verbose_name='Content Name')),
+                ('name', models.CharField(max_length='255', verbose_name='Content Name')),
                 ('content', ckeditor.fields.RichTextField(verbose_name='HTML Content')),
             ],
         ),
@@ -47,7 +47,7 @@ class Migration(migrations.Migration):
             name='Menu',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=b'255', verbose_name='Name')),
+                ('name', models.CharField(max_length='255', verbose_name='Name')),
                 ('order', models.IntegerField(verbose_name='Order')),
             ],
         ),
@@ -56,7 +56,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('no', models.IntegerField()),
-                ('detail', models.CharField(max_length=b'5000', verbose_name='Question')),
+                ('detail', models.CharField(max_length='5000', verbose_name='Question')),
                 ('active', models.BooleanField(default=False, verbose_name='Is Active')),
                 ('choices', models.ManyToManyField(related_name='choices', to='mudur.Answer')),
                 ('rightanswer', models.ForeignKey(related_name='rightanswer', to='mudur.Answer')),
@@ -70,11 +70,11 @@ class Migration(migrations.Migration):
             name='Site',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=b'255', verbose_name='Site Name')),
-                ('year', models.CharField(max_length=b'4', verbose_name='Year')),
-                ('logo', models.ImageField(upload_to=b'images/', verbose_name='Logo')),
+                ('name', models.CharField(max_length='255', verbose_name='Site Name')),
+                ('year', models.CharField(max_length='4', verbose_name='Year')),
+                ('logo', models.ImageField(upload_to='images/', verbose_name='Logo')),
                 ('is_active', models.BooleanField(default=False, verbose_name='Is Active')),
-                ('home_url', models.CharField(max_length=b'128', null=True, verbose_name='Home Url')),
+                ('home_url', models.CharField(max_length='128', null=True, verbose_name='Home Url')),
                 ('application_start_date', models.DateField(default=datetime.datetime.now, verbose_name='Course Application Start Date')),
                 ('application_end_date', models.DateField(default=datetime.datetime.now, verbose_name='Course Application End Date')),
             ],

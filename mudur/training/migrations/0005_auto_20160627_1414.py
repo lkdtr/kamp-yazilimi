@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='trainesscourserecord',
             name='createtimestamp',
-            field=models.DateField(default=django.utils.timezone.now, null=True, verbose_name=b'Creation Timestamp', blank=True),
+            field=models.DateField(default=django.utils.timezone.now, null=True, verbose_name='Creation Timestamp', blank=True),
         ),
         migrations.AddField(
             model_name='trainesscourserecord',
@@ -32,6 +32,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='trainesscourserecord',
             name='modifytimestamp',
-            field=models.DateField(default=django.utils.timezone.now, null=True, verbose_name=b'Modification Timestamp', blank=True),
+            field=models.DateField(default=django.utils.timezone.now, null=True, verbose_name='Modification Timestamp', blank=True),
         ),
     ]

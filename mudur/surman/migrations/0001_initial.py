@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             name='Answer',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('text', models.TextField(default=b'', blank=True)),
+                ('text', models.TextField(default='', blank=True)),
             ],
             options={
                 'ordering': ('id',),
@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('key', models.CharField(max_length=255)),
                 ('text', models.CharField(max_length=255)),
-                ('extra', models.TextField(default=b'', blank=True)),
+                ('extra', models.TextField(default='', blank=True)),
                 ('related_course', models.ForeignKey(related_name='related_questions', blank=True, to='training.Course', null=True)),
                 ('related_trainer', models.ForeignKey(related_name='related_questions', blank=True, to='userprofile.UserProfile', null=True)),
             ],

@@ -12,6 +12,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='trainessclassictestanswers',
             name='answer',
-            field=models.CharField(max_length=2000, verbose_name=b'Cevap'),
+            field=models.CharField(max_length=2000, verbose_name='Cevap'),
         ),
     ]

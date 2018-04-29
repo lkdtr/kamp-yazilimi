@@ -13,11 +13,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='course',
             name='textboxquestion',
-            field=models.ManyToManyField(to='mudur.TextBoxQuestions', verbose_name=b'Klasik Sorular', blank=True),
+            field=models.ManyToManyField(to='mudur.TextBoxQuestions', verbose_name='Klasik Sorular', blank=True),
         ),
         migrations.AlterField(
             model_name='course',
             name='question',
-            field=models.ManyToManyField(to='mudur.Question', verbose_name=b'\xc3\x87oktan Se\xc3\xa7meli Sorular', blank=True),
+            field=models.ManyToManyField(to='mudur.Question', verbose_name='\xc3\x87oktan Se\xc3\xa7meli Sorular', blank=True),
         ),
     ]
