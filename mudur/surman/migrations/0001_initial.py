@@ -8,7 +8,7 @@ class Migration(migrations.Migration):
     dependencies = [
         ('mudur', '0011_site_domain'),
         ('training', '0013_auto_20160815_1457'),
-        ('userprofile', '0019_auto_20160823_2002'),
+        ('userprofile', '0019_auto_20160821_1640'),
     ]
 
     operations = [
