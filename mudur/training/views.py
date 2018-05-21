@@ -225,7 +225,7 @@ def approve_course_preference(request):
                             data["approve_is_open"] = False
     except Exception as e:
         log.error('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), extra=request.log_extra)
-        log.error(e.message, extra=request.log_extra)
+        log.error(str(e), extra=request.log_extra)
         data['note'] = "Hata oluştu"
     if request.POST:
         try:
@@ -238,7 +238,7 @@ def approve_course_preference(request):
                 log.debug("kursu onayladi " + data['trainess_course_record'].course.name, extra=request.log_extra)
         except Exception as e:
             log.error('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), extra=request.log_extra)
-            log.error(e.message, extra=request.log_extra)
+            log.error(str(e), extra=request.log_extra)
             message = "İşleminiz Sırasında Hata Oluştu"
             status = "-1"
         return HttpResponse(json.dumps({'status': status, 'message': message}), content_type="application/json")
@@ -410,7 +410,7 @@ def statistic(request):
             total_preference = len(TrainessCourseRecord.objects.filter(course__site=request.site))
             data['statistic_by_totalsize'] = {'Toplam Profil(Kişi)': total_profile, 'Toplam Tercih': total_preference}
         except Exception as e:
-            log.error(e.message, extra=request.log_extra)
+            log.error(str(e), extra=request.log_extra)
         return render(request, "training/statistic.html", data)
     else:
         return redirect("index")
@@ -454,7 +454,7 @@ def cancel_all_preference(request):
 #        except Exception as e:
 #            message = "İşleminiz Sırasında Hata Oluştu"
 #            status = "-1"
-#            log.error(e.message, extra=request.log_extra)
+#            log.error(str(e), extra=request.log_extra)
 #        return HttpResponse(json.dumps({'status':'-1', 'message':message}), content_type="application/json")
 #    message = "İşleminiz Sırasında Hata Oluştu"
 #    return HttpResponse(json.dumps({'status':'-1', 'message':message}), content_type="application/json")
@@ -472,7 +472,7 @@ def get_preferred_courses(request):
             status = "0"
         except Exception as e:
             status = "-1"
-            log.error(e.message, extra=request.log_extra)
+            log.error(str(e), extra=request.log_extra)
         return HttpResponse(json.dumps({'status': status, 'preferred_courses': preferred_courses}),
                             content_type="application/json")
     return HttpResponse(json.dumps({'status': '-1'}), content_type="application/json")
@@ -502,7 +502,7 @@ def apply_course_in_addition(request):
                             message = "Kurs basvurulara kapali"
                             log.error(message + " " + str(course_pre['value']), extra=request.log_extra)
                     except Exception as e:
-                        log.error(e.message, extra=request.log_extra)
+                        log.error(str(e), extra=request.log_extra)
                         message = "Tercihleriniz kaydedilirken hata oluştu"
                         return HttpResponse(json.dumps({'status': '-1', 'message': message}),
                                             content_type="application/json")

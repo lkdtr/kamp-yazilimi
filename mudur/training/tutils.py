@@ -214,11 +214,11 @@ def save_course_prefferences(userprofile, course_prefs, site, d, answersforcours
                     send_email_by_operation_name(context, "preference_saved")
             except Exception as e:
                 log.error('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), extra=d)
-                log.error(e.message, extra=d)
+                log.error(str(e), extra=d)
                 log.error("rapor e-postası gönderilemedi", extra=d)
         except Exception as e:
             log.error('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), extra=d)
-            log.error(e.message, extra=d)
+            log.error(str(e), extra=d)
             res['message'] = "Tercihleriniz kaydedilirken hata oluştu"
     else:
         res['message'] = "En fazla " + PREFERENCE_LIMIT + " tane tercih hakkına sahipsiniz"
@@ -364,7 +364,7 @@ def applytrainerselections(postrequest, course, data, site, d):
         except Exception as e:
             note = "Beklenmedik bir hata oluştu!"
             log.error('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), extra=d)
-            log.error(e.message, extra=d)
+            log.error(str(e), extra=d)
     else:
         note = "Bu işlemi yapmaya yetkiniz yok!"
     return note
@@ -390,7 +390,7 @@ def cancel_all_prefs(trainess, cancelnote, site, ruser, d):
             trainess_course_records.delete()
         except Exception as e:
             log.error('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), extra=d)
-            log.error(e.message, extra=d)
+            log.error(str(e), extra=d)
             return 0
         if site.application_end_date < now:
             remaining_days = int((site.event_start_date - now).days)
@@ -410,5 +410,5 @@ def cancel_all_prefs(trainess, cancelnote, site, ruser, d):
         return 1
     except Exception as e:
         log.error('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), extra=d)
-        log.error(e.message, extra=d)
+        log.error(str(e), extra=d)
         return 2

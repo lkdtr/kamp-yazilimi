@@ -49,7 +49,7 @@ def getanswers(context, tuser, ruser, courseid):
 
         return answers
     except Exception as e:
-        log.error(e.message, extra={'clientip': '', 'user': ruser})
+        log.error(str(e), extra={'clientip': '', 'user': ruser})
         return None
 
 
@@ -79,7 +79,7 @@ def oldeventprefs(context, tuser):
         if html:
             html = "<h4>Eski Tercihleri: </h4>" + html
     except Exception as e:
-        log.error(e.message, extra={'clientip': '', 'user': ''})
+        log.error(str(e), extra={'clientip': '', 'user': ''})
     return html
 
 

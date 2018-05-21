@@ -19,7 +19,7 @@ def send_email(subject_template, content_template, data, from_email, to_addresse
         msg.content_subtype = "html"
         msg.send()
     except Exception as e:
-        log.error(e.message, extra={'clientip': '', 'user': ''})
+        log.error(str(e), extra={'clientip': '', 'user': ''})
         raise Exception(_("Mail could not be sent"))
 
 

@@ -53,11 +53,11 @@ def subscribe(request):
                         user.save()
                         data['note'] = _("Your account has been created. Please check your email for activation link")
                     except Exception as e:
-                        data['note'] = e.message
+                        data['note'] = str(e)
                     form = None
                 except Exception as e:
                     data['note'] = _("Your account couldn't create. Please try again!")
-                    log.error(e.message, extra=request.log_extra)
+                    log.error(str(e), extra=request.log_extra)
         elif 'cancel' in request.POST:
             return redirect("subscribe")
         data['createuserform'] = form
@@ -139,7 +139,7 @@ def createprofile(request):
                                         data['note'] = "Profiliniz aşağıdaki sebeplerden dolayı kaydedilemedi"
                                         return render(request, "userprofile/user_profile.html", data)
                             except Exception as e:
-                                log.error(e.message, extra=request.log_extra)
+                                log.error(str(e), extra=request.log_extra)
                                 data['note'] = "Profiliniz kaydedildi ancak konaklama tercihleriniz kaydedilemedi." \
                                                " Sistem yöneticisi ile görüşün!"
                                 return render(request, "userprofile/user_profile.html", data)
@@ -148,7 +148,7 @@ def createprofile(request):
                     return render(request, "userprofile/user_profile.html", data)
                 except Exception as e:
                     log.error('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), extra=request.log_extra)
-                    log.error(e.message, extra=request.log_extra)
+                    log.error(str(e), extra=request.log_extra)
                     data['note'] = "Profiliniz kaydedilirken hata oluştu lütfen sayfayı yeniden yükleyip tekrar deneyin"
                     return render(request, "userprofile/user_profile.html", data)
         data['note'] = "Profiliniz aşağıdaki sebeplerden dolayı oluşturulamadı"
@@ -175,7 +175,7 @@ def instructor_information_view(request):
         except ObjectDoesNotExist as e:
             log.debug("Egitmen bilgileri bulunamadi, yeni bilgiler olusturulmak icin form acilacak",
                       extra=request.log_extra)
-            log.error(e.message, extra=request.log_extra)
+            log.error(str(e), extra=request.log_extra)
             form = InstructorInformationForm(site=request.site, request=request)
             instructorinformation = None
 
@@ -193,7 +193,7 @@ def instructor_information_view(request):
                              extra=request.log_extra)
                 except Exception as e:
                     data['note'] = _("An error occurred while saving your information")
-                    log.error(e.message, extra=request.log_extra)
+                    log.error(str(e), extra=request.log_extra)
         data['form'] = form
     return render(request, "userprofile/instructor_information.html", data)
 
@@ -234,7 +234,7 @@ def alluserview(request):
                 userlist.append(usr)
     except Exception as e:
         log.error("An error occured while showing alluserview", extra=request.log_extra)
-        log.error(e.message, extra=request.log_extra)
+        log.error(str(e), extra=request.log_extra)
     log.info("All user view showed", extra=request.log_extra)
     data["datalist"] = userlist
     return render(request, "userprofile/allusers.html", data)
@@ -250,7 +250,7 @@ def get_all_trainers_view(request):
             trainers.extend(course.trainer.all())
         data['trainers'] = set(trainers)
     except Exception as e:
-        log.error(e.message, extra=request.log_extra)
+        log.error(str(e), extra=request.log_extra)
     return render(request, "userprofile/alltrainers.html", data)
 
 
@@ -263,9 +263,9 @@ def active(request, key):
             user.save()
             backend_login(request, user)
     except ObjectDoesNotExist as e:
-        log.error(e.message, extra=request.log_extra)
+        log.error(str(e), extra=request.log_extra)
     except Exception as e:
-        log.error(e.message, extra=request.log_extra)
+        log.error(str(e), extra=request.log_extra)
     return redirect("createprofile")
 
 
@@ -300,7 +300,7 @@ def password_reset(request):
                 form = None
             except Exception as e:
                 data['note'] = _("Your password couldn't be changed")
-                log.error(e.message, extra=request.log_extra)
+                log.error(str(e), extra=request.log_extra)
     data['changepasswordform'] = form
     return render(request, "userprofile/change_password.html", data)
 
@@ -344,7 +344,7 @@ def password_reset_key(request):
             #except Exception as e:
             #    data['note'] = _("""Password reset operation failed""")
             #    log.error(data['note'], extra=request.log_extra)
-            #    log.error(e.message, extra=request.log_extra)
+            #    log.error(str(e), extra=request.log_extra)
         else:
             data['note'] = _("""Email field can not be empty""")
             log.error(data['note'], extra=request.log_extra)
@@ -363,7 +363,7 @@ def password_reset_key_done(request, key=None):
         user.save()
     except Exception as e:
         data['note'] = _("""Password reset operation failed""")
-        log.error(e.message, extra=request.log_extra)
+        log.error(str(e), extra=request.log_extra)
     if request.method == 'POST':
         form = ChangePasswordForm(request.POST)
         if form.is_valid():
@@ -376,7 +376,7 @@ def password_reset_key_done(request, key=None):
                 redirect("index")
             except Exception as e:
                 data['note'] = _("""Your password couldn't be changed""")
-                log.error(e.message, extra=request.log_extra)
+                log.error(str(e), extra=request.log_extra)
     data['changepasswordform'] = form
     data['user'] = user
     return render(request, "userprofile/change_password.html", data)
@@ -401,7 +401,7 @@ def password_reset_by_sms(request):
                     data['note'] = "Geçersiz Kod"
             except Exception as e:
                 data['note'] = _("""Password reset operation failed""")
-                log.error(e.message, extra=request.log_extra)
+                log.error(str(e), extra=request.log_extra)
     data['changepasswordform'] = form
     return render(request, "userprofile/change_password.html", data)
 
@@ -422,7 +422,7 @@ def showuserprofile(request, userid, courserecordid):
             if not UserProfileOPS.is_user_trainer_ofcourse_or_staff(request.user, courserecord.course):
                 return redirect("selectcoursefcp")
         except Exception as e:
-            log.warning(e.message, extra=request.log_extra)
+            log.warning(str(e), extra=request.log_extra)
             if not request.user.is_staff:
                 return redirect("selectcoursefcp")
             log.warning("Staff user show user profile", extra=request.log_extra)
@@ -481,7 +481,7 @@ def showuserprofile(request, userid, courserecordid):
                             data['note'] = UserProfileOPS.saveparticipation(request, courserecord)
                             data['forms'] = getparticipationforms(request.site, courserecord)
                     except Exception as e:
-                        log.error(e.message, extra=request.log_extra)
+                        log.error(str(e), extra=request.log_extra)
         else:
             data['note'] = "Böyle Bir kullanıcı yoktur."
         return render(request, "userprofile/showuserprofile.html", data)
