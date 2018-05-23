@@ -1,5 +1,6 @@
 from datetime import datetime
 from django import template
+from django.utils.safestring import mark_safe
 
 from mudur.models import ApprovalDate
 from mudur.settings import REQUIRE_TRAINESS_APPROVE
@@ -32,12 +33,12 @@ def isdategtnow_head(datedict, key):
 def manuallyaddtrainess(site, user):
     now = datetime.date(datetime.now())
     if site.event_start_date > now > site.application_end_date and user.is_staff:
-        return """
+        return mark_safe("""
         <div class="alert alert-info">Sistemde profili tanimli olup başvuruyu kaçırmış kullanıcıları "Kursiyer Ekle"
          butonuna tıklayarak kursunuza ekleyebilirsiniz</div>
         <a href="/egitim/katilimciekle" class="btn btn-primary pull-right" type="button" data-toggle="modal"><i class="fa fa-fw fa-plus"></i>
         Kursiyer Ekle
-      </a>"""
+      </a>""")
     return ""
 
 
@@ -48,7 +49,7 @@ def authorizedforelection(context, site, user, course):
     if approvaldates:
         if site.event_start_date > now and approvaldates[0].start_date <= datetime.now() <= approvaldates[
             0].end_date and UserProfileOPS.is_authorized_inst(user.userprofile, course=course):
-            return """
+            return mark_safe("""
             <div class="alert alert-danger">
                 Uyarı: <p>* Onay tarihleri içerisinde kabul e-postaları onayladığınız 1. tercihi kursunuz olan katılımcılara gönderilir.</p>
                        <p>* Kabul e-postası gönderilen kullanıcıların onayını kaldıramazsınız!</p>
@@ -57,7 +58,7 @@ def authorizedforelection(context, site, user, course):
             </div>
             <p><input type="checkbox" name="send_consent_email"/>  Kabul e-postaları gönderilsin</p>
             <button type="submit" class="btn btn-success pull-left" name="send">Gönder</button>
-            """
+            """)
     return ""
 
 
@@ -89,7 +90,7 @@ def isdategtnow_body(context, datedict, key, t, course, user):
                 else:
                     dom += "<input type=\"checkbox\" name=\"students%s\" value=\"%s\"/>" % (course.id, t.pk)
                 dom += "</div>"
-                return dom
+                return mark_safe(dom)
             else:
                 return "%d. tercihi kabul edilmis." % priviliged_pref.preference_order
     if (t.trainess_approved and REQUIRE_TRAINESS_APPROVE) or (t.approved and not REQUIRE_TRAINESS_APPROVE):
@@ -113,7 +114,7 @@ def getconsentmailfield(tcr, user):
                 dom = "<div>"
                 dom += "<input type=\"checkbox\" name=\"consentmail%s\" value=\"%s\"/>" % (tcr.course.pk, tcr.pk)
                 dom += "</div>"
-                return dom
+                return mark_safe(dom)
         return "Gonderilmedi"
     else:
         return "Gönderilmedi"
@@ -130,14 +131,14 @@ def getanswer(question, user):
 @register.simple_tag(name="gettrainesscolor", takes_context=True)
 def gettrainesscolor(context, trainess, courserecord):
     if courserecord.trainess_approved:
-        return "<div class =\"approved-trainess-for-this-course\" ></div >"
+        return mark_safe("<div class =\"approved-trainess-for-this-course\" ></div >")
     elif courserecord.approved:
-        return "<div class =\"checked-trainee-course\" ></div>"
+        return mark_safe("<div class =\"checked-trainee-course\" ></div>")
     else:
         is_approved_another_course = TrainessCourseRecord.objects.filter(course__site=context['request'].site,
                                                                          trainess=trainess, approved=True)
         if is_approved_another_course:
-            return "<div class =\"checked-for-another-course\" > </div>"
+            return mark_safe("<div class =\"checked-for-another-course\" > </div>")
     return ""
 
 
@@ -151,7 +152,7 @@ def gettrainessapprovedpref(context, courserecord):
     for tap in trainess_approved_prefs:
         html += "<div class =\"checked-for-another-course\" > Kursiyer %s.tercihi olan %s kursuna kabul edilmiş </br>" \
                 "</div>" % (tap.preference_order, tap.course.name)
-    return html
+    return mark_safe(html)
 
 
 @register.simple_tag(name="getallprefs", takes_context=True)
@@ -162,7 +163,7 @@ def getallprefs(context, courserecord):
     html = ""
     for pref in trainess_all_prefs:
         html += "<div> %s.tercihi - %s (%s) </br></div>" % (pref.preference_order, pref.course.name, pref.course.no)
-    return html
+    return mark_safe(html)
 
 
 
@@ -171,7 +172,7 @@ def getparticipationheader(site):
     html = ""
     for date in range(1, int((site.event_end_date - site.event_start_date).days) + 2):
         html += "<th>%s. gun</th>" % str(date)
-    return html
+    return mark_safe(html)
 
 @register.simple_tag(name="getapprovedtrainess")
 def getapprovedtrainess(course):
@@ -180,7 +181,7 @@ def getapprovedtrainess(course):
     html = ""
     for tcr in tcrs:
         html += "<tr><th>%s</th><th>%s</th><th>%s</th><th></th><th></th></tr>" % (str(tcr.pk),tcr.trainess.user.first_name,tcr.trainess.user.last_name)
-    return html
+    return mark_safe(html)
 
 @register.simple_tag(name="getparforms")
 def getparforms(site, cr):
@@ -188,13 +189,13 @@ def getparforms(site, cr):
     forms = getparticipationforms(site, cr)
     for form in forms:
         html += "<td>" + form.as_p() + "</td>"
-    return html
+    return mark_safe(html)
 
 
 @register.simple_tag(name="getparformsbydate")
 def getparformsbydate(cr, date):
     form = getparticipationforms_by_date(cr, date)
-    return form.as_ul()
+    return mark_safe(form.as_ul())
 
 
 @register.simple_tag(name="usernotesaddedbyinst")
@@ -215,7 +216,7 @@ def usernotesaddedbyinst(ruser, tuser):
                    trainessnote.note_date.strftime('%d-%m-%Y'))
     else:
         html = "Not Yok."
-    return html
+    return mark_safe(html)
 
 
 @register.simple_tag(name="potentialinstform")
@@ -227,7 +228,7 @@ def potentialinstform(tuser):
             html += "<input type = 'checkbox' id='potential-%s' name='potential-%s' checked />" % (tuser.pk, tuser.pk)
         else:
             html += "<input type='checkbox' id='potential-%s' name='potential-%s' />" % (tuser.pk, tuser.pk)
-        return html
+        return mark_safe(html)
     except UserProfileBySite.DoesNotExist:
         html += "<input type='checkbox' id='potential-%s' name='potential-%s' />" % (tuser.pk, tuser.pk)
-        return html
+        return mark_safe(html)

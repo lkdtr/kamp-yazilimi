@@ -1,6 +1,7 @@
 import logging
 
 from django import template
+from django.utils.safestring import mark_safe
 
 from mudur.models import Site
 
@@ -80,7 +81,7 @@ def oldeventprefs(context, tuser):
             html = "<h4>Eski Tercihleri: </h4>" + html
     except Exception as e:
         log.error(str(e), extra={'clientip': '', 'user': ''})
-    return html
+    return mark_safe(html)
 
 
 @register.simple_tag(name="getoperationsmenu")
@@ -109,7 +110,7 @@ def getoperationsmenu(uprofile):
         </li>
         """
 
-    return html
+    return mark_safe(html)
 
 
 @register.simple_tag(name="instinfo")
@@ -118,7 +119,7 @@ def instinfo(uprofile):
     if UserProfileOPS.is_instructor(uprofile):
         html += "<li><a href=\"/accounts/egitmen/bilgi\"><i class=\"fa fa-info-circle fa-fw\"></i> Egitmen Bilgileri </a></li>"
 
-    return html
+    return mark_safe(html)
 
 
 @register.simple_tag(name="inststatistic")
@@ -126,7 +127,7 @@ def inststatistic(uprofile):
     html = ""
     if UserProfileOPS.is_instructor(uprofile):
         html += "<li><a href='/egitim/istatistik/'><i class='fa fa-pie-chart fa-fw'></i> İstatistik </a></li>"
-    return html
+    return mark_safe(html)
 
 
 @register.simple_tag(name="getinstinfo")
@@ -139,5 +140,5 @@ def getinstinfo(uprofile, site):
                 inst_info.transportation, inst_info.arrival_date, inst_info.departure_date,
                 inst_info.additional_information)
         except Exception as e:
-            return "<td></td><td></td><td></td><td></td>"
-    return html
+            html = "<td></td><td></td><td></td><td></td>"
+    return mark_safe(html)
