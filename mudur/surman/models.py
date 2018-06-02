@@ -12,8 +12,8 @@ class Survey(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=128, unique=True)
 
-    def __unicode__(self):
-        return u"#{} {}".format(self.id, self.site.name)
+    def __str__(self):
+        return "#{} {}".format(self.id, self.site.name)
 
 
 class Question(models.Model):
@@ -28,16 +28,16 @@ class Question(models.Model):
         ordering = ("id",)
         unique_together = [('key', 'survey')]
 
-    def __unicode__(self):
-        return u"#{} {}".format(self.id, truncatechars(self.text, 20))
+    def __str__(self):
+        return "#{} {}".format(self.id, truncatechars(self.text, 20))
 
 
 class AnswerGroup(models.Model):
     token = models.CharField(max_length=10, unique=True)
     created = models.DateTimeField(default=timezone.now)
 
-    def __unicode__(self):
-        return u"#{} {}".format(self.id, self.token)
+    def __str__(self):
+        return "#{} {}".format(self.id, self.token)
 
 
 class Answer(models.Model):
@@ -45,8 +45,8 @@ class Answer(models.Model):
     group = models.ForeignKey(AnswerGroup, related_name="answers")
     text = models.TextField(blank=True, default="")
 
-    def __unicode__(self):
-        return u"#{} {} ({})".format(self.id, truncatechars(self.text, 20), self.question)
+    def __str__(self):
+        return "#{} {} ({})".format(self.id, truncatechars(self.text, 20), self.question)
 
     class Meta:
         ordering = ("id",)

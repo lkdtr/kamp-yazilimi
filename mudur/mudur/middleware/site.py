@@ -30,8 +30,8 @@ class CurrentSiteMiddleware(object):
             request.site = Site.objects.get(is_active=True)
             log.info("%s" % request.get_host(), extra=request.log_extra)
         except Site.MultipleObjectsReturned as e:
-            log.error(e.message, extra=request.log_extra)
+            log.error(str(e), extra=request.log_extra)
             raise Http404
         except Site.DoesNotExist as e:
-            log.error(e.message, extra=request.log_extra)
+            log.error(str(e), extra=request.log_extra)
             raise Http404

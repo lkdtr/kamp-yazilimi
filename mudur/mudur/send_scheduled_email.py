@@ -1,11 +1,8 @@
-#!-*- coding:utf-8 -*-
 # !/usr/bin/env python
 
 import os
 import sys
 import django
-
-reload(sys)
 
 
 def send_all_consent_email():
@@ -59,4 +56,4 @@ if __name__ == "__main__":
         elif function in ["not_approved_trainess_after_approval_period_ends", "not_approved_trainess_eventstardate"]:
             send_to_not_approved_trainess_email(function)
     except:
-        print "Project path can not be empty!"
+        print("Project path can not be empty!")

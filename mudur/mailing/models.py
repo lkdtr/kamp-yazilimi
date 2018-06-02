@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# !-*- coding:utf-8 -*-
 
 from django.db import models
 from mudur.models import Site
@@ -11,7 +10,7 @@ class EmailTemplate(models.Model):
     body_html = models.TextField(max_length=2000, verbose_name="HTML E-posta Govdesi")
     site = models.ForeignKey(Site)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.operation_name
 
     class Meta:

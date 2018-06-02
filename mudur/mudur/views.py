@@ -1,4 +1,3 @@
-# -*- coding:utf-8  -*-
 
 import logging
 
@@ -30,7 +29,7 @@ def index(request):
         content = None
         log.error("%s entered content not found " % request.user, extra=request.log_extra)
     except Exception as e:
-        log.error("%s error occured %s " % (request.user, e.message), extra=request.log_extra)
+        log.error("%s error occured %s " % (request.user, str(e)), extra=request.log_extra)
     data['content'] = content
     return render(request, 'base/dashboard.html', data)
 

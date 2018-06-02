@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import sys
 import json
 import logging
@@ -226,7 +225,7 @@ def approve_course_preference(request):
                             data["approve_is_open"] = False
     except Exception as e:
         log.error('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), extra=request.log_extra)
-        log.error(e.message, extra=request.log_extra)
+        log.error(str(e), extra=request.log_extra)
         data['note'] = "Hata oluştu"
     if request.POST:
         try:
@@ -239,7 +238,7 @@ def approve_course_preference(request):
                 log.debug("kursu onayladi " + data['trainess_course_record'].course.name, extra=request.log_extra)
         except Exception as e:
             log.error('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), extra=request.log_extra)
-            log.error(e.message, extra=request.log_extra)
+            log.error(str(e), extra=request.log_extra)
             message = "İşleminiz Sırasında Hata Oluştu"
             status = "-1"
         return HttpResponse(json.dumps({'status': status, 'message': message}), content_type="application/json")
@@ -411,7 +410,7 @@ def statistic(request):
             total_preference = len(TrainessCourseRecord.objects.filter(course__site=request.site))
             data['statistic_by_totalsize'] = {'Toplam Profil(Kişi)': total_profile, 'Toplam Tercih': total_preference}
         except Exception as e:
-            log.error(e.message, extra=request.log_extra)
+            log.error(str(e), extra=request.log_extra)
         return render(request, "training/statistic.html", data)
     else:
         return redirect("index")
@@ -455,7 +454,7 @@ def cancel_all_preference(request):
 #        except Exception as e:
 #            message = "İşleminiz Sırasında Hata Oluştu"
 #            status = "-1"
-#            log.error(e.message, extra=request.log_extra)
+#            log.error(str(e), extra=request.log_extra)
 #        return HttpResponse(json.dumps({'status':'-1', 'message':message}), content_type="application/json")
 #    message = "İşleminiz Sırasında Hata Oluştu"
 #    return HttpResponse(json.dumps({'status':'-1', 'message':message}), content_type="application/json")
@@ -473,7 +472,7 @@ def get_preferred_courses(request):
             status = "0"
         except Exception as e:
             status = "-1"
-            log.error(e.message, extra=request.log_extra)
+            log.error(str(e), extra=request.log_extra)
         return HttpResponse(json.dumps({'status': status, 'preferred_courses': preferred_courses}),
                             content_type="application/json")
     return HttpResponse(json.dumps({'status': '-1'}), content_type="application/json")
@@ -503,7 +502,7 @@ def apply_course_in_addition(request):
                             message = "Kurs basvurulara kapali"
                             log.error(message + " " + str(course_pre['value']), extra=request.log_extra)
                     except Exception as e:
-                        log.error(e.message, extra=request.log_extra)
+                        log.error(str(e), extra=request.log_extra)
                         message = "Tercihleriniz kaydedilirken hata oluştu"
                         return HttpResponse(json.dumps({'status': '-1', 'message': message}),
                                             content_type="application/json")
@@ -610,13 +609,13 @@ def submitandregister(request):
     data = {'note': "Kurs onerisi olustur:"}
     curinstprofform = InstProfileForm(prefix="cur")
     forms = {}
-    for x in xrange(4):
+    for x in range(4):
         forms[x] = [CreateInstForm(prefix=str(x) + "inst"), InstProfileForm(prefix=str(x) + "instprof")]
     form = CreateCourseForm()
     if "submit" in request.POST:
         allf = []
         forms = {}
-        for x in xrange(4):
+        for x in range(4):
             if str(x) + "inst-email" in request.POST:
                 forms[x] = [CreateInstForm(request.POST, prefix=str(x) + "inst"),
                             InstProfileForm(request.POST, prefix=str(x) + "instprof")]

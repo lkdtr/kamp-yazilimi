@@ -1,1 +1,1 @@
-from signals import *
+default_app_config = 'userprofile.apps.UserProfileAppConfig'

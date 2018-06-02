@@ -1,9 +1,7 @@
-#!-*- coding-utf8 -*-
-# coding=utf-8
-
 import logging
 
 from django import template
+from django.utils.safestring import mark_safe
 
 from mudur.models import Site
 
@@ -39,7 +37,7 @@ def getanswers(context, tuser, ruser, courseid):
                 try:
                     answers.append(TrainessClassicTestAnswers.objects.get(question=q, user=tuser))
                 except:
-                    print "answers couldnt find"
+                    print("answers couldnt find")
             answers.extend(TrainessClassicTestAnswers.objects.filter(user=tuser, question__site=context["request"].site,
                                                                      question__is_sitewide=True))
 
@@ -52,7 +50,7 @@ def getanswers(context, tuser, ruser, courseid):
 
         return answers
     except Exception as e:
-        log.error(e.message, extra={'clientip': '', 'user': ruser})
+        log.error(str(e), extra={'clientip': '', 'user': ruser})
         return None
 
 
@@ -82,8 +80,8 @@ def oldeventprefs(context, tuser):
         if html:
             html = "<h4>Eski Tercihleri: </h4>" + html
     except Exception as e:
-        log.error(e.message, extra={'clientip': '', 'user': ''})
-    return html
+        log.error(str(e), extra={'clientip': '', 'user': ''})
+    return mark_safe(html)
 
 
 @register.simple_tag(name="getoperationsmenu")
@@ -112,7 +110,7 @@ def getoperationsmenu(uprofile):
         </li>
         """
 
-    return html
+    return mark_safe(html)
 
 
 @register.simple_tag(name="instinfo")
@@ -121,7 +119,7 @@ def instinfo(uprofile):
     if UserProfileOPS.is_instructor(uprofile):
         html += "<li><a href=\"/accounts/egitmen/bilgi\"><i class=\"fa fa-info-circle fa-fw\"></i> Egitmen Bilgileri </a></li>"
 
-    return html
+    return mark_safe(html)
 
 
 @register.simple_tag(name="inststatistic")
@@ -129,7 +127,7 @@ def inststatistic(uprofile):
     html = ""
     if UserProfileOPS.is_instructor(uprofile):
         html += "<li><a href='/egitim/istatistik/'><i class='fa fa-pie-chart fa-fw'></i> İstatistik </a></li>"
-    return html
+    return mark_safe(html)
 
 
 @register.simple_tag(name="getinstinfo")
@@ -142,5 +140,5 @@ def getinstinfo(uprofile, site):
                 inst_info.transportation, inst_info.arrival_date, inst_info.departure_date,
                 inst_info.additional_information)
         except Exception as e:
-            return "<td></td><td></td><td></td><td></td>"
-    return html
+            html = "<td></td><td></td><td></td><td></td>"
+    return mark_safe(html)

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 from training.models import Course
 from userprofile.models import UserProfile
@@ -15,7 +14,7 @@ class CourseSubOps:
     def createinst(postrequest, numofinst):
         insts = []
         uprof = UserProfileOPS()
-        for i in xrange(numofinst):
+        for i in range(numofinst):
             n_str = str(i) + '-'
             upass = uprof.generatenewpass(10)  # uretilen parola olusturulan kullaniciya gonderilecek.
             inst = User(first_name=postrequest[n_str + 'first_name'], last_name=postrequest[n_str + 'last_name'],

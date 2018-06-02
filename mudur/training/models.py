@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# !-*- coding:utf-8 -*-
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -31,7 +30,7 @@ class Course(models.Model):
     question = models.ManyToManyField(Question, blank=True, verbose_name=_("Question"))
     textboxquestion = models.ManyToManyField(TextBoxQuestions, blank=True, verbose_name=_("Text Box Questions"))
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -48,7 +47,7 @@ class TrainessCourseRecord(models.Model):
     instapprovedate = models.DateField(default=now, blank=True, null=True)
     consentemailsent = models.BooleanField(default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.course.name
 
     class Meta:
@@ -67,7 +66,7 @@ class TrainessParticipation(models.Model):
                                default='0')
     day = models.CharField(verbose_name=_("Day"), max_length=20, default='1')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.courserecord.trainess.user.username
 
     class Meta:
@@ -79,7 +78,7 @@ class TrainessTestAnswers(models.Model):
     tcourserecord = models.ForeignKey(TrainessCourseRecord)
     answer = models.ManyToManyField(Answer)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.tcourserecord.trainess.user.username
 
     class Meta:

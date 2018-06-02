@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# !-*- coding:utf-8 -*-
 import sys
 import os
 import django
@@ -9,14 +8,14 @@ def get_users_with_edu():
     from userprofile.models import UserProfile
     users = UserProfile.objects.filter(user__username__contains="edu.tr")
     for user in users:
-        print user
+        print(user)
 
 def application_opens():
     from training.models import Course
     coursesin = ['36', '50', '61', '105', '121', '126', '40']
     courses = Course.objects.filter(site__is_active=True, no__in=coursesin)
     for course in courses:
-        print course.no
+        print(course.no)
         course.application_is_open = True
         course.save()
 
@@ -30,15 +29,15 @@ def onayla():
             "onaylanacaklar") as e:  # Burada onaylanacak kisilerin eposta adreslerinin bulundugu dosya gelecek (her satirda bir adres)
         kursiyerler = e.readlines()
         for k in kursiyerler:
-            print k
+            print(k)
             ku = User.objects.get(username=k.rstrip())
             kup = UserProfile.objects.get(user=ku)
             kupts = TrainessCourseRecord.objects.filter(trainess=kup).filter(course__pk=coursepk)
             for kupt in kupts:
-                print kupt.trainess.user.username
+                print(kupt.trainess.user.username)
                 kupt.approved = True
                 kupt.save()
-                print kupt.approved
+                print(kupt.approved)
 
 
 def karalisteimport():
@@ -63,14 +62,14 @@ def karalisteimport():
                     #                                                    user__username="ozge@kripton.rocks"), label="sistem",
                     #                                                note=userfields[5])
                     #                    trainessnote.save()
-                    print "*******"
-                    print userfields[0]
-                    print userobj
+                    print("*******")
+                    print(userfields[0])
+                    print(userobj)
                     pass
                 else:
-                    print "******* Profil var site yok"
-                    print userfields[0]
-                    print userobj
+                    print("******* Profil var site yok")
+                    print(userfields[0])
+                    print(userobj)
             else:
                 name = userfields[0].split(" ")[0] + " " + userfields[0].split(" ")[1]
                 surname = userfields[0].split(" ")[2]
@@ -83,14 +82,14 @@ def karalisteimport():
                                                         user__username="ozge@kripton.rocks"), label="sistem",
                                                     note=userfields[5])
                         trainessnote.save()
-                        print "*******"
-                        print userfields[0]
-                        print userobj2
+                        print("*******")
+                        print(userfields[0])
+                        print(userobj2)
                         # pass
                     else:
-                        print "******* Profil var site yok"
-                        print userfields[0]
-                        print userobj2
+                        print("******* Profil var site yok")
+                        print(userfields[0])
+                        print(userobj2)
 
 
 def push_note_to_trainess(note, filename):
@@ -102,7 +101,7 @@ def push_note_to_trainess(note, filename):
         with open(filename) as f:
             userlist = f.readlines()
             for user in userlist:
-                print user
+                print(user)
                 usermail = user.rstrip()
                 up = UserProfile.objects.get(user__username=usermail)
                 # trainessnote = TrainessNote.objects.get(note_to_profile=up)
@@ -112,7 +111,7 @@ def push_note_to_trainess(note, filename):
                                             note=note)
                 trainessnote.save()
     else:
-        print "note and filename can not be empty!!"
+        print("note and filename can not be empty!!")
 
 
 def import_participation(filename):
@@ -122,9 +121,9 @@ def import_participation(filename):
         for tcrno in tcrlist:
             tcrnoint = int(re.search(r'\d+', tcrno.rstrip()).group())
             tcr = TrainessCourseRecord.objects.get(pk=tcrnoint)
-            print tcr
+            print(tcr)
             for i in range(1, 17):
-                print i
+                print(i)
                 trp = TrainessParticipation(courserecord=tcr, day=i, morning='2', afternoon='2', evening='2')
                 trp.save()
 
@@ -132,20 +131,20 @@ def correct_wrongs():
     from training.models import TrainessCourseRecord
     wrongs = TrainessCourseRecord.objects.filter(consentemailsent=True,approved=False,course__site__is_active=True)
     for w in wrongs:
-        print "\n"
-        print "First approve", w.trainess, w.course
+        print("\n")
+        print("First approve", w.trainess, w.course)
         wrongapprove = TrainessCourseRecord.objects.get(trainess=w.trainess, consentemailsent=True, approved=True,course__site__is_active=True)
-        print wrongapprove
+        print(wrongapprove)
         wrongapprove.consentemailsent = False
         wrongapprove.approved = False
         wrongapprove.trainess_approved = False
         wrongapprove.save()
-        print "Second approve", wrongapprove.trainess, wrongapprove.course
+        print("Second approve", wrongapprove.trainess, wrongapprove.course)
         w.consentemailsent = True
         w.approved = True
         w.trainess_approved = True
         w.save()
-        print "change successful"
+        print("change successful")
 
 def cancel_course(course_no):
     from training.models import TrainessCourseRecord
@@ -153,38 +152,38 @@ def cancel_course(course_no):
    
     linux3tercih_edenler = TrainessCourseRecord.objects.filter(course__no=course_no, course__site__is_active=True)
     for tercih in linux3tercih_edenler:
-        print tercih.trainess
+        print(tercih.trainess)
         diger_tercihleri = TrainessCourseRecord.objects.filter(trainess=tercih.trainess).filter(~Q(course__no=course_no))
         if tercih.preference_order == 1:
             for dtercih in diger_tercihleri:
                 if dtercih.preference_order == 2:
                     dtercih.preference_order=1
                     dtercih.save()
-                    print dtercih.pk
-                    print "preference order changed to 1"
+                    print(dtercih.pk)
+                    print("preference order changed to 1")
                 elif dtercih.preference_order == 3:
                     dtercih.preference_order=2
                     dtercih.save()
-                    print dtercih.pk
-                    print "preference order changed to 2"
+                    print(dtercih.pk)
+                    print("preference order changed to 2")
         if tercih.preference_order == 2:
             for dtercih in diger_tercihleri:
                 if dtercih.preference_order == 3:
                     dtercih.preference_order=2
                     dtercih.save()
-                    print dtercih.pk
-                    print "preference order changed to 2"
+                    print(dtercih.pk)
+                    print("preference order changed to 2")
         tercih.delete()
 def write_par():
     from mudur.models import Site
     from training.models import Course, TrainessCourseRecord, TrainessParticipation
     
     gelmeyenler_dict = {}
-    print "parsing text file..."
+    print("parsing text file...")
     with open("ab2017_gelmeyenler.txt", "r") as f:
         kisiler=  f.readlines()
         for kisi in kisiler:
-            print kisi
+            print(kisi)
             course_no =  kisi.split("-")[0]
             isim_soyisim =  kisi.split("-")[1].rstrip("\n")
             course = Course.objects.get(pk=course_no)
@@ -193,17 +192,17 @@ def write_par():
             except:
                 gelmeyenler_dict[course.pk] = [isim_soyisim]
     
-    print "participation..."
+    print("participation...")
     site = Site.objects.get(name__contains="Akademik Bil", year="2017")
     courses = Course.objects.filter(site=site)
-    print courses
-    print "hebelek"
+    print(courses)
+    print("hebelek")
     for c in courses:
-        print "hebelek 2"
+        print("hebelek 2")
         tcrs = TrainessCourseRecord.objects.filter(course=c, approved=True)
-        print tcrs
+        print(tcrs)
         for tcr in tcrs:
-            print tcr.pk
+            print(tcr.pk)
             kursiyer_ismi = tcr.trainess.user.first_name + " " + tcr.trainess.user.last_name
             gelmeyenlerlist = gelmeyenler_dict.get(c.pk, None)
             if gelmeyenlerlist and kursiyer_ismi not in gelmeyenler_dict[c.pk]:
@@ -215,7 +214,7 @@ def write_par():
                     trp = TrainessParticipation(courserecord=tcr,day=i, morning="0", afternoon="0", evening="-1")
                     trp.save()
     else:
-         print "bos" 
+         print("bos" )
 
 if __name__ == "__main__":
     # try:
@@ -233,4 +232,4 @@ if __name__ == "__main__":
     # push_note_to_trainess("note", "filename")
 #    import_participation("lyk2016_kabuledilenler_tercihno.csv")
     # except:
-    #    print "Project path can not be empty!"
+    #    print("Project path can not be empty!")

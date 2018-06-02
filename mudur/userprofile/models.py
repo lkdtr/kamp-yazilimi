@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-# -*- coding:utf-8 -*-
 
 import datetime
 
@@ -39,7 +38,7 @@ class UserVerification(models.Model):
     password_reset_key_expires = models.DateTimeField(null=True, blank=True)
     temporary_code = models.CharField(max_length=10, null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.user.username
 
     class Meta:
@@ -73,9 +72,9 @@ class UserProfile(models.Model):
     experience = models.CharField(verbose_name=_("Work Experience"), max_length=1000, null=True, blank=True)
     profilephoto = models.ImageField(upload_to=user_directory_path, verbose_name=_("Profile Picture"))
 
-    def __unicode__(self):
+    def __str__(self):
         if self.user.get_full_name():
-            return u"{u} ({fn})".format(u=self.user.username, fn=self.user.get_full_name())
+            return "{u} ({fn})".format(u=self.user.username, fn=self.user.get_full_name())
         else:
             return self.user.username
 
@@ -95,7 +94,7 @@ class UserProfileBySite(models.Model):
     canapply = models.BooleanField(verbose_name=_("Can Apply?"), blank=True, default=False)
     potentialinstructor = models.BooleanField(verbose_name=_("Potential Instructor"), blank=True, default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.user.username
 
     class Meta:
@@ -113,7 +112,7 @@ class TrainessNote(models.Model):
     site = models.ForeignKey(Site)
     label = models.CharField(max_length=50, verbose_name=_("Label"))
 
-    def __unicode__(self):
+    def __str__(self):
         return self.note_to_profile.user.username
 
     class Meta:
@@ -129,7 +128,7 @@ class Accommodation(models.Model):
     website = models.CharField(verbose_name=_("Website"), max_length=300)
     site = models.ForeignKey(Site)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -144,7 +143,7 @@ class UserAccomodationPref(models.Model):
     preference_order = models.SmallIntegerField(default=1)
     approved = models.BooleanField(default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.user.user.username
 
     class Meta:
@@ -160,7 +159,7 @@ class InstructorInformation(models.Model):
     departure_date = models.DateField(verbose_name=_("Departure Date"), default=datetime.date.today)
     site = models.ForeignKey(Site)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.user.user.username
 
     class Meta:
@@ -173,9 +172,10 @@ class TrainessClassicTestAnswers(models.Model):
     question = models.ForeignKey(TextBoxQuestions, verbose_name="Soru")
     answer = models.CharField(max_length=2000, verbose_name="Cevap")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.user.user.username
 
     class Meta:
         verbose_name = _("Trainess Answer for Classic Question")
         verbose_name_plural = _("Trainess Answers for Classic Questions ")
+

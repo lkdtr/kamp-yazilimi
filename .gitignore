@@ -10,7 +10,8 @@ mudur/mudur/settings.py
 mudur/egitmenler
 mudur/kurslar
 venv
-.idea
+.idea/
+.venv*/
 media/
 mudur/geribildirim.csv
 mudur/keys.txt

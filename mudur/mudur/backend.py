@@ -1,4 +1,3 @@
-#!-*- coding:utf-8 -*-
 
 import hashlib
 import logging
@@ -28,5 +27,5 @@ def send_email_by_operation_name(context, operation_name):
                    context['recipientlist'])
         return 1
     except Exception as e:
-        log.error(e.message, extra={'clientip': context.get('clientip', ''), 'user': context.get('user', '')})
+        log.error(str(e), extra={'clientip': context.get('clientip', ''), 'user': context.get('user', '')})
         return 0
