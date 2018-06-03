@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ agreement.title|title }}</title>
+</head>
+<body>
+    <p>
+        Değerli kullanıcı. {{ agreement.category.title }} değişmiştir. <br>
+        Lütfen siteyi kullanmaya devam edebilmek için anlaşmayı kabul edin.
+    </p>
+    <hr>
+    <h1>{{ agreement.title|title }}</h1>
+    <p>{{ agreement.body }}</p>
+    <form action="{% url "accept_agreement" %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        <button name="status" value="yes">Kabul Ediyorum</button>
+        <button name="status" value="no">Kabul Etmiyorum</button>
+    </form>
+</body>
+</html>

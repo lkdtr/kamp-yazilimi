@@ -3,15 +3,14 @@
 
 import datetime
 
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django_countries.fields import CountryField
 from django_countries.data import COUNTRIES
-
-from mudur.settings import USER_TYPES, UNIVERSITIES, GENDER, TRANSPORTATION
+from django_countries.fields import CountryField
 
 from mudur.models import Site, TextBoxQuestions
+from mudur.settings import USER_TYPES, UNIVERSITIES, GENDER, TRANSPORTATION
 
 OCCUPATIONS = [
     ("kamu", _("Public")),
@@ -178,4 +177,25 @@ class TrainessClassicTestAnswers(models.Model):
     class Meta:
         verbose_name = _("Trainess Answer for Classic Question")
         verbose_name_plural = _("Trainess Answers for Classic Questions ")
+
+
+class AgreementCategory(models.Model):
+    title = models.CharField(max_length=30, unique=True)
+    is_active = models.BooleanField(default=True)
+
+
+class AgreementText(models.Model):
+    title = models.CharField(max_length=30)
+    body = models.TextField()
+    version = models.IntegerField(default=0)
+    category = models.ForeignKey(AgreementCategory)
+
+    class Meta:
+        unique_together = (("version", "category",),)
+
+
+class UserAgreementInfo(models.Model):
+    user = models.ForeignKey(User)
+    agreement = models.ForeignKey(AgreementText)
+    date = models.DateTimeField(auto_now_add=True)
 
