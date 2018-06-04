@@ -25,7 +25,7 @@
                     <dt>E-posta:</dt><dd>{{ tuser.user.username }}</dd>
                     <dt>Şehir:</dt><dd>{{ tuser.city }}</dd>
                     <dt>İş:</dt><dd>{{ tuser.job }}</dd>
-                    <dt>Doğum Tarihi:</dt><dd>{{ tuser.birthdate }}</dd>
+                    <dt>Doğum Tarihi:</dt><dd>{{ tuser.birthdate.year }} ({{ tuser.birthdate|age }})</dd>
                     <dt>Cinsiyet:</dt><dd>{{ tuser.gender }}</dd>
                     <dt>Ünvan:</dt><dd>{{ tuser.title }}</dd>
                     <dt>Kurum:</dt><dd>{{ tuser.organization }}</dd>

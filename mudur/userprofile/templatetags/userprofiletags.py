@@ -7,6 +7,7 @@ from mudur.models import Site
 
 from userprofile.models import TrainessClassicTestAnswers, InstructorInformation
 from userprofile.userprofileops import UserProfileOPS
+from userprofile.uutils import calculate_age
 
 from training.models import Course, TrainessCourseRecord, TrainessParticipation
 from training.tutils import calculate_participations
@@ -142,3 +143,8 @@ def getinstinfo(uprofile, site):
         except Exception as e:
             html = "<td></td><td></td><td></td><td></td>"
     return mark_safe(html)
+
+
+@register.filter()
+def age(value):
+    return calculate_age(value)

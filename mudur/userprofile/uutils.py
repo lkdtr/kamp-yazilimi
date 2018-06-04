@@ -1,4 +1,4 @@
-
+from datetime import date
 import logging
 from userprofile.forms import StuProfileForm, UserProfileBySiteForm
 from django.utils.translation import ugettext_lazy as _
@@ -38,3 +38,8 @@ def getuserprofileforms(user, site, d):
                                                      site=site).order_by('name')
         log.debug("Profil oluşturma islemi", extra=d)
     return note, userprofilebysite, userproform, userprobysiteform, accomodations, accomodation_records
+
+
+def calculate_age(born):
+    today = date.today()
+    return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
