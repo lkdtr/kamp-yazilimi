@@ -70,7 +70,7 @@ class UserProfile(models.Model):
     department = models.CharField(verbose_name=_("Department"), max_length=50)
     website = models.CharField(verbose_name=_("Website"), max_length=300, null=True, blank=True)
     experience = models.CharField(verbose_name=_("Work Experience"), max_length=1000, null=True, blank=True)
-    profilephoto = models.ImageField(upload_to=user_directory_path, verbose_name=_("Profile Picture"))
+    profilephoto = models.ImageField(upload_to=user_directory_path, verbose_name=_("Profile Picture"), help_text=_("Maximum 5 MB file is allowed."))
     emergency_contact_information = models.TextField(verbose_name=_("Emergency Contact Information"), null=True, blank=True)
 
     def __str__(self):
@@ -88,7 +88,7 @@ class UserProfile(models.Model):
 class UserProfileBySite(models.Model):
     user = models.ForeignKey(User)
     site = models.ForeignKey(Site)
-    document = models.FileField(upload_to=user_directory_path, verbose_name=_("Belge Ekle"), blank=True, null=True)
+    document = models.FileField(upload_to=user_directory_path, verbose_name=_("Belge Ekle"), blank=True, null=True, help_text=_("Maximum 10 MB file is allowed."))
     needs_document = models.BooleanField(verbose_name=_("Needs Document"), blank=True, default=False)
     userpassedtest = models.BooleanField(verbose_name=_("FAQ is answered?"), blank=True, default=False)
     additional_information = models.TextField(verbose_name=_("Additional Information"), blank=True, null=True)
