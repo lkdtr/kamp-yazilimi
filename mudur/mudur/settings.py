@@ -14,12 +14,22 @@ import sys
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
+'''
+    DJANGO_ROOT: Django kodlarının bulunduğu dizin
+    GIT_ROOT: Git reposunun bulunduğu dizin
+    PROJECT_ROOT: Projenin çalışma alanı
+'''
+DJANGO_ROOT = BASE_DIR
+GIT_ROOT = os.path.dirname(DJANGO_ROOT)
+PROJECT_ROOT = os.path.dirname(DJANGO_ROOT)
+
 sys.path.insert(0, os.path.join(BASE_DIR, "mudur"))
 
 '''
     COMMON_CONFIG_FILE: Veri tabani ayarlari ve secret key bu dosyada yer alir.
 '''
-COMMON_CONFIG_FILE = '/opt/kampyazilim.conf'
+COMMON_CONFIG_FILE = os.getenv("MUDUR_CONFIG", '/opt/kampyazilim.conf')
 from .readconf import *
 
 '''
@@ -89,11 +99,8 @@ REQUIRE_TRAINESS_APPROVE = False
 '''
     VIRTUAL_ENV_PATH: Uygulamanın Python virtualenv'nin kurulu oldugu dizinin yolu
 '''
-VIRTUAL_ENV_PATH = "venv/venv"
-'''
-    PROJECT_HOME_DIR: Uygulamanın ana dizini
-'''
-PROJECT_HOME_DIR = "/opt/ab-kurs-kayit/mudur"
+VIRTUAL_ENV_PATH = os.path.join(os.path.dirname(PROJECT_ROOT), "venv")
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
@@ -152,8 +159,8 @@ MIDDLEWARE_CLASSES = (
     'mudur.middleware.agreement.AgreementMiddleware',
 )
 ROOT_URLCONF = 'mudur.urls'
-CSRF_COOKIE_SECURE = not DEBUG
-SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = os.getenv("MUDUR_HTTPS", "False") == "True"
+SESSION_COOKIE_SECURE = os.getenv("MUDUR_HTTPS", "False") == "True"
 X_FRAME_OPTIONS = "DENY"
 WSGI_APPLICATION = 'mudur.wsgi.application'
 

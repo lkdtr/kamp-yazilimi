@@ -7,7 +7,7 @@ from django.db.models import signals
 
 from mudur.adaptor import define_crontab, deleteoldjobs
 from mudur.models import Site, ApprovalDate
-from mudur.settings import PROJECT_HOME_DIR, VIRTUAL_ENV_PATH
+from mudur.settings import DJANGO_ROOT, VIRTUAL_ENV_PATH
 from mudur.backend import create_verification_link, send_email_by_operation_name
 from userprofile.models import UserVerification
 
@@ -40,7 +40,7 @@ def defineconsentmailcronjob_signal(instance, created, **kwargs):
             eventstartdate = instance.event_start_date
             date_list = daterange(datetime.date(allapprovedates[0].end_date), eventstartdate)
             consentmailcommand = "cd %s && bash_scripts/abkayit_cronjob.sh -w %s -pv %s -f send_all_consent_email" % (
-                PROJECT_HOME_DIR, PROJECT_HOME_DIR, VIRTUAL_ENV_PATH)
+                DJANGO_ROOT, DJANGO_ROOT, VIRTUAL_ENV_PATH)
             deleteoldjobs(consentmailcommand)
             for d in date_list:
                 define_crontab(consentmailcommand, d)
@@ -56,7 +56,7 @@ def definenotapprovedtrainesscronjob_signal(instance, created, **kwargs):
     if instance.is_active:
         beforeeventstartdate = instance.event_start_date - timedelta(days=0, hours=12)
         notapprovedcommand1 = "cd %s && bash_scripts/abkayit_cronjob.sh -w %s -pv %s -f not_approved_trainess_eventstardate" % (
-            PROJECT_HOME_DIR, PROJECT_HOME_DIR, VIRTUAL_ENV_PATH)
+            DJANGO_ROOT, DJANGO_ROOT, VIRTUAL_ENV_PATH)
         deleteoldjobs(notapprovedcommand1)
         define_crontab(notapprovedcommand1, beforeeventstartdate)
         log.info("not_approved_trainess_eventstardate defined for date %s" % beforeeventstartdate,
@@ -64,7 +64,7 @@ def definenotapprovedtrainesscronjob_signal(instance, created, **kwargs):
         allapprovedates = ApprovalDate.objects.filter(site=instance, for_instructor=True).order_by('-end_date')
         if allapprovedates:
             notapprovedcommand2 = "cd %s && bash_scripts/abkayit_cronjob.sh -w %s -pv %s -f not_approved_trainess_after_approval_period_ends" % (
-                PROJECT_HOME_DIR, PROJECT_HOME_DIR, VIRTUAL_ENV_PATH)
+                DJANGO_ROOT, DJANGO_ROOT, VIRTUAL_ENV_PATH)
             deleteoldjobs(notapprovedcommand2)
             define_crontab(notapprovedcommand2, allapprovedates[0].end_date + timedelta(days=1))
             log.info("not_approved_trainess_after_approval_period_ends defined "
