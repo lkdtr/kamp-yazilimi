@@ -158,8 +158,8 @@ MIDDLEWARE_CLASSES = (
     'mudur.middleware.site.CurrentSiteMiddleware',
 )
 ROOT_URLCONF = 'mudur.urls'
-CSRF_COOKIE_SECURE = not DEBUG
-SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = os.getenv("MUDUR_HTTPS", False)
+SESSION_COOKIE_SECURE = os.getenv("MUDUR_HTTPS", False)
 X_FRAME_OPTIONS = "DENY"
 WSGI_APPLICATION = 'mudur.wsgi.application'
 
