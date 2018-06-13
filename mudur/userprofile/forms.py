@@ -221,6 +221,7 @@ class StuProfileForm(ModelForm):
             'university': forms.Select(attrs={'placeholder': _('University'), 'class': 'form-control'}),
             'department': forms.TextInput(attrs={'placeholder': _('Department'), 'class': 'form-control'}),
             'website': forms.TextInput(attrs={'placeholder': _('Website'), 'class': 'form-control'}),
+            'emergency_contact_information': forms.Textarea(attrs={'placeholder': _('Emergency Contact Information'), 'class': 'form-control'}),
             'experience': forms.TextInput(
                     attrs={'placeholder': _('Daha önce çalışılan/Staj yapılan yerler'), 'class': 'form-control'}),
             'user': forms.HiddenInput(),
@@ -228,6 +229,8 @@ class StuProfileForm(ModelForm):
         }
         help_texts = {
             'organization': 'Kurum Bilgisi; okuyorsanız okuduğunuz kurum, çalışıyorsanız çalıştığınız kurum bilgisidir',
+            'emergency_contact_information': 'Lütfen acil bir durumda ulaşabilmemiz için bir iletişim bilgisi yazınız. '
+                                             'Örn. 1. Dereceden aile ferdi ve telefon numarası.',
         }
 
     def __init__(self, *args, **kwargs):
@@ -238,7 +241,8 @@ class StuProfileForm(ModelForm):
         self.ruser = kwargs.pop('ruser', None)
         super(StuProfileForm, self).__init__(*args, **kwargs)
         for field in self.fields:
-            if field in ['tckimlikno', 'ykimlikno', 'university', 'user', 'website', 'experience']:
+            if field in ['tckimlikno', 'ykimlikno', 'university', 'user', 'website', 'experience',
+                         'emergency_contact_information']:
                 self.fields[field].required = False
             else:
                 self.fields[field].required = True
