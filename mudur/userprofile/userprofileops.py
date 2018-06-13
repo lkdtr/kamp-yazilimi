@@ -9,7 +9,9 @@ from pysimplesoap.client import SoapClient
 
 from mudur.settings import TCKIMLIK_SORGULAMA_WS, EMAIL_FROM_ADDRESS, SMS_URL, SMS_USERCODE, SMS_PASSWORD, SMS_MSGHEADER
 from training.models import Course, TrainessParticipation
-from userprofile.models import TrainessNote
+from userprofile.models import TrainessNote, TrainessClassicTestAnswers
+from mudur.models import TextBoxQuestions
+
 '''
     General operations that are used in userprofile app.
 '''
@@ -20,6 +22,14 @@ log = logging.getLogger(__name__)
 class UserProfileOPS:
     def __init__(self):
         pass
+
+    @staticmethod
+    def check_profile_questions_ready(user, site):
+        questions = TextBoxQuestions.objects.filter(site=site, is_sitewide=True)
+        question_count = questions.count()
+        answers = TrainessClassicTestAnswers.objects.filter(user=user.userprofile, question__in=questions).exclude(answer__isnull=True).exclude(answer__exact='')
+        answers_count = answers.count()
+        return question_count == answers_count
 
     @staticmethod
     def generatenewpass(plen):

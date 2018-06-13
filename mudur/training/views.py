@@ -72,6 +72,7 @@ def apply_to_course(request):
     data = {'closed': True, 'additional1_pref_closed': True, 'PREFERENCE_LIMIT': PREFERENCE_LIMIT,
             'ADDITION_PREFERENCE_LIMIT': ADDITION_PREFERENCE_LIMIT}
     now = datetime.now()
+    data['profile_ready'] = UserProfileOPS.check_profile_questions_ready(request.user, request.site)
     data['may_cancel_all'] = True if request.site.event_start_date > datetime.date(now) else False
     """
     courses: mevcut etkinte onaylanmis ve basvuruya acik kurslar
