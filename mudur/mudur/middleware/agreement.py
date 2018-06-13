@@ -3,7 +3,10 @@ class AgreementMiddleware(object):
         from userprofile.models import AgreementText, AgreementCategory, UserAgreementInfo
         from django.shortcuts import redirect
         from django.urls import reverse
-        if request.path == reverse("accept_agreement"):
+        from django.conf import settings
+        if request.path == reverse("accept_agreement") \
+                or request.path.startswith(settings.STATIC_URL) \
+                or request.path.startswith(settings.MEDIA_URL):
             return
 
         if request.user.is_authenticated:
