@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.db.models import signals
 
 from mudur.adaptor import define_crontab, deleteoldjobs
+from mudur.helpers import disable_for_loaddata
 from mudur.models import Site, ApprovalDate
 from mudur.settings import DJANGO_ROOT, VIRTUAL_ENV_PATH
 from mudur.backend import create_verification_link, send_email_by_operation_name
@@ -15,7 +16,7 @@ from training.tutils import daterange
 
 log = logging.getLogger(__name__)
 
-
+@disable_for_loaddata
 def send_confirm_link(instance, created, **kwargs):
     if not instance.is_staff:
         if created:
@@ -28,7 +29,7 @@ def send_confirm_link(instance, created, **kwargs):
             context['domain'] = context['site'].home_url.rstrip('/')
             send_email_by_operation_name(context, "send_activation_key")
 
-
+@disable_for_loaddata
 def defineconsentmailcronjob_signal(instance, created, **kwargs):
     """
         Site modelinde her save işlemi sonrasında "kabul e-postalarının onaylama tarihi bitiminde  e-postası
@@ -47,7 +48,7 @@ def defineconsentmailcronjob_signal(instance, created, **kwargs):
                 log.info("consentmailtotrainess_cronjob defined for date %s" % d.strftime(
                         "%Y-%m-%d %H:%M:%S"), extra={'clientip': '', 'user': ''})
 
-
+@disable_for_loaddata
 def definenotapprovedtrainesscronjob_signal(instance, created, **kwargs):
     """
         Site modelinde her save işlemi sonrasında "kabul e-postalarının onaylama tarihi bitiminde  e-postası
