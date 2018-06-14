@@ -276,10 +276,22 @@ def control_panel(request, courseid):
                 data['trainess'][course] = get_approved_trainess(course, request.log_extra)
         if request.user.userprofile in course.authorized_trainer.all():
             log.info("Kullanıcı %s kursunda degisiklik yapiyor" % course.name, extra=request.log_extra)
-            if "send" in request.POST:
+
+            if "send" in request.POST and "confirm" in request.POST and len(request.POST.getlist('consentmail' + str(course.pk))) > 0:
+                log.info("kursiyer onay maili yollama basladi", extra=request.log_extra)
+                log.info(request.POST, extra=request.log_extra)
+                data['note'] = applytrainerselections(request.POST, course, data, request.site, request.log_extra)
+            elif "send" in request.POST and len(request.POST.getlist('consentmail' + str(course.pk))) > 0:
+                log.info("kursiyer onay maili icin onay ekrani getirildi", extra=request.log_extra)
+                log.info(request.POST, extra=request.log_extra)
+                sendconsentmailprefs = [ int(i) for i in request.POST.getlist('consentmail' + str(course.pk))]
+                data['confirm_users'] = TrainessCourseRecord.objects.filter(id__in=sendconsentmailprefs).all()
+                return render(request, "training/controlpanel_confirm.html", data)
+            elif "send" in request.POST and  len(request.POST.getlist('consentmail' + str(course.pk))) == 0:
                 log.info("kursiyer onay islemi basladi", extra=request.log_extra)
                 log.info(request.POST, extra=request.log_extra)
                 data['note'] = applytrainerselections(request.POST, course, data, request.site, request.log_extra)
+
             return render(request, "training/controlpanel.html", data)
         elif request.user.userprofile in course.trainer.all():
             data['note'] = "Kursiyerler için not ekleyebilirsiniz."

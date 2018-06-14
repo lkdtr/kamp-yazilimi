@@ -56,7 +56,6 @@ def authorizedforelection(context, site, user, course):
                        <p>* Onaylanan diğer (1. tercihi kursunuz olmayan) katılımcıların kabul e-postaları onay tarihi bitiminde gönderilir.</p>
                        <p>* El ile eklediğiniz katılımcıları 1. tercih listesinde görüntüleyebilirsiniz.</p>
             </div>
-            <p><input type="checkbox" name="send_consent_email"/>  Kabul e-postaları gönderilsin</p>
             <button type="submit" class="btn btn-success pull-left" name="send">Gönder</button>
             """)
     return ""
