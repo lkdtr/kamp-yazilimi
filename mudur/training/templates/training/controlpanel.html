@@ -23,6 +23,16 @@ function fnFormatDetails ( dTable, nTr )
 }
 
 $(document).ready(function(){
+
+    $('.control_check').on('change','input[type=checkbox] ',function() {
+        if($(".control_check").find("input[type=checkbox]:checked").length > {{ max_p }} ) {
+            $(".btn-success").prop("disabled",true);
+         } else {
+            $(".btn-success").prop("disabled",false);
+        }
+
+    });
+
     $('[data-id="course_table_control_panel"]').each(function(){
 
        var dTable = $(this).dataTable({
@@ -105,6 +115,7 @@ $(document).ready(function(){
         </h4>
             {% for course,value in trainess.items %}
                 <h2><strong>{{ course.name }}</strong></h2>
+                Seçilebilir Katılımcı :{{ course.max_participant|subtract:count_accepted }}
                 {% for pref,trs in value.items %}
                     {% if trs %}
                         {% if pref > 0 %}
@@ -157,7 +168,7 @@ $(document).ready(function(){
                                 </td>
                                 <td>{{ t.trainess.gender }}</td>
                                 <td>{{ t.trainess.organization }}</td>
-                                <td>
+                                <td class="control_check">
                                     {% gettrainesscolor t.trainess t%}
                                     {% isdategtnow_body dates pref t course user %}
                                 </td>
@@ -192,7 +203,9 @@ $(document).ready(function(){
                         </table>
                     {% endif %}
                 {% endfor %}
-                {% authorizedforelection request.site user course %}
+                {% if   course.max_participant|subtract:count_accepted  >= 0 %}
+                    {% authorizedforelection request.site user course %}
+                {% endif %}
             {% endfor %}
     </form>
 </div>

@@ -27,7 +27,8 @@ from userprofile.userprofileops import UserProfileOPS
 
 from training.models import Course, TrainessCourseRecord, TrainessParticipation
 from training.forms import CreateCourseForm, AddTrainessForm
-from training.tutils import get_approve_start_end_dates_for_inst, save_course_prefferences, applytrainerselections
+from training.tutils import get_approve_start_end_dates_for_inst, save_course_prefferences, applytrainerselections, \
+    get_approved_by_course_trainess_count
 from training.tutils import get_additional_pref_start_end_dates_for_trainess
 from training.tutils import get_approved_trainess, get_trainess_by_course, is_trainess_approved_any_course, \
     gettestsofcourses, cancel_all_prefs, get_approve_first_start_last_end_dates_for_inst, daterange, \
@@ -259,27 +260,39 @@ def view_pdf(request, rid):
 
 @login_required
 def control_panel(request, courseid):
+    """
+    @TODO: Buralar daha düzgün yazılabilir geniş bir zamanda Mustafa Y.'ye nin kendisine not!
+    """
     data = {'note': _("You can accept trainees")}
     now = timezone.now()
     try:
         course = Course.objects.get(pk=courseid)
         data['now'] = now
+        data['max_p'] = course.max_participant
         data['user'] = request.user
         data['dates'] = get_approve_start_end_dates_for_inst(request.site, request.log_extra)
         data['trainess'] = {}
         data['notesavedsuccessful'] = False
+
         if data['dates']:
             if now <= data['dates'].get(1).end_date:
                 data['trainess'][course] = get_trainess_by_course(course, request.log_extra)
+                data['count_accepted'] = get_approved_by_course_trainess_count(course)
             else:
                 data['note'] = _("Consent period is closed")
                 data['trainess'][course] = get_approved_trainess(course, request.log_extra)
+                data['count_accepted'] = get_approved_by_course_trainess_count(course)
         if request.user.userprofile in course.authorized_trainer.all():
             log.info("Kullanıcı %s kursunda degisiklik yapiyor" % course.name, extra=request.log_extra)
             if "send" in request.POST:
                 log.info("kursiyer onay islemi basladi", extra=request.log_extra)
                 log.info(request.POST, extra=request.log_extra)
-                data['note'] = applytrainerselections(request.POST, course, data, request.site, request.log_extra)
+
+                """ Secilen kursiyer sayisi secilebilenden fazlaysa kontrolu yapalim  """
+                approvedr = len(request.POST.getlist('students' + str(course.pk)))
+                if approvedr <= course.max_participant:
+                    data['note'] = applytrainerselections(request.POST, course, data, request.site, request.log_extra)
+                data['count_accepted'] = get_approved_by_course_trainess_count(course)
             return render(request, "training/controlpanel.html", data)
         elif request.user.userprofile in course.trainer.all():
             data['note'] = "Kursiyerler için not ekleyebilirsiniz."
@@ -297,6 +310,8 @@ def control_panel(request, courseid):
                 uprobysite.save()
                 data['savednoteuserid'] = user.userprofile.pk
                 data['notesavedsuccessful'] = True
+
+
             return render(request, "training/controlpanelforunauthinst.html", data)
         elif not request.user.is_staff:
             return redirect("applytocourse")
