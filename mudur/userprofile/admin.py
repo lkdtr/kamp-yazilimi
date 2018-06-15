@@ -44,7 +44,12 @@ class UserProfileAdmin(ForeignKeyAutocompleteAdmin):
     search_fields = ["user__first_name", "user__last_name", "user__email"]
 
     def has_change_permission(self, request, obj=None):
-        return False
+        return True
+
+    def get_readonly_fields(self, request, obj=None):
+        fields = list(self.readonly_fields) + [field.name for field in obj._meta.fields]
+        fields = list(set(fields))
+        return fields
 
     def has_delete_permission(self, request, obj=None):
         return False
