@@ -1,0 +1,36 @@
+{% extends "base/dashboard.html" %}
+{% load i18n %}
+{% load userprofiletags %}
+{% load bootstrap3 %}
+
+{% block content %}
+<script>
+    $(document).ready(function () {
+        $("#id_hide_user").on("change", function (e) {
+            var target = $(e.target);
+            if (target.prop("checked")) {
+                $("#kullanici_adi").val("Anonim");
+            } else {
+                $("#kullanici_adi").val("{{ request.user.username|escapejs }}");
+            }
+        }).trigger("change");
+    });
+</script>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h1>Geri Bildirim Formu</h1>
+            <form id="userprofile" name="form-control" class="span4 signup-form" method="POST" enctype="multipart/form-data">{%csrf_token%}
+                {% csrf_token %}
+                {% bootstrap_form_errors form %}
+                <div class="form-group"><label class="control-label" for="kullanici_adi">Kullanıcı Adı</label><input id="kullanici_adi" class="form-control" disabled="disabled"></div>
+                {% bootstrap_field form.hide_user %}
+                {% bootstrap_field form.title %}
+                {% bootstrap_field form.body %}
+                {% bootstrap_field form.attachment %}
+                <input type="submit" class="btn btn-primary" value="{% trans 'Save'%}">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
