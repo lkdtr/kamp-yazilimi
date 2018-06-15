@@ -212,7 +212,6 @@ class StuProfileForm(ModelForm):
                     attrs={'placeholder': _('Mobile Phone Number'), 'class': 'form-control'}),
             'address': forms.Textarea(attrs={'placeholder': _('Address'), 'class': 'form-control'}),
             'job': forms.TextInput(attrs={'placeholder': _('Job'), 'class': 'form-control'}),
-            'city': forms.Select(attrs={'placeholder': _('Current City'), 'class': 'form-control'}, choices=()),
             'country': CountrySelectWidget(attrs={'placeholder': _('Nationality'), 'onChange': 'countrychanged();'}),
             'title': forms.TextInput(attrs={'placeholder': _('Title'), 'class': 'form-control'}),
             'organization': forms.TextInput(attrs={'placeholder': _('Organization'), 'class': 'form-control'}),
@@ -247,7 +246,7 @@ class StuProfileForm(ModelForm):
             else:
                 self.fields[field].required = True
 
-        self.fields["city"].choices = Region.objects.all().values_list('name_ascii', 'name_ascii')
+        self.fields["city"].widget = forms.Select(attrs={'placeholder': _('Current City'), 'class': 'form-control'}, choices=list(Region.objects.all().values_list('name_ascii', 'name_ascii')))
 
     def clean_profilephoto(self):
         profilephoto = self.cleaned_data.get("profilephoto", False)
