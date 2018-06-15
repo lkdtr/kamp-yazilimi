@@ -20,7 +20,7 @@
                             <p><strong>{{ question0.detail }}</strong></p>
                             {% for choice in question0.answer_set.all %}
                                 <div class="radio">
-                                    <label><input type="radio" value="{{ choice.id }}" name="{{ course.pk }}{{question0.no}}"><p>{{ choice.detail }}</p></label>
+                                    <label><input type="radio" required="required" value="{{ choice.id }}" name="{{ course.pk }}{{question0.no}}"><p>{{ choice.detail }}</p></label>
                                 </div>
                             {% endfor %}
                          </div>
@@ -33,7 +33,7 @@
                             <p><strong>{{ question1.detail }}</strong></p>
 
                             <div class="col-md-6">
-                                <textarea class="form-control" name="answer{{ question1.pk }}" rows="4" cols="50" maxlength="2000">{% getanswer question1 user %}</textarea>
+                                <textarea class="form-control" required="required" name="answer{{ question1.pk }}" rows="4" cols="50" maxlength="2000">{% getanswer question1 user %}</textarea>
                             </div>
                         </div>
                     </div>
