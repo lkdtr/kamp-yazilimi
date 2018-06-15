@@ -182,6 +182,12 @@ msgstr "Giriş Başarısız!"
 msgid "User Profile"
 msgstr "Kullanıcı Profili"
 
+msgid "Maximum 5 MB file is allowed."
+msgstr "Maksimum 5 MB dosya boyutu."
+
+msgid "Maximum 10 MB file is allowed."
+msgstr "Maksimum 10 MB dosya boyutu."
+
 #: templates/base/dashboard.html:115
 msgid "Change Password"
 msgstr "Parola Değiştir"

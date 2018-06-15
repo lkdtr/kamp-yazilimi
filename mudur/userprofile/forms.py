@@ -181,7 +181,7 @@ class UserProfileBySiteForm(ModelForm):
             'site': forms.HiddenInput(),
         }
         help_texts = {
-            'document': 'Görevlendirme yazısı, veli izin yazısı vb.',
+            'document': 'Görevlendirme yazısı, veli izin yazısı vb. Maksimum 10MB dosya boyutu.',
         }
 
     def __init__(self, *args, **kwargs):
