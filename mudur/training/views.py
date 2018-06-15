@@ -27,7 +27,8 @@ from userprofile.userprofileops import UserProfileOPS
 
 from training.models import Course, TrainessCourseRecord, TrainessParticipation
 from training.forms import CreateCourseForm, AddTrainessForm
-from training.tutils import get_approve_start_end_dates_for_inst, save_course_prefferences, applytrainerselections
+from training.tutils import get_approve_start_end_dates_for_inst, save_course_prefferences, applytrainerselections, \
+    get_approved_by_course_trainess_count
 from training.tutils import get_additional_pref_start_end_dates_for_trainess
 from training.tutils import get_approved_trainess, get_trainess_by_course, is_trainess_approved_any_course, \
     gettestsofcourses, cancel_all_prefs, get_approve_first_start_last_end_dates_for_inst, daterange, \
@@ -72,6 +73,7 @@ def apply_to_course(request):
     data = {'closed': True, 'additional1_pref_closed': True, 'PREFERENCE_LIMIT': PREFERENCE_LIMIT,
             'ADDITION_PREFERENCE_LIMIT': ADDITION_PREFERENCE_LIMIT}
     now = datetime.now()
+    data['profile_ready'] = UserProfileOPS.check_profile_questions_ready(request.user, request.site)
     data['may_cancel_all'] = True if request.site.event_start_date > datetime.date(now) else False
     """
     courses: mevcut etkinte onaylanmis ve basvuruya acik kurslar
@@ -259,21 +261,28 @@ def view_pdf(request, rid):
 
 @login_required
 def control_panel(request, courseid):
+    """
+    @TODO: Buralar daha düzgün yazılabilir geniş bir zamanda Mustafa Y.'ye nin kendisine not!
+    """
     data = {'note': _("You can accept trainees")}
     now = timezone.now()
     try:
         course = Course.objects.get(pk=courseid)
         data['now'] = now
+        data['max_p'] = course.max_participant
         data['user'] = request.user
         data['dates'] = get_approve_start_end_dates_for_inst(request.site, request.log_extra)
         data['trainess'] = {}
         data['notesavedsuccessful'] = False
+
         if data['dates']:
             if now <= data['dates'].get(1).end_date:
                 data['trainess'][course] = get_trainess_by_course(course, request.log_extra)
+                data['count_accepted'] = get_approved_by_course_trainess_count(course)
             else:
                 data['note'] = _("Consent period is closed")
                 data['trainess'][course] = get_approved_trainess(course, request.log_extra)
+                data['count_accepted'] = get_approved_by_course_trainess_count(course)
         if request.user.userprofile in course.authorized_trainer.all():
             log.info("Kullanıcı %s kursunda degisiklik yapiyor" % course.name, extra=request.log_extra)
 
@@ -290,6 +299,12 @@ def control_panel(request, courseid):
             elif "send" in request.POST and  len(request.POST.getlist('consentmail' + str(course.pk))) == 0:
                 log.info("kursiyer onay islemi basladi", extra=request.log_extra)
                 log.info(request.POST, extra=request.log_extra)
+
+                """ Secilen kursiyer sayisi secilebilenden fazlaysa kontrolu yapalim  """
+                approvedr = len(request.POST.getlist('students' + str(course.pk)))
+                if approvedr <= course.max_participant:
+                    data['note'] = applytrainerselections(request.POST, course, data, request.site, request.log_extra)
+                data['count_accepted'] = get_approved_by_course_trainess_count(course)
                 data['note'] = applytrainerselections(request.POST, course, data, request.site, request.log_extra)
 
             return render(request, "training/controlpanel.html", data)

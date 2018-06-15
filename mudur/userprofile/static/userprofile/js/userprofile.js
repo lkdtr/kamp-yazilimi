@@ -48,4 +48,16 @@ function genderchanged(){
 }
 $(document).ready(function(){
     $("#id_tckimlikno").parent().parent().find('div').first().append("<span class='required'></span>");
+    $('#id_profilephoto').bind('change', function() {
+      if (this.files[0].size > 5*1000*1000){
+        this.value=null;
+        alert("Profil fotografı boyutu 5 MB'yi geçemez");
+      }
+    });
+    $('#id_document').bind('change', function() {
+      if (this.files[0].size > 10*1000*1000){
+        this.value=null;
+        alert("Görevlendirme Belgesi boyutu 10 MB'yi geçemez");
+      }
+    });
 });

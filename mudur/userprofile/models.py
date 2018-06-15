@@ -3,15 +3,14 @@
 
 import datetime
 
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django_countries.fields import CountryField
 from django_countries.data import COUNTRIES
-
-from mudur.settings import USER_TYPES, UNIVERSITIES, GENDER, TRANSPORTATION
+from django_countries.fields import CountryField
 
 from mudur.models import Site, TextBoxQuestions
+from mudur.settings import USER_TYPES, UNIVERSITIES, GENDER, TRANSPORTATION
 
 OCCUPATIONS = [
     ("kamu", _("Public")),
@@ -70,7 +69,7 @@ class UserProfile(models.Model):
     department = models.CharField(verbose_name=_("Department"), max_length=50)
     website = models.CharField(verbose_name=_("Website"), max_length=300, null=True, blank=True)
     experience = models.CharField(verbose_name=_("Work Experience"), max_length=1000, null=True, blank=True)
-    profilephoto = models.ImageField(upload_to=user_directory_path, verbose_name=_("Profile Picture"))
+    profilephoto = models.ImageField(upload_to=user_directory_path, verbose_name=_("Profile Picture"), help_text=_("Maximum 5 MB file is allowed."))
     emergency_contact_information = models.TextField(verbose_name=_("Emergency Contact Information"), null=True, blank=True)
 
     def __str__(self):
@@ -88,7 +87,7 @@ class UserProfile(models.Model):
 class UserProfileBySite(models.Model):
     user = models.ForeignKey(User)
     site = models.ForeignKey(Site)
-    document = models.FileField(upload_to=user_directory_path, verbose_name=_("Belge Ekle"), blank=True, null=True)
+    document = models.FileField(upload_to=user_directory_path, verbose_name=_("Belge Ekle"), blank=True, null=True, help_text=_("Maximum 10 MB file is allowed."))
     needs_document = models.BooleanField(verbose_name=_("Needs Document"), blank=True, default=False)
     userpassedtest = models.BooleanField(verbose_name=_("FAQ is answered?"), blank=True, default=False)
     additional_information = models.TextField(verbose_name=_("Additional Information"), blank=True, null=True)
@@ -179,4 +178,25 @@ class TrainessClassicTestAnswers(models.Model):
     class Meta:
         verbose_name = _("Trainess Answer for Classic Question")
         verbose_name_plural = _("Trainess Answers for Classic Questions ")
+
+
+class AgreementCategory(models.Model):
+    title = models.CharField(max_length=30, unique=True)
+    is_active = models.BooleanField(default=True)
+
+
+class AgreementText(models.Model):
+    title = models.CharField(max_length=30)
+    body = models.TextField()
+    version = models.IntegerField(default=0)
+    category = models.ForeignKey(AgreementCategory)
+
+    class Meta:
+        unique_together = (("version", "category",),)
+
+
+class UserAgreementInfo(models.Model):
+    user = models.ForeignKey(User)
+    agreement = models.ForeignKey(AgreementText)
+    date = models.DateTimeField(auto_now_add=True)
 

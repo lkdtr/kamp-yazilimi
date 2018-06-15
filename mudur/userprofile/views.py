@@ -3,9 +3,9 @@ import json
 import logging
 from datetime import datetime,timedelta
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http.response import HttpResponse
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import user_passes_test, login_required
@@ -19,7 +19,8 @@ from django.contrib.auth.tokens import default_token_generator
 from userprofile.forms import CreateUserForm, UpdateUserForm, StuProfileForm, InstructorInformationForm, \
     ChangePasswordForm, UserProfileBySiteForm, UserProfileBySiteForStaffForm, ChangePasswordWithSMSForm
 from userprofile.models import Accommodation, UserProfile, UserAccomodationPref, InstructorInformation, \
-    UserVerification, TrainessNote, TrainessClassicTestAnswers, UserProfileBySite
+    UserVerification, TrainessNote, TrainessClassicTestAnswers, UserProfileBySite, AgreementCategory, \
+    AgreementText, UserAgreementInfo
 from userprofile.userprofileops import UserProfileOPS
 from userprofile.uutils import getuserprofileforms
 
@@ -35,6 +36,24 @@ from mudur.decorators import active_required
 from mudur.settings import ACCOMODATION_PREFERENCE_LIMIT
 
 log = logging.getLogger(__name__)
+
+
+@login_required()
+def accept_agreement(request):
+    agreement_text = get_object_or_404(AgreementText, id=request.session.get("agreement_id", 0))
+    next_url = request.GET.get("next", request.POST.get("next", request.session.get("next", "/")))
+    if next_url == request.path:
+        next_url = "/"
+    if request.POST.get("status") == "yes":
+        UserAgreementInfo.objects.create(user=request.user, agreement=agreement_text)
+        request.session.pop("agreement_id")
+        request.session.pop("next")
+        return redirect(next_url)
+    elif request.POST.get("status") == "no":
+        logout(request)
+        return redirect("/")
+    else:
+        return render(request, "userprofile/agreement.html", {"agreement": agreement_text, "next": next_url})
 
 
 def subscribe(request):

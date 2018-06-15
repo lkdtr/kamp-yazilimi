@@ -156,6 +156,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'mudur.middleware.site.CurrentSiteMiddleware',
+    'mudur.middleware.agreement.AgreementMiddleware',
 )
 ROOT_URLCONF = 'mudur.urls'
 CSRF_COOKIE_SECURE = os.getenv("MUDUR_HTTPS", "False") == "True"

@@ -61,6 +61,10 @@ def authorizedforelection(context, site, user, course):
     return ""
 
 
+@register.filter
+def subtract(value, arg):
+    return value - arg
+
 @register.simple_tag(name="isdategtnow_body", takes_context=True)
 def isdategtnow_body(context, datedict, key, t, course, user):
     now = datetime.now()

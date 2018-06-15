@@ -121,6 +121,21 @@ def get_approved_trainess(course, d):
     return trainess
 
 
+
+def get_approved_by_course_trainess_count(course):
+    """
+
+    :param course: bir kursta onaylanmis kisilerin listesi
+    :return: kursa göre toplam kabul edilen öğrenci sayısı
+    """
+    total_trainess = 0
+    for i in range(1, PREFERENCE_LIMIT + 1):
+        total_trainess += TrainessCourseRecord.objects.filter(course=course.pk, preference_order=i, approved=True).prefetch_related('course').count()
+    for i in range(1, ADDITION_PREFERENCE_LIMIT + 1):
+        total_trainess += TrainessCourseRecord.objects.filter(course=course.pk, preference_order=-i, approved=True).prefetch_related('course').count()
+    return total_trainess
+
+
 def get_trainess_by_course(course, d):
     """
 
@@ -379,7 +394,7 @@ def cancel_all_prefs(trainess, cancelnote, site, ruser, d):
         try:
             context['course_prefs'] = trainess_course_records
             context['recipientlist'] = [trainess.user.email] + REPORT_RECIPIENT_LIST
-            
+
             approvedpref = TrainessCourseRecord.objects.filter(course__site=site, trainess=trainess,
                                                                approved=True, consentemailsent=True)
             if site.application_end_date < now < site.event_start_date:
