@@ -20,7 +20,7 @@ $(document).ready(function(){
     $('[data-id="course_table"]').DataTable({
             "dom": 'Bfrtip',
             "language": {
-                    "url": "/static/base/Turkish.json"
+                    "url": "/static/base/json/Turkish.json"
             },
             "searching": true,
             "bJQueryUI": false,
@@ -38,7 +38,7 @@ $(document).ready(function(){
        var dTable = $(this).dataTable({
             "dom": 'Bfrtip',
             "language": {
-              "url": "/static/base/Turkish.json"
+              "url": "/static/base/json/Turkish.json"
             },
             "columnDefs": [
                {

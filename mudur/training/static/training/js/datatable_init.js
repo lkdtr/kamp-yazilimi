@@ -2,7 +2,7 @@ $(document).ready(function(){
         $('#list_table').DataTable({
             "dom": 'Bfrtip',
             "language": {
-                    "url": "/static/base/Turkish.json"
+                    "url": "/static/base/json/Turkish.json"
             },
             "searching": true,
             "bJQueryUI": false,
