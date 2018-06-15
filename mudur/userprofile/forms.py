@@ -1,3 +1,4 @@
+import datetime
 import logging
 
 from django import forms
@@ -13,7 +14,7 @@ from django_countries.widgets import CountrySelectWidget
 from django.contrib.auth.forms import PasswordResetForm
 from captcha.fields import ReCaptchaField
 
-from userprofile.models import UserProfile, UserProfileBySite, InstructorInformation
+from userprofile.models import UserProfile, UserProfileBySite, InstructorInformation, UserFeedback
 from userprofile.dynamicfields import DynmcFields
 from userprofile.userprofileops import UserProfileOPS
 from cities_light.models import Region
@@ -389,3 +390,31 @@ class InstructorInformationForm(ModelForm):
             self.instance.site = self.site
         self.instance.user = self.request.user.userprofile
         return super(InstructorInformationForm, self).save(commit)
+
+
+class UserFeedbackForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super(UserFeedbackForm, self).__init__(*args, **kwargs)
+
+    hide_user = forms.BooleanField(required=False, label="Kullanıcı adını gizle")
+
+    def clean(self):
+        time_diff = datetime.datetime.now() - self.request.user.userprofile.last_feedback_date
+        if time_diff.seconds < 60:
+            raise forms.ValidationError("En son geri bildiriminizden beri 1 dakikadan az geçmiş,"
+                                        " Lütfen {} saniye bekleyiniz.".format(60-time_diff))
+
+    def save(self, commit=True):
+        obj = super().save(commit=False)
+        obj.site = self.request.site
+        if not self.cleaned_data["hide_user"]:
+            obj.user = self.request.user.userprofile
+
+        self.request.user.userprofile.last_feedback_date = datetime.datetime.now()
+        obj.save()
+        return obj
+
+    class Meta:
+        model = UserFeedback
+        fields = ["hide_user", "title", "body", "attachment"]

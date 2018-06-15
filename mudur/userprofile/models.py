@@ -71,6 +71,7 @@ class UserProfile(models.Model):
     experience = models.CharField(verbose_name=_("Work Experience"), max_length=1000, null=True, blank=True)
     profilephoto = models.ImageField(upload_to=user_directory_path, verbose_name=_("Profile Picture"), help_text=_("Maximum 5 MB file is allowed."))
     emergency_contact_information = models.TextField(verbose_name=_("Emergency Contact Information"), null=True, blank=True)
+    last_feedback_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         if self.user.get_full_name():
@@ -130,6 +131,22 @@ class Accommodation(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = _("Accommodation")
+        verbose_name_plural = _("Accommodations")
+
+
+class UserFeedback(models.Model):
+    user = models.ForeignKey(UserProfile, verbose_name="Kullanıcı", blank=True, null=True)
+    site = models.ForeignKey(Site, verbose_name="Etkinlik")
+    title = models.CharField(verbose_name="Başlık", max_length=100)
+    body = models.TextField(verbose_name="İçerik")
+    attachment = models.FileField(verbose_name="Eklenti", upload_to="feedback_files", blank=True)
+    creation_date = models.DateTimeField(verbose_name="Oluşturulma Tarihi", auto_now_add=True)
+
+    def __str__(self):
+        return self.title
 
     class Meta:
         verbose_name = _("Accommodation")

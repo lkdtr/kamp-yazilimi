@@ -17,7 +17,8 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.tokens import default_token_generator
 
 from userprofile.forms import CreateUserForm, UpdateUserForm, StuProfileForm, InstructorInformationForm, \
-    ChangePasswordForm, UserProfileBySiteForm, UserProfileBySiteForStaffForm, ChangePasswordWithSMSForm
+    ChangePasswordForm, UserProfileBySiteForm, UserProfileBySiteForStaffForm, ChangePasswordWithSMSForm, \
+    UserFeedbackForm
 from userprofile.models import Accommodation, UserProfile, UserAccomodationPref, InstructorInformation, \
     UserVerification, TrainessNote, TrainessClassicTestAnswers, UserProfileBySite, AgreementCategory, \
     AgreementText, UserAgreementInfo
@@ -84,6 +85,17 @@ def subscribe(request):
     else:
         return redirect("selectcoursefcp")
 
+
+@login_required(login_url='/')
+def feedback(request,):
+    if request.method == "POST":
+        form = UserFeedbackForm(request.POST, request.FILES, request=request)
+        if form.is_valid():
+            form.save()
+            return redirect("/")
+    else:
+        form = UserFeedbackForm(request=request)
+    return render(request, "userprofile/user_feedback.html", {"form":form})
 
 @login_required(login_url='/')
 def getaccomodations(request, usertype, gender):

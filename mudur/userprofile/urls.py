@@ -7,6 +7,7 @@ urlpatterns = [
                        url(r'^agreement/$', userprofile_views.accept_agreement, name="accept_agreement"),
                        url(r'^kayit', userprofile_views.subscribe, name="subscribe"),
                        url(r'^profil', userprofile_views.createprofile, name="createprofile"),
+                       url(r'^geribildirim', userprofile_views.feedback, name="user_feedback"),
                        url(r'^getaccomodations/(?P<usertype>[a-zA-Z]+)/(?P<gender>[a-zA-Z]+)', userprofile_views.getaccomodations,
                            name="getaccomodations"),
 
