@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django_extensions.admin import ForeignKeyAutocompleteAdmin
 
 from userprofile.models import InstructorInformation, UserProfile, Accommodation, UserAccomodationPref, \
-    UserVerification, TrainessNote, UserProfileBySite
+    UserVerification, TrainessNote, UserProfileBySite, UserFeedback
 from training.models import Course
 
 admin.site.unregister(User)
@@ -129,3 +129,9 @@ class TrainessNoteAdmin(admin.ModelAdmin):
     list_display = ['note_to_profile', 'note_from_profile', 'site', 'note', 'label']
     list_filter = ('label',)
     search_fields = ('note_from_profile__user__username', 'note_to_profile__user__username')
+
+@admin.register(UserFeedback)
+class UserFeedbackAdmin(admin.ModelAdmin):
+    list_display = ['site', 'title', 'creation_date']
+    list_filter = ('site', 'creation_date',)
+    search_fields = ('title', 'body')

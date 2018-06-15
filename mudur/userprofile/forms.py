@@ -403,15 +403,14 @@ class UserFeedbackForm(forms.ModelForm):
         time_diff = datetime.datetime.now() - self.request.user.userprofile.last_feedback_date
         if time_diff.seconds < 60:
             raise forms.ValidationError("En son geri bildiriminizden beri 1 dakikadan az geçmiş,"
-                                        " Lütfen {} saniye bekleyiniz.".format(60-time_diff))
+                                        " Lütfen {} saniye bekleyiniz.".format(60-time_diff.seconds))
 
     def save(self, commit=True):
         obj = super().save(commit=False)
         obj.site = self.request.site
         if not self.cleaned_data["hide_user"]:
             obj.user = self.request.user.userprofile
-
-        self.request.user.userprofile.last_feedback_date = datetime.datetime.now()
+        UserProfile.objects.filter(id=self.request.user.userprofile.id).update(last_feedback_date=datetime.datetime.now())
         obj.save()
         return obj
 

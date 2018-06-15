@@ -149,8 +149,8 @@ class UserFeedback(models.Model):
         return self.title
 
     class Meta:
-        verbose_name = _("Accommodation")
-        verbose_name_plural = _("Accommodations")
+        verbose_name = _("User Feedback")
+        verbose_name_plural = _("User Feedbacks")
 
 
 class UserAccomodationPref(models.Model):
