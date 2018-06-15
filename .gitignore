@@ -1,4 +1,5 @@
 *.py[cod]
+*.config
 mudur/logfile*
 mudur/documents/*
 .project

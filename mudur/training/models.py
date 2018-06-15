@@ -4,7 +4,6 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.timezone import now
 
-
 from userprofile.models import UserProfile
 
 from mudur.models import Site, Question, Answer, TextBoxQuestions
@@ -29,6 +28,7 @@ class Course(models.Model):
     url = models.CharField(verbose_name=_("URL"), max_length=350)
     question = models.ManyToManyField(Question, blank=True, verbose_name=_("Question"))
     textboxquestion = models.ManyToManyField(TextBoxQuestions, blank=True, verbose_name=_("Text Box Questions"))
+    max_participant = models.IntegerField(default=20)
 
     def __str__(self):
         return self.name
