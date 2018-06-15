@@ -281,15 +281,14 @@ def control_panel(request, courseid):
         data['dates'] = get_approve_start_end_dates_for_inst(request.site, request.log_extra)
         data['trainess'] = {}
         data['notesavedsuccessful'] = False
-
+        data['count_accepted'] = get_approved_by_course_trainess_count(course)
         if data['dates']:
             if now <= data['dates'].get(1).end_date:
                 data['trainess'][course] = get_trainess_by_course(course, request.log_extra)
-                data['count_accepted'] = get_approved_by_course_trainess_count(course)
             else:
                 data['note'] = _("Consent period is closed")
                 data['trainess'][course] = get_approved_trainess(course, request.log_extra)
-                data['count_accepted'] = get_approved_by_course_trainess_count(course)
+
         if request.user.userprofile in course.authorized_trainer.all():
             log.info("Kullanıcı %s kursunda degisiklik yapiyor" % course.name, extra=request.log_extra)
             approvedr = len(request.POST.getlist('students' + str(course.pk)))
