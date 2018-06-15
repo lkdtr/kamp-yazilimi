@@ -368,6 +368,7 @@ def applytrainerselections(postrequest, course, data, site, d):
                                     data['approvedpref'] = p
                                     data["recipientlist"] = [p.trainess.user.username]
                                     res = send_email_by_operation_name(data, "send_consent_email")
+
                                     if res == 1:
                                         p.consentemailsent = True
                             p.save()
