@@ -145,6 +145,7 @@ INSTALLED_APPS = (
 captchasettings = CaptchaSettings()
 RECAPTCHA_PUBLIC_KEY = captchasettings.get_public_key()
 RECAPTCHA_PRIVATE_KEY = captchasettings.get_private_key()
+NOCAPTCHA = True
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
