@@ -120,6 +120,8 @@ def createprofile(request):
     note, userprobysite, data['userproform'], data['userproformbysite'], data['accomodations'], data[
         'accomodation_records'] = getuserprofileforms(request.user, request.site, request.log_extra)
     data['sitewidequestions'] = TextBoxQuestions.objects.filter(site=request.site, active=True, is_sitewide=True)
+
+    data['sitewidequestion_answers'] = {int(key[6:]): value for key, value in request.POST.items() if key.startswith("answer")}
     if 'register' in request.POST:
         data['update_user_form'] = UpdateUserForm(data=request.POST, instance=request.user)
         try:

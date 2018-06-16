@@ -17,6 +17,11 @@ log = logging.getLogger(__name__)
 register = template.Library()
 
 
+@register.filter(name="get_val")
+def get_val(obj, val):
+    return obj[val]
+
+
 @register.simple_tag(name="getanswer")
 def getanswer(question, user):
     try:

@@ -143,7 +143,13 @@
                     <div class="col-md-6">
                         <textarea class="form-control" name="answer{{ sitewidequestion.pk }}" rows="4" cols="50"
                                   required="required"
-                                  maxlength="2000">{% getanswer sitewidequestion user %}</textarea>
+                                  maxlength="2000">{% spaceless %}
+                                    {% if sitewidequestion.pk in sitewidequestion_answers %}
+                                        {{ sitewidequestion_answers|get_val:sitewidequestion.pk }}
+                                    {% else %}
+                                        {% getanswer sitewidequestion user %}
+                                    {% endif  %}
+                                  {% endspaceless %}</textarea>
                     </div>
                 </div>
             </div>
