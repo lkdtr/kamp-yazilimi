@@ -13,7 +13,7 @@ class AgreementMiddleware(object):
             categories = AgreementCategory.objects.filter(is_active=True)
             for category in categories:
                 latest_agreement = AgreementText.objects.filter(category=category).order_by("-version").first()
-                if not UserAgreementInfo.objects.filter(user=request.user, agreement=latest_agreement).exists():
+                if latest_agreement is not None and not UserAgreementInfo.objects.filter(user=request.user, agreement=latest_agreement).exists():
                     request.session["agreement_id"] = latest_agreement.id
                     request.session["next"] = request.path
                     return redirect(reverse("accept_agreement"))

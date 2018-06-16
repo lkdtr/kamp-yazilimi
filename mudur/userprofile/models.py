@@ -198,12 +198,14 @@ class TrainessClassicTestAnswers(models.Model):
 
 
 class AgreementCategory(models.Model):
-    title = models.CharField(max_length=30, unique=True)
+    title = models.CharField(max_length=120, unique=True)
     is_active = models.BooleanField(default=True)
 
+    def __str__(self):
+        return self.title
 
 class AgreementText(models.Model):
-    title = models.CharField(max_length=30)
+    title = models.CharField(max_length=120)
     body = models.TextField()
     version = models.IntegerField(default=0)
     category = models.ForeignKey(AgreementCategory)
@@ -211,9 +213,14 @@ class AgreementText(models.Model):
     class Meta:
         unique_together = (("version", "category",),)
 
+    def __str__(self):
+        return self.title
+
 
 class UserAgreementInfo(models.Model):
     user = models.ForeignKey(User)
     agreement = models.ForeignKey(AgreementText)
     date = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return "<{} {}>".format(self.user, self.agreement)

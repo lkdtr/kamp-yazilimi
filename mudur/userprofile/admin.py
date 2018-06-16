@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django_extensions.admin import ForeignKeyAutocompleteAdmin
 
 from userprofile.models import InstructorInformation, UserProfile, Accommodation, UserAccomodationPref, \
-    UserVerification, TrainessNote, UserProfileBySite, UserFeedback
+    UserVerification, TrainessNote, UserProfileBySite, UserFeedback, AgreementCategory, AgreementText, UserAgreementInfo
 from training.models import Course
 
 admin.site.unregister(User)
@@ -67,6 +67,12 @@ class UserProfileBySiteInline(admin.StackedInline):
     extra = 0
 
 
+class UserAgreementInfoInline(admin.StackedInline):
+    model = UserAgreementInfo
+    extra = 0
+    readonly_fields = ("agreement", "date",)
+
+
 class UserSiteFilter(admin.SimpleListFilter):
     title = _('Trainees Site')
     parameter_name = 'treessite'
@@ -92,6 +98,7 @@ class UserAdmin(AuthUserAdmin):
         UserProfileInline,
         UserVerificationInline,
         UserProfileBySiteInline,
+        UserAgreementInfoInline,
     ]
 
     def is_instructor(self, obj):
@@ -135,8 +142,22 @@ class TrainessNoteAdmin(admin.ModelAdmin):
     list_filter = ('label',)
     search_fields = ('note_from_profile__user__username', 'note_to_profile__user__username')
 
+
 @admin.register(UserFeedback)
 class UserFeedbackAdmin(admin.ModelAdmin):
     list_display = ['site', 'title', 'creation_date']
     list_filter = ('site', 'creation_date',)
+    search_fields = ('title', 'body')
+
+
+@admin.register(AgreementCategory)
+class AgreementCategoryAdmin(admin.ModelAdmin):
+    list_display = ['title', 'is_active']
+    search_fields = ('title', )
+
+
+@admin.register(AgreementText)
+class AgreementTextAdmin(admin.ModelAdmin):
+    list_display = ['title', 'version', 'category']
+    list_filter = ('category',)
     search_fields = ('title', 'body')
