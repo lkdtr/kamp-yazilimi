@@ -13,7 +13,7 @@
             </p>
             <hr>
             <h1>{{ agreement.title|title }}</h1>
-            <p>{{ agreement.body }}</p>
+            <p>{{ agreement.body|linebreaks }}</p>
             <form action="{% url "accept_agreement" %}" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="next" value="{{ next }}">
