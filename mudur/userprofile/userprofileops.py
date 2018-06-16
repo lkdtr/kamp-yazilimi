@@ -50,8 +50,8 @@ class UserProfileOPS:
         try:
             client = SoapClient(wsdl=TCKIMLIK_SORGULAMA_WS, trace=False)
             response = client.TCKimlikNoDogrula(TCKimlikNo=tckimlikno,
-                                                Ad=name.replace('i', 'İ').decode('utf-8').upper(),
-                                                Soyad=surname.replace('i', 'İ').decode('utf-8').upper(), DogumYili=year)
+                                                Ad=name.replace('i', 'İ').upper(),
+                                                Soyad=surname.replace('i', 'İ').upper(), DogumYili=year)
             return response['TCKimlikNoDogrulaResult']
         except:
             return -1
