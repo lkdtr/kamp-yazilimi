@@ -302,7 +302,9 @@ def control_panel(request, courseid):
                 log.info("kursiyer onay maili icin onay ekrani getirildi", extra=request.log_extra)
                 log.info(request.POST, extra=request.log_extra)
                 sendconsentmailprefs = [int(i) for i in request.POST.getlist('consentmail' + str(course.pk))]
+                sendok = [int(i) for i in request.POST.getlist('students' + str(course.pk))]
                 data['confirm_users'] = TrainessCourseRecord.objects.filter(id__in=sendconsentmailprefs).all()
+                data['sendok'] = TrainessCourseRecord.objects.filter(id__in=sendok).all()
                 return render(request, "training/controlpanel_confirm.html", data)
 
             elif "send" in request.POST and len(request.POST.getlist('consentmail' + str(course.pk))) == 0:
