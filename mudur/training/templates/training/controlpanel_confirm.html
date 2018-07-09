@@ -98,11 +98,14 @@ $(document).ready(function(){
     <form name="select-student{{course.id}}" method="POST">{% csrf_token %}
 
 
+
             {% for course,value in trainess.items %}
                 {% for confirmusers in confirm_users %}
                     <input type="hidden" name="consentmail{{ course.pk }}" value="{{ confirmusers.pk }}" />
-                    <input type="hidden" name="students{{ course.pk }}" value="{{ confirmusers.pk }}" />
-                {% endfor %}
+            {% endfor %}
+            {% for i in sendok %}
+                    <input type="hidden" name="students{{ course.pk }}" value="{{ i.pk }}" />
+            {% endfor %}
                 <input type="hidden" name="confirm" value="1" />
                 <h2><strong>{{ course.name }} için aşağıda ismi geçen katılımcıları kalıcı olarak onayladığınıza emin misiniz ? (Bu işlem geri alınamaz)</strong></h2>
                 {% for pref,trs in value.items %}
