@@ -13,7 +13,7 @@ import os
 import sys
 
 
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 '''
     DJANGO_ROOT: Django kodlarının bulunduğu dizin
