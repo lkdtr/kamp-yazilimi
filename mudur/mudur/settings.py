@@ -17,12 +17,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 '''
     DJANGO_ROOT: Django kodlarının bulunduğu dizin
-    GIT_ROOT: Git reposunun bulunduğu dizin
-    PROJECT_ROOT: Projenin çalışma alanı
+    PROJECT_ROOT: Git reposunun bulunduğu yer
+    VIRTUAL_ENV_PATH: Uygulamanın virtualenv'nin kurulu oldugu dizinin yolu, VIRTUAL_ENV ortam değişkeninden alır
 '''
 DJANGO_ROOT = BASE_DIR
-GIT_ROOT = os.path.dirname(DJANGO_ROOT)
 PROJECT_ROOT = os.path.dirname(DJANGO_ROOT)
+VIRTUAL_ENV_PATH = os.getenv("VIRTUAL_ENV", os.path.join(PROJECT_ROOT, ".venv"))
 
 sys.path.insert(0, os.path.join(BASE_DIR, "mudur"))
 
@@ -96,10 +96,7 @@ TCKIMLIK_SORGULAMA_WS = "https://tckimlik.nvi.gov.tr/Service/KPSPublic.asmx?WSDL
                             Kamp'ta öyle bir durum yok.(False)
 '''
 REQUIRE_TRAINESS_APPROVE = False
-'''
-    VIRTUAL_ENV_PATH: Uygulamanın Python virtualenv'nin kurulu oldugu dizinin yolu
-'''
-VIRTUAL_ENV_PATH = os.path.join(os.path.dirname(PROJECT_ROOT), "venv")
+
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
