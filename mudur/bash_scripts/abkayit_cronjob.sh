@@ -35,7 +35,7 @@ echo WORKING DIR  = "${WORKINGDIR}"
 echo PVIRTUALENVDIR = "${PVIRTUALENVDIR}"
 echo FUNCTION = "${FUNCTION}"
 source ${PVIRTUALENVDIR}/bin/activate
-python ${WORKINGDIR}/abkayit/send_scheduled_email.py ${WORKINGDIR} ${FUNCTION}
+python ${WORKINGDIR}/mudur/send_scheduled_email.py ${WORKINGDIR} ${FUNCTION}
 else
 echo !!!Some parameters missing!!!
 echo "
