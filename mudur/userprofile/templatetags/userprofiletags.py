@@ -45,7 +45,7 @@ def getanswers(context, tuser, ruser, courseid):
                 except:
                     print("answers couldnt find")
             answers.extend(TrainessClassicTestAnswers.objects.filter(user=tuser, question__site=context["request"].site,
-                                                                     question__is_sitewide=True))
+                                                                     question__is_sitewide=True,question__is_visible=True))
 
         #html = ""
         #if answers:
