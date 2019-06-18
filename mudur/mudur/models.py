@@ -95,6 +95,7 @@ class TextBoxQuestions(models.Model):
     detail = models.CharField(max_length=700, verbose_name=_("Classic Questions"))
     active = models.BooleanField(verbose_name=_("Is Active"), default=True)
     is_sitewide = models.BooleanField(verbose_name=_("Site Wide"), default=False)
+    is_visible = models.BooleanField(verbose_name=_("Is Visible?"), default=True)
 
     class Meta:
         verbose_name = _("Classic Question")
