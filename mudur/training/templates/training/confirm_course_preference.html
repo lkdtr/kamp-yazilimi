@@ -37,9 +37,10 @@
                         </div>
                     </div>
                     </div>
+		    {%comment%}
                     <div class="form-group">
                     <div class="row">
-                        <div class="col-md-2">
+			<div class="col-md-2">
                             <b>Eğitmenler</b>
                         </div>
                         <div class="col-md-6">
@@ -49,6 +50,8 @@
 
                         </div>
                     </div>
+		    {%endcomment%}
+
                     {%comment%}
                     <div class="row">
                         <div class="col-md-2">
@@ -58,8 +61,8 @@
 			    <a href='{% url 'view_pdf' trainess_course_record.pk %}'>Kabul Mektubu</a>
                         </div>
                     </div>
-                    {%endcomment%}
                     </div>
+                    {%endcomment%}
                     {%if approve_is_open%}
                     <div class="form-group">
                         <input id="course_record_id" type="hidden" value="{{trainess_course_record.id}}"/>
