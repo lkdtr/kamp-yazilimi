@@ -461,6 +461,7 @@ UNIVERSITIES = [('Abant İzzet Baysal Üniversitesi (Bolu)', 'Abant İzzet Baysa
                 ('Sabancı Üniversitesi(İstanbul)', 'Sabancı Üniversitesi(İstanbul)'),
                 ('Sağlık Bilimleri Üniversitesi(İstanbul)', 'Sağlık Bilimleri Üniversitesi(İstanbul)'),
                 ('Sakarya Üniversitesi(Sakarya-Adapazarı)', 'Sakarya Üniversitesi(Sakarya-Adapazarı)'),
+                ('Samsun Üniversitesi(Samsun)', 'Samsun Üniversitesi(Samsun)'),
                 ('Sanko Üniversitesi (Gaziantep)', 'Sanko Üniversitesi (Gaziantep)'),
                 ('Selahaddin Eyyubi Üniversitesi (Diyarbakır)', 'Selahaddin Eyyubi Üniversitesi (Diyarbakır)'),
                 ('Selçuk Üniversitesi (Konya)', 'Selçuk Üniversitesi (Konya)'),
