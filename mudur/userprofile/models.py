@@ -123,6 +123,7 @@ class TrainessNote(models.Model):
 
 class Accommodation(models.Model):
     gender = models.CharField(choices=GENDER.items(), verbose_name=_("Gender"), max_length=1)
+    is_full = models.BooleanField(default=False)
     usertype = models.CharField(choices=USER_TYPES.items(), verbose_name=_("User Type"), max_length=15)
     name = models.CharField(verbose_name=_("Name"), max_length=100)
     address = models.CharField(verbose_name=_("Address"), max_length=300)

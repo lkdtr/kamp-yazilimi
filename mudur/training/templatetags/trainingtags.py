@@ -85,11 +85,13 @@ def isdategtnow_body(context, datedict, key, t, course, user):
                 elif t.preference_order > approvedpref.preference_order:
                     is_selectable = False
                     priviliged_pref = approvedpref
-               
+            trainess_accomodation = t.trainess.useraccomodationpref_set.get()
             if is_selectable:
                 dom = "<div>"
                 if t.approved:
                     dom += "<input type=\"checkbox\" checked name=\"students%s\" value=\"%s\"/>" % (course.id, t.pk)
+                elif trainess_accomodation.accomodation.is_full:
+                    dom += "<input type=\"checkbox\" name=\"students%s\" value=\"%s\"/ title=\"%s kontenjani doldu\" disabled>" % (course.id, t.pk,trainess_accomodation.accomodation.name)
                 else:
                     dom += "<input type=\"checkbox\" name=\"students%s\" value=\"%s\"/>" % (course.id, t.pk)
                 dom += "</div>"
@@ -115,7 +117,11 @@ def getconsentmailfield(tcr, user):
             if tcr.course.site.event_start_date > now and approvaldates[0].start_date <= datetime.now() <= approvaldates[
                 0].end_date:
                 dom = "<div>"
-                dom += "<input type=\"checkbox\" name=\"consentmail%s\" value=\"%s\"/>" % (tcr.course.pk, tcr.pk)
+                trainess_accomodation = tcr.trainess.useraccomodationpref_set.get()
+                if trainess_accomodation.accomodation.is_full:
+                    dom += "<input type=\"checkbox\" name=\"consentmail%s\" value=\"%s\"/ title=\"%s kontenjani doldu\" disabled>" % (tcr.course.pk, tcr.pk,trainess_accomodation.accomodation.name)
+                else:
+                    dom += "<input type=\"checkbox\" name=\"consentmail%s\" value=\"%s\"/>" % (tcr.course.pk, tcr.pk)
                 dom += "</div>"
                 return mark_safe(dom)
         return "Gonderilmedi"
