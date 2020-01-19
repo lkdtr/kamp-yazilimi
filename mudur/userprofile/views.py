@@ -156,13 +156,18 @@ def createprofile(request):
                             prefs.delete()
                         if 'tercih1' in request.POST.keys():
                             try:
-                                uaccpref = UserAccomodationPref(user=request.user.userprofile,
-                                                                accomodation=Accommodation.objects.get(
-                                                                        pk=request.POST.get('tercih1')),
-                                                                usertype="stu", preference_order=1)
-                                uaccpref.save()
-                                log.info("Kullanıcı profilini ve konaklama tercihini güncelledi.",
-                                         extra=request.log_extra)
+                                if request.site.update_accommodation_end_date < datetime.now().date():
+                                    data['note'] = "Profiliniz kaydedildi ancak konaklama tercihleriniz kaydedilemedi. Konaklama tercih değişikliği süresi geçti."
+                                    log.info("Kullanıcı profilini ve konaklama tercihini güncellenmedi.",extra=request.log_extra)
+                                    return render(request, "userprofile/user_profile.html", data)
+                                else: 
+                                    uaccpref = UserAccomodationPref(user=request.user.userprofile,
+                                                                    accomodation=Accommodation.objects.get(
+                                                                            pk=request.POST.get('tercih1')),
+                                                                    usertype="stu", preference_order=1)
+                                    uaccpref.save()
+                                    log.info("Kullanıcı profilini ve konaklama tercihini güncelledi.",
+                                            extra=request.log_extra)
                                 if request.site.needs_document:
                                     if data['userproformbysite'].is_valid():
                                         data['userproformbysite'].save()
@@ -184,7 +189,7 @@ def createprofile(request):
                     log.error(str(e), extra=request.log_extra)
                     data['note'] = "Profiliniz kaydedilirken hata oluştu lütfen sayfayı yeniden yükleyip tekrar deneyin"
                     return render(request, "userprofile/user_profile.html", data)
-        data['note'] = "Profiliniz aşağıdaki sebeplerden dolayı oluşturulamadı"
+        data['note'] = "Profiliniz aşağıdaki sebeplerden dolayı oluşturulamadı ya da güncelleme süresi doldu"
     elif 'cancel' in request.POST:
         return redirect("createprofile")
     return render(request, "userprofile/user_profile.html", data)
