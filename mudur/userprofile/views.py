@@ -151,23 +151,22 @@ def createprofile(request):
                                 tca.answer = answer
                                 tca.save()
                     if not UserProfileOPS.is_instructor(request.user.userprofile) and ACCOMODATION_PREFERENCE_LIMIT:
+                        if request.site.update_accommodation_end_date < datetime.now().date():
+                                    data['note'] = "Profiliniz kaydedildi ancak konaklama tercihleriniz kaydedilemedi. Konaklama tercih değişikliği süresi geçti."
+                                    log.info("Kullanıcı profiliniz kaydedildi fakat konaklama tercihiniz güncellenmedi.",extra=request.log_extra)
+                                    return render(request, "userprofile/user_profile.html", data)
                         prefs = UserAccomodationPref.objects.filter(user=request.user.userprofile)
                         if prefs:
                             prefs.delete()
                         if 'tercih1' in request.POST.keys():
                             try:
-                                if request.site.update_accommodation_end_date < datetime.now().date():
-                                    data['note'] = "Profiliniz kaydedildi ancak konaklama tercihleriniz kaydedilemedi. Konaklama tercih değişikliği süresi geçti."
-                                    log.info("Kullanıcı profilini ve konaklama tercihini güncellenmedi.",extra=request.log_extra)
-                                    return render(request, "userprofile/user_profile.html", data)
-                                else: 
-                                    uaccpref = UserAccomodationPref(user=request.user.userprofile,
-                                                                    accomodation=Accommodation.objects.get(
-                                                                            pk=request.POST.get('tercih1')),
-                                                                    usertype="stu", preference_order=1)
-                                    uaccpref.save()
-                                    log.info("Kullanıcı profilini ve konaklama tercihini güncelledi.",
-                                            extra=request.log_extra)
+                                uaccpref = UserAccomodationPref(user=request.user.userprofile,
+                                                                accomodation=Accommodation.objects.get(
+                                                                        pk=request.POST.get('tercih1')),
+                                                                usertype="stu", preference_order=1)
+                                uaccpref.save()
+                                log.info("Kullanıcı profilini ve konaklama tercihini güncelledi.",
+                                        extra=request.log_extra)
                                 if request.site.needs_document:
                                     if data['userproformbysite'].is_valid():
                                         data['userproformbysite'].save()
