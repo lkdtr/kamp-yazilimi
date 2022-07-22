@@ -16,4 +16,4 @@ pytz  # Don't fix the version
 pysimplesoap==1.16.2
 python-crontab==2.2.8
 requests  # Don't fix the version
-soap2py==1.16
+gunicorn==19.8.1
