@@ -5,7 +5,7 @@
 
 LKD ve İNETD bünyesinde yürütülen eğitim ve etkinlikler için geliştirilmiş, genişletilebilir etkinlik yönetim sistemi.
 
-Kurulum ve diğer bilgiler için uygulamanın Wiki [sayfasını](https://git.linux.org.tr/lkd-ab/mudur/wiki/Ana+Sayfa) ziyaret edebilirsiniz.
+Kurulum ve diğer bilgiler için uygulamanın Wiki [sayfasını](https://github.com/lkdtr/kamp-yazilimi/wiki) ziyaret edebilirsiniz.
 
 ## Lisans
 Bu uygulama GPLv3 altındadır. Orjinal lisans dökümanını "[LICENSE](https://git.linux.org.tr/lkd-ab/mudur/src/master/LICENSE)" dosyasından okuyabilirsiniz.
