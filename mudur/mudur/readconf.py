@@ -85,6 +85,8 @@ class EmailSettings:
     fromaddress = None
     host = None
     port = None
+    username = None
+    password = None
 
     def __init__(self):
         config = ConfigParser.ConfigParser()
@@ -93,6 +95,8 @@ class EmailSettings:
         self.fromaddress = config.get(section, "from")
         self.host = config.get(section, "host")
         self.port = config.get(section, "port")
+        self.username = config.get(section, "username")
+        self.password = config.get(section, "password")
 
 
 class SMSSettings:

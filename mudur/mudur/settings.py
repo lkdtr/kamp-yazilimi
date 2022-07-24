@@ -38,6 +38,8 @@ from .readconf import *
 emailsettings = EmailSettings()
 EMAIL_FROM_ADDRESS = emailsettings.fromaddress
 EMAIL_HOST = emailsettings.host
+EMAIL_HOST_USER = emailsettings.username
+EMAIL_HOST_PASSWORD = emailsettings.password
 EMAIL_PORT = emailsettings.port
 
 SEND_REPORT = True

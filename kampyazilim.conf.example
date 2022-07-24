@@ -12,6 +12,8 @@ secret_key:<application_secretkey>
 from:<from address>
 host:<smtp server>
 port:<smtp port>
+username:<smtp username>
+password:<smtp password>
 
 [SMS]
 url: <api url>
