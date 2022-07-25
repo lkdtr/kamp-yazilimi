@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 pyenv virtualenv 3.7.1 venv
 pyenv activate venv
 
