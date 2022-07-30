@@ -30,6 +30,7 @@ sys.path.insert(0, os.path.join(BASE_DIR, "mudur"))
     MUDUR_CONFIG: Veri tabani ayarlari ve secret key bu dosyada yer alir.
 '''
 def validate_mudur_config(setting):
+    import configparser as ConfigParser
     if MUDUR_CONFIG is None:
         raise ValueError('MUDUR_CONFIG is not defined')
     elif not os.path.exists(setting):
