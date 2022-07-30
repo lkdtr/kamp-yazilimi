@@ -1,0 +1,75 @@
+services:
+  mudur:
+    build:
+      &build
+      context: .
+    expose:
+      - 8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgresql:
+        condition: service_healthy
+      mudur-prerun:
+        condition: service_completed_successfully
+    env_file:
+      &env_file
+      - ./.env
+    volumes:
+      &volumes
+      - ./mudur:/app/mudur
+      - ./kampyazilim.conf:/app/kampyazilim.conf
+    restart: on-failure
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "/usr/bin/curl",
+          "--output",
+          "/dev/null",
+          "--silent",
+          "--show-error",
+          "--fail",
+          "localhost:80"
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  mudur-prerun:
+    build: *build
+    env_file: *env_file
+    volumes: *volumes
+    entrypoint: [ "bash", "-c", "./entrypoint.sh managepy migrate && ./entrypoint.sh managepy collectstatic -y && ./entrypoint.sh managepy compilemessages" ]
+    depends_on:
+      postgresql:
+        condition: service_healthy
+
+  postgresql:
+    image: postgres:12.11-alpine
+    tmpfs:
+      - /run
+      - /var/cache
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: mudur
+      POSTGRES_USER: mudur
+      POSTGRES_DB: mudur
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "psql",
+          "--username",
+          "postgresql",
+          "--command",
+          "SELECT 1"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5442:5432"
+volumes:
+  postgres_data:
