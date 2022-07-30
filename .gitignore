@@ -27,3 +27,4 @@ mudur/ab2017_gelmeyenler.txt
 mudur/Yoklama_duzeltmece.py
 kampyazilim.conf
 .python-version
+mudur/locale/*/LC_MESSAGES/django.mo
