@@ -13,12 +13,13 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 COPY requirements.txt requirements.txt
 
-RUN apt-get update && apt-get install -y libpq-dev libjpeg-dev cron && apt-get autoclean
+RUN apt-get update && apt-get install -y libpq-dev libjpeg-dev cron gettext && apt-get autoclean
 RUN pip install --upgrade pip && pip install wheel && pip install -r requirements.txt
 
-COPY mudur mudur
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY kampyazilim.conf.example kampyazilim.conf
+COPY mudur mudur
 COPY Dockerfile /Dockerfile
 
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["entrypoint.sh"]
 CMD ["web"]
