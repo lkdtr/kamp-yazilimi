@@ -17,8 +17,12 @@ services:
       - ./.env
     volumes:
       &volumes
-      - ./mudur:/app/mudur
-      - ./kampyazilim.conf:/app/kampyazilim.conf
+      - ./entrypoint.sh:/usr/local/bin/entrypoint.sh  # For development purposes only!
+      - ./kampyazilim.conf:/app/kampyazilim.conf  # For development purposes only!
+      - ./mudur:/app/mudur  # For development purposes only!
+      - django_static:/app/mudur/staticfiles  # keep media files secure and ready to be shared with nginx
+      - django_media:/app/mudur/media  # keep media files secure and ready to be shared with nginx
+      - django_spool_cron:/var/spool/cron  # Remember crontab entries
     restart: on-failure
     healthcheck:
       test:
@@ -40,7 +44,7 @@ services:
     build: *build
     env_file: *env_file
     volumes: *volumes
-    entrypoint: [ "bash", "-c", "./entrypoint.sh managepy migrate && ./entrypoint.sh managepy collectstatic -y && ./entrypoint.sh managepy compilemessages" ]
+    entrypoint: [ "bash", "-c", "entrypoint.sh managepy migrate && entrypoint.sh managepy collectstatic --noinput && entrypoint.sh managepy compilemessages" ]
     depends_on:
       postgresql:
         condition: service_healthy
@@ -62,7 +66,7 @@ services:
           "CMD",
           "psql",
           "--username",
-          "postgresql",
+          "mudur",
           "--command",
           "SELECT 1"
         ]
@@ -70,6 +74,9 @@ services:
       timeout: 5s
       retries: 5
     ports:
-      - "5442:5432"
+      - "5433:5432"
 volumes:
   postgres_data:
+  django_static:
+  django_media:
+  django_spool_cron:
