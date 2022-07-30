@@ -29,16 +29,22 @@ case $key in
 esac
 shift # past argument or value
 done
-if [ ! -z "${WORKINGDIR}" ]
+if [ -n "${WORKINGDIR}" ]
 then
 echo WORKING DIR  = "${WORKINGDIR}"
 echo PVIRTUALENVDIR = "${PVIRTUALENVDIR}"
 echo FUNCTION = "${FUNCTION}"
-source ${PVIRTUALENVDIR}/bin/activate
-python ${WORKINGDIR}/mudur/send_scheduled_email.py ${WORKINGDIR} ${FUNCTION}
+
+if [ -z "${PVIRTUALENVDIR}" ]
+then
+  source "${PVIRTUALENVDIR}"/bin/activate
+fi
+
+python "${WORKINGDIR}"/mudur/send_scheduled_email.py "${WORKINGDIR}" "${FUNCTION}"
 else
-echo !!!Some parameters missing!!!
+echo "!!!Some parameters missing!!!"
 echo "
       -w: --workingdir: Project's base directory
+      -f: --function: function to be run
       -pv: --pvirtualenvdir: Python virtualenv directory"
 fi
