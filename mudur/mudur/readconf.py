@@ -1,5 +1,5 @@
 import configparser as ConfigParser
-from mudur.settings import COMMON_CONFIG_FILE
+from mudur.settings import MUDUR_CONFIG
 
 
 class DBconfig:
@@ -11,7 +11,7 @@ class DBconfig:
 
     def __init__(self):
         config = ConfigParser.ConfigParser()
-        config.read(COMMON_CONFIG_FILE)
+        config.read(MUDUR_CONFIG)
         section = "DB"
         self.dbhost = config.get(section, "host")
         self.dbport = config.get(section, "port")
@@ -44,7 +44,7 @@ class LDAPconfig:
 
     def __init__(self):
         config = ConfigParser.ConfigParser()
-        config.read(COMMON_CONFIG_FILE)
+        config.read(MUDUR_CONFIG)
         section = "LDAP"
         self.ldaphost = config.get(section, "host")
         self.ldapport = config.get(section, "port")
@@ -73,7 +73,7 @@ class DjangoSettings:
 
     def __init__(self):
         config = ConfigParser.ConfigParser()
-        config.read(COMMON_CONFIG_FILE)
+        config.read(MUDUR_CONFIG)
         section = "DJANGO"
         self.secret_key = config.get(section, "secret_key")
 
@@ -90,7 +90,7 @@ class EmailSettings:
 
     def __init__(self):
         config = ConfigParser.ConfigParser()
-        config.read(COMMON_CONFIG_FILE)
+        config.read(MUDUR_CONFIG)
         section = "EMAIL"
         self.fromaddress = config.get(section, "from")
         self.host = config.get(section, "host")
@@ -107,7 +107,7 @@ class SMSSettings:
 
     def __init__(self):
         config = ConfigParser.ConfigParser()
-        config.read(COMMON_CONFIG_FILE)
+        config.read(MUDUR_CONFIG)
         section = "SMS"
         self.url = config.get(section, "url")
         self.usercode = config.get(section, "usercode")
@@ -133,7 +133,7 @@ class CaptchaSettings:
 
     def __init__(self):
         config = ConfigParser.ConfigParser()
-        config.read(COMMON_CONFIG_FILE)
+        config.read(MUDUR_CONFIG)
         section = "CAPTCHA"
         self.publickey = config.get(section, 'publickey')
         self.privatekey = config.get(section, 'privatekey')
