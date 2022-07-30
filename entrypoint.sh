@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 MANAGEPY_COMMAND=(python mudur/manage.py)
-WEB_COMMAND=(gunicorn mudur.wsgi --bind 127.0.0.1:8080 --workers 8 --access-logfile -)
+WEB_COMMAND=(gunicorn --chdir mudur --bind 127.0.0.1:8080 --workers 8 --access-logfile - mudur.wsgi)
 
 if [ -z "${TERM}" ]; then
   FMT_BOLD="$(tput bold)"
@@ -18,8 +18,8 @@ case "${1}" in
   exit 11
   ;;
 managepy)
-  print_command "${MANAGEPY_COMMAND[@]}"
-  exec "${MANAGEPY_COMMAND[@]}"
+  print_command "${MANAGEPY_COMMAND[@]}" "${@:2}"
+  exec "${MANAGEPY_COMMAND[@]}" "${@:2}"
   ;;
 web)
   print_command "${WEB_COMMAND[@]}" "${@:2}"
