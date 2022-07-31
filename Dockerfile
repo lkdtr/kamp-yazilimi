@@ -21,5 +21,6 @@ COPY kampyazilim.conf.example kampyazilim.conf
 COPY mudur mudur
 COPY Dockerfile /Dockerfile
 
+EXPOSE 8080
 ENTRYPOINT ["entrypoint.sh"]
 CMD ["web"]

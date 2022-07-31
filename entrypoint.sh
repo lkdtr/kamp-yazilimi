@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 
 MANAGEPY_COMMAND=(python mudur/manage.py)
-WEB_COMMAND=(gunicorn --chdir mudur --bind 127.0.0.1:8080 --workers 8 --access-logfile - mudur.wsgi)
+if [ "${MUDUR_DEBUG,,}" = "true" ]
+then
+  WEB_COMMAND=(gunicorn --chdir mudur --bind 0.0.0.0:8080 --workers 2 --access-logfile - --reload mudur.wsgi)
+else
+  WEB_COMMAND=(gunicorn --chdir mudur --bind 0.0.0.0:8080 --workers 8 --access-logfile - mudur.wsgi)
+fi
 
 if [ -z "${TERM}" ]; then
   FMT_BOLD="$(tput bold)"

@@ -34,7 +34,7 @@ services:
           "--silent",
           "--show-error",
           "--fail",
-          "localhost:80"
+          "localhost:8080"
         ]
       interval: 30s
       timeout: 10s

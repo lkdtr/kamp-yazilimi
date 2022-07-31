@@ -160,6 +160,8 @@ RECAPTCHA_PRIVATE_KEY = captchasettings.get_private_key()
 NOCAPTCHA = True
 
 MIDDLEWARE_CLASSES = (
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -196,7 +198,7 @@ DATABASES = {
 }
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
-LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale/'), '/usr/local/lib/python2.7/dist-packages/django_countries/locale/')
+LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale/'), )
 
 LANGUAGE_CODE = 'tr'
 
@@ -218,6 +220,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 TEMPLATES = [
     {
