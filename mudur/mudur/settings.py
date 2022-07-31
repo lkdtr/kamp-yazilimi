@@ -27,9 +27,22 @@ VIRTUAL_ENV_PATH = os.getenv("VIRTUAL_ENV", os.path.join(PROJECT_ROOT, ".venv"))
 sys.path.insert(0, os.path.join(BASE_DIR, "mudur"))
 
 '''
-    COMMON_CONFIG_FILE: Veri tabani ayarlari ve secret key bu dosyada yer alir.
+    MUDUR_CONFIG: Veri tabani ayarlari ve secret key bu dosyada yer alir.
 '''
-COMMON_CONFIG_FILE = os.getenv("MUDUR_CONFIG", '/opt/kampyazilim.conf')
+def validate_mudur_config(setting):
+    import configparser as ConfigParser
+    if MUDUR_CONFIG is None:
+        raise ValueError('MUDUR_CONFIG is not defined')
+    elif not os.path.exists(setting):
+        raise ValueError('MUDUR_CONFIG do not exist')
+    elif not setting:
+        raise ValueError('MUDUR_CONFIG do not exist')
+    config = ConfigParser.ConfigParser()
+    config.read(setting)
+
+MUDUR_CONFIG = os.getenv("MUDUR_CONFIG", None)
+validate_mudur_config(MUDUR_CONFIG)
+
 from .readconf import *
 
 '''
@@ -112,7 +125,7 @@ DJANGOSETTINGS = DjangoSettings()
 SECRET_KEY = DJANGOSETTINGS.getsecretkey()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.getenv("ABKURSKAYITDEBUG", ""))
+DEBUG = os.getenv("MUDUR_DEBUG", "false").lower() == 'true'
 
 ALLOWED_HOSTS = ['*']
 
@@ -147,6 +160,8 @@ RECAPTCHA_PRIVATE_KEY = captchasettings.get_private_key()
 NOCAPTCHA = True
 
 MIDDLEWARE_CLASSES = (
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -159,8 +174,8 @@ MIDDLEWARE_CLASSES = (
     'mudur.middleware.agreement.AgreementMiddleware',
 )
 ROOT_URLCONF = 'mudur.urls'
-CSRF_COOKIE_SECURE = os.getenv("MUDUR_HTTPS", "False") == "True"
-SESSION_COOKIE_SECURE = os.getenv("MUDUR_HTTPS", "False") == "True"
+CSRF_COOKIE_SECURE = os.getenv("MUDUR_HTTPS", "false").lower() == "true"
+SESSION_COOKIE_SECURE = os.getenv("MUDUR_HTTPS", "false").lower() == "true"
 X_FRAME_OPTIONS = "DENY"
 WSGI_APPLICATION = 'mudur.wsgi.application'
 
@@ -183,7 +198,7 @@ DATABASES = {
 }
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
-LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale/'), '/usr/local/lib/python2.7/dist-packages/django_countries/locale/')
+LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale/'), )
 
 LANGUAGE_CODE = 'tr'
 
@@ -205,6 +220,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 TEMPLATES = [
     {
