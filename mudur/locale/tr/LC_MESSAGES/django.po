@@ -44,11 +44,11 @@ msgstr "Anasayfa"
 
 #: mudur/models.py:24
 msgid "domain"
-msgstr ""
+msgstr "domain"
 
 #: mudur/models.py:25
 msgid "To parse incoming requests and show correct page"
-msgstr ""
+msgstr "Gelen istekleri ayrıştırmak ve doğru sayfayı göstermek için"
 
 #: mudur/models.py:26
 msgid "Course Application Start Date"
@@ -156,7 +156,7 @@ msgstr "Site Adı"
 
 #: mudur/models.py:99
 msgid "Is Visible?"
-msgstr ""
+msgstr "Görünür mü?"
 
 #: mudur/models.py:102
 msgid "Classic Question"
@@ -347,7 +347,7 @@ msgstr "Onaylandı mı?"
 
 #: training/templates/training/allapprovedprefs.html:20
 msgid "Is consent email sent"
-msgstr ""
+msgstr "İzin e-postası gönderildi mi"
 
 #: training/templates/training/allapprovedprefs.html:21
 msgid "Participation"
@@ -360,7 +360,7 @@ msgstr "Yaşadığınız Şehir"
 
 #: training/templates/training/allcourseprefs.html:15
 msgid "Tel No"
-msgstr ""
+msgstr "Tel No"
 
 #: training/templates/training/allcourseprefs.html:18
 msgid "Organisation"
@@ -424,7 +424,7 @@ msgstr "Profili Göster"
 
 #: training/templates/training/participationpages.html:16
 msgid "Basvuru No"
-msgstr "Basvuru No""
+msgstr "Basvuru No"
 
 #: training/templates/training/participationpages.html:17
 msgid "Ad"
@@ -584,7 +584,7 @@ msgstr "Yabancı uyruklu katılımcılar için yabancı kimlik no boş olamaz"
 
 #: userprofile/forms.py:280
 msgid "Bu TC Kimlik numarasına sahip başka hesap var."
-msgstr ""
+msgstr "Bu TC Kimlik numarasına sahip başka hesap var."
 
 #: userprofile/forms.py:284
 msgid "An error occured while verifing your TC identity number"
