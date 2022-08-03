@@ -8,5 +8,5 @@ LKD ve İNETD bünyesinde yürütülen eğitim ve etkinlikler için geliştirilm
 Kurulum ve diğer bilgiler için uygulamanın Wiki [sayfasını](https://github.com/lkdtr/kamp-yazilimi/wiki) ziyaret edebilirsiniz.
 
 ## Lisans
-Bu uygulama GPLv3 altındadır. Orjinal lisans dökümanını "[LICENSE](https://git.linux.org.tr/lkd-ab/mudur/src/master/LICENSE)" dosyasından okuyabilirsiniz.
-Markdown formatında lisans -> [LICENSE.md](https://git.linux.org.tr/lkd-ab/mudur/src/master/LICENSE.md)
+Bu uygulama GPLv3 altındadır. Orjinal lisans dökümanını "[LICENSE](https://github.com/lkdtr/kamp-yazilimi/blob/master/LICENSE)" dosyasından okuyabilirsiniz.
+Markdown formatında lisans -> [LICENSE.md](https://github.com/lkdtr/kamp-yazilimi/blob/master/LICENSE.md)
