@@ -8,9 +8,8 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django_countries.data import COUNTRIES
 from django_countries.fields import CountryField
-
 from mudur.models import Site, TextBoxQuestions
-from mudur.settings import USER_TYPES, UNIVERSITIES, GENDER, TRANSPORTATION
+from mudur.settings import GENDER, TRANSPORTATION, UNIVERSITIES, USER_TYPES
 
 OCCUPATIONS = [
     ("kamu", _("Public")),
@@ -41,12 +40,12 @@ class UserVerification(models.Model):
         return self.user.username
 
     class Meta:
-        verbose_name = _('User Verification')
-        verbose_name_plural = _('User Verifications')
+        verbose_name = _("User Verification")
+        verbose_name_plural = _("User Verifications")
 
 
 def user_directory_path(instance, filename):
-    return 'user_{0}/{1}'.format(instance.user.id, filename)
+    return "user_{0}/{1}".format(instance.user.id, filename)
 
 
 class UserProfile(models.Model):
@@ -54,13 +53,14 @@ class UserProfile(models.Model):
     birthdate = models.DateField(verbose_name=_("Birth Date"), default=datetime.date(1970, 1, 1))
     tckimlikno = models.CharField(verbose_name=_("TC Identity Number"), max_length=11, blank=True)
     ykimlikno = models.CharField(verbose_name=_("Foreign Identity Number"), max_length=11, blank=True)
-    gender = models.CharField(choices={'E': _("Male"), 'K': _("Female")}.items(), verbose_name=_("Gender"),
-                              max_length=1)
+    gender = models.CharField(
+        choices={"E": _("Male"), "K": _("Female")}.items(), verbose_name=_("Gender"), max_length=1
+    )
     mobilephonenumber = models.CharField(verbose_name=_("Mobile Phone Number"), max_length=14)
     address = models.TextField(verbose_name=_("Home Address"))
     job = models.CharField(verbose_name=_("Job"), max_length=40, null=True, blank=True)
     city = models.CharField(verbose_name=_("Current City"), max_length=40)
-    country = CountryField(verbose_name=_("Nationality"), choices=COUNTRIES, default='TR')
+    country = CountryField(verbose_name=_("Nationality"), choices=COUNTRIES, default="TR")
     title = models.CharField(verbose_name=_("Title"), max_length=40)
     occupation = models.CharField(verbose_name=_("Occupation"), choices=OCCUPATIONS, max_length=4)
     current_education = models.CharField(verbose_name=_("Current Education"), choices=EDUCATIONS, max_length=4)
@@ -69,8 +69,12 @@ class UserProfile(models.Model):
     department = models.CharField(verbose_name=_("Department"), max_length=50)
     website = models.CharField(verbose_name=_("Website"), max_length=300, null=True, blank=True)
     experience = models.CharField(verbose_name=_("Work Experience"), max_length=1000, null=True, blank=True)
-    profilephoto = models.ImageField(upload_to=user_directory_path, verbose_name=_("Profile Picture"), help_text=_("Maximum 5 MB file is allowed."))
-    emergency_contact_information = models.TextField(verbose_name=_("Emergency Contact Information"), null=True, blank=True)
+    profilephoto = models.ImageField(
+        upload_to=user_directory_path, verbose_name=_("Profile Picture"), help_text=_("Maximum 5 MB file is allowed.")
+    )
+    emergency_contact_information = models.TextField(
+        verbose_name=_("Emergency Contact Information"), null=True, blank=True
+    )
     last_feedback_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -80,15 +84,21 @@ class UserProfile(models.Model):
             return self.user.username
 
     class Meta:
-        ordering = ('user__username',)
-        verbose_name = _('User Profile')
-        verbose_name_plural = _('User Profiles')
+        ordering = ("user__username",)
+        verbose_name = _("User Profile")
+        verbose_name_plural = _("User Profiles")
 
 
 class UserProfileBySite(models.Model):
     user = models.ForeignKey(User)
     site = models.ForeignKey(Site)
-    document = models.FileField(upload_to=user_directory_path, verbose_name=_("Belge Ekle"), blank=True, null=True, help_text=_("Maximum 10 MB file is allowed."))
+    document = models.FileField(
+        upload_to=user_directory_path,
+        verbose_name=_("Belge Ekle"),
+        blank=True,
+        null=True,
+        help_text=_("Maximum 10 MB file is allowed."),
+    )
     needs_document = models.BooleanField(verbose_name=_("Needs Document"), blank=True, default=False)
     userpassedtest = models.BooleanField(verbose_name=_("FAQ is answered?"), blank=True, default=False)
     additional_information = models.TextField(verbose_name=_("Additional Information"), blank=True, null=True)
@@ -99,15 +109,16 @@ class UserProfileBySite(models.Model):
         return self.user.username
 
     class Meta:
-        ordering = ('user__username',)
-        verbose_name = _('User Profile By Site')
-        verbose_name_plural = _('User Profiles By Sites')
+        ordering = ("user__username",)
+        verbose_name = _("User Profile By Site")
+        verbose_name_plural = _("User Profiles By Sites")
 
 
 class TrainessNote(models.Model):
     note = models.CharField(verbose_name=_("Note"), max_length=500)
-    note_from_profile = models.ForeignKey(UserProfile, related_name="note_from_profile",
-                                          null=True)  # from whom - trainer
+    note_from_profile = models.ForeignKey(
+        UserProfile, related_name="note_from_profile", null=True
+    )  # from whom - trainer
     note_to_profile = models.ForeignKey(UserProfile, related_name="note_to_profile")  # to whom - traiess
     note_date = models.DateTimeField(default=datetime.datetime.now)
     site = models.ForeignKey(Site)
@@ -117,8 +128,8 @@ class TrainessNote(models.Model):
         return self.note_to_profile.user.username
 
     class Meta:
-        verbose_name = _('Trainess Note')
-        verbose_name_plural = _('Trainess Notes')
+        verbose_name = _("Trainess Note")
+        verbose_name_plural = _("Trainess Notes")
 
 
 class Accommodation(models.Model):
@@ -139,10 +150,21 @@ class Accommodation(models.Model):
 
 
 class UserFeedback(models.Model):
+    STATUS_NEW = 1
+    STATUS_PROCESSING = 2
+    STATUS_CLOSED = 3
+    STATUS = (
+        (STATUS_NEW, _("Yeni")),
+        (STATUS_PROCESSING, _("Sürüyor")),
+        (STATUS_CLOSED, _("Cevaplandı")),
+    )
+
     user = models.ForeignKey(UserProfile, verbose_name="Kullanıcı", blank=True, null=True)
     site = models.ForeignKey(Site, verbose_name="Etkinlik")
+    status = models.PositiveSmallIntegerField(choices=STATUS, verbose_name="Durum", default=STATUS_NEW)
     title = models.CharField(verbose_name="Başlık", max_length=100)
     body = models.TextField(verbose_name="İçerik")
+    answer = models.TextField(verbose_name="Cevap", blank=True, null=True)
     attachment = models.FileField(verbose_name="Eklenti", upload_to="feedback_files", blank=True)
     creation_date = models.DateTimeField(verbose_name="Oluşturulma Tarihi", auto_now_add=True)
 
@@ -205,6 +227,7 @@ class AgreementCategory(models.Model):
     def __str__(self):
         return self.title
 
+
 class AgreementText(models.Model):
     title = models.CharField(max_length=120)
     body = models.TextField()
@@ -212,7 +235,12 @@ class AgreementText(models.Model):
     category = models.ForeignKey(AgreementCategory)
 
     class Meta:
-        unique_together = (("version", "category",),)
+        unique_together = (
+            (
+                "version",
+                "category",
+            ),
+        )
 
     def __str__(self):
         return self.title
