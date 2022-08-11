@@ -8,18 +8,20 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('userprofile', '0006_auto_20220730_2113'),
+        ("userprofile", "0006_auto_20220730_2113"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='userfeedback',
-            name='answer',
-            field=models.TextField(blank=True, null=True, verbose_name='Cevap'),
+            model_name="userfeedback",
+            name="answer",
+            field=models.TextField(blank=True, null=True, verbose_name="Cevap"),
         ),
         migrations.AddField(
-            model_name='userfeedback',
-            name='status',
-            field=models.CharField(choices=[('New', 'Yeni'), ('Processing', 'Sürüyor'), ('Closed', 'Cevaplandı')], default='New', max_length=12, verbose_name='Durum'),
+            model_name="userfeedback",
+            name="status",
+            ield=models.PositiveSmallIntegerField(
+                choices=[(1, "Yeni"), (2, "Sürüyor"), (3, "Cevaplandı")], default=1, verbose_name="Durum"
+            ),
         ),
     ]
