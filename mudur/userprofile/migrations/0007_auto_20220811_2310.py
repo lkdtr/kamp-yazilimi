@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="userfeedback",
             name="status",
-            ield=models.PositiveSmallIntegerField(
+            field=models.PositiveSmallIntegerField(
                 choices=[(1, "Yeni"), (2, "Sürüyor"), (3, "Cevaplandı")], default=1, verbose_name="Durum"
             ),
         ),
