@@ -100,7 +100,7 @@ def send_notice_for_user_feedback(instance, created, **kwargs):
             "title": instance.title,
             "body": instance.body,
             "site": Site.objects.get(is_active=True),
-            "recipientlist": [settings.REPORT_RECIPIENT_LIST],
+            "recipientlist": settings.REPORT_RECIPIENT_LIST,
         }
         send_email_by_operation_name(context, "notice_for_user_feedback")
 
