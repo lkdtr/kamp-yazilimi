@@ -312,7 +312,7 @@
   cityListForApproved = [];
   cityStatisticUserSizeForApproved = [];
   {% for item in statistic_by_city_for_approved%}
-    cityListForApproved.push("{{ item.trainess__university }}");
+    cityListForApproved.push("{{ item.trainess__city }}");
     cityStatisticUserSizeForApproved.push({{ item.trainess__id__count }});
   {% endfor%}
   $(function () {
