@@ -1,0 +1,21 @@
+[Unit]
+Description=Gunicorn uzerinde Mudur servisi
+After=network.target
+Requires=postgresql@12-main.service
+
+[Service]
+# User=1000
+# Group=1000
+Environment="MUDUR_CONFIG=/var/www/kamp-yazilimi/kampyazilim.conf"
+WorkingDirectory=/var/www/kamp-yazilimi/
+ExecStart=/var/www/kamp-yazilimi/venv/bin/gunicorn --chdir mudur --bind 0.0.0.0:8080 --workers 8 --access-logfile - mudur.wsgi
+KillMode=mixed
+TimeoutStopSec=5
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+
