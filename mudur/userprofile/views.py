@@ -44,7 +44,7 @@ from userprofile.uutils import getuserprofileforms
 
 from mudur.backend import create_verification_link, send_email_by_operation_name
 from mudur.decorators import active_required
-from mudur.models import TextBoxQuestions
+from mudur.models import Site, TextBoxQuestions
 from mudur.settings import ACCOMODATION_PREFERENCE_LIMIT
 
 log = logging.getLogger(__name__)
@@ -503,7 +503,23 @@ def password_reset_key(request):
                     else:
                         data["note"] = "sms gonderilemedi: " + note
                 elif not user.is_active:
-                    return redirect("active_resend")
+                    user.is_active = False
+                    user_verification, created = UserVerification.objects.get_or_create(
+                        user=user
+                    )
+                    user_verification.activation_key = create_verification_link(user)
+                    user_verification.save()
+                    context = {
+                        "user": user,
+                        "activation_key": user_verification.activation_key,
+                        "site": Site.objects.get(is_active=True),
+                        "recipientlist": [user.username],
+                    }
+                    context["domain"] = context["site"].home_url.rstrip("/")
+                    send_email_by_operation_name(context, "send_activation_key")
+                    data["note"] = _(
+                        """Your account still deactivated. Please check your email for activation link"""
+                    )
                 else:
                     user_verification.password_reset_key = create_verification_link(
                         user
