@@ -233,7 +233,7 @@ def approve_course_preference(request):
     except Exception as e:
         log.error('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), extra=request.log_extra)
         log.error(str(e), extra=request.log_extra)
-        data['note'] = "Hata oluştu"
+        data['note'] = "Hata oluştu. Başvurunuz teyit için lütfen kamp@linux.org.tr adresine e-posta atın."
     if request.POST:
         try:
             log.debug(request.POST.get("courseRecordId"), extra=request.log_extra)
