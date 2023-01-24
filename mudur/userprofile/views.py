@@ -13,13 +13,8 @@ from django.core.urlresolvers import reverse_lazy
 from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import ugettext_lazy as _
-from mudur.backend import create_verification_link, send_email_by_operation_name
-from mudur.decorators import active_required
-from mudur.models import TextBoxQuestions
-from mudur.settings import ACCOMODATION_PREFERENCE_LIMIT
 from training.models import Course, TrainessCourseRecord, TrainessParticipation
 from training.tutils import cancel_all_prefs, getparticipationforms
-
 from userprofile.forms import (
     ChangePasswordForm,
     ChangePasswordWithSMSForm,
@@ -47,13 +42,22 @@ from userprofile.models import (
 from userprofile.userprofileops import UserProfileOPS
 from userprofile.uutils import getuserprofileforms
 
+from mudur.backend import create_verification_link, send_email_by_operation_name
+from mudur.decorators import active_required
+from mudur.models import Site, TextBoxQuestions
+from mudur.settings import ACCOMODATION_PREFERENCE_LIMIT
+
 log = logging.getLogger(__name__)
 
 
 @login_required()
 def accept_agreement(request):
-    agreement_text = get_object_or_404(AgreementText, id=request.session.get("agreement_id", 0))
-    next_url = request.GET.get("next", request.POST.get("next", request.session.get("next", "/")))
+    agreement_text = get_object_or_404(
+        AgreementText, id=request.session.get("agreement_id", 0)
+    )
+    next_url = request.GET.get(
+        "next", request.POST.get("next", request.session.get("next", "/"))
+    )
     if next_url == request.path:
         next_url = "/"
     if request.POST.get("status") == "yes":
@@ -65,7 +69,11 @@ def accept_agreement(request):
         logout(request)
         return redirect("/")
     else:
-        return render(request, "userprofile/agreement.html", {"agreement": agreement_text, "next": next_url})
+        return render(
+            request,
+            "userprofile/agreement.html",
+            {"agreement": agreement_text, "next": next_url},
+        )
 
 
 def subscribe(request):
@@ -75,7 +83,9 @@ def subscribe(request):
             "buttonname2": "cancel",
             "buttonname1_value": _("Register"),
             "buttonname2_value": _("Cancel"),
-            "note": _("Register to system to participate in courses before the conferences"),
+            "note": _(
+                "Register to system to participate in courses before the conferences"
+            ),
         }
         form = CreateUserForm()
         if "register" in request.POST:
@@ -86,7 +96,9 @@ def subscribe(request):
                     user.set_password(user.password)
                     try:
                         user.save()
-                        data["note"] = _("Your account has been created. Please check your email for activation link")
+                        data["note"] = _(
+                            "Your account has been created. Please check your email for activation link"
+                        )
                     except Exception as e:
                         data["note"] = str(e)
                     form = None
@@ -146,22 +158,37 @@ def createprofile(request):
         data["accomodations"],
         data["accomodation_records"],
     ) = getuserprofileforms(request.user, request.site, request.log_extra)
-    data["sitewidequestions"] = TextBoxQuestions.objects.filter(site=request.site, active=True, is_sitewide=True)
+    data["sitewidequestions"] = TextBoxQuestions.objects.filter(
+        site=request.site, active=True, is_sitewide=True
+    )
 
     data["sitewidequestion_answers"] = {
-        int(key[6:]): value for key, value in request.POST.items() if key.startswith("answer")
+        int(key[6:]): value
+        for key, value in request.POST.items()
+        if key.startswith("answer")
     }
     if "register" in request.POST:
-        data["update_user_form"] = UpdateUserForm(data=request.POST, instance=request.user)
+        data["update_user_form"] = UpdateUserForm(
+            data=request.POST, instance=request.user
+        )
         try:
             data["userproform"] = StuProfileForm(
-                request.POST, request.FILES, instance=request.user.userprofile, ruser=request.user
+                request.POST,
+                request.FILES,
+                instance=request.user.userprofile,
+                ruser=request.user,
             )
         except UserProfile.DoesNotExist:
-            data["userproform"] = StuProfileForm(request.POST, request.FILES, ruser=request.user)
+            data["userproform"] = StuProfileForm(
+                request.POST, request.FILES, ruser=request.user
+            )
         if userprobysite:
             data["userproformbysite"] = UserProfileBySiteForm(
-                request.POST, request.FILES, instance=userprobysite, ruser=request.user, site=request.site
+                request.POST,
+                request.FILES,
+                instance=userprobysite,
+                ruser=request.user,
+                site=request.site,
             )
         else:
             data["userproformbysite"] = UserProfileBySiteForm(
@@ -178,18 +205,29 @@ def createprofile(request):
                             # noinspection PyUnresolvedReferences
                             answer = request.POST.get("answer%s" % question.pk, "")
                             if answer:
-                                tca, created = TrainessClassicTestAnswers.objects.get_or_create(
+                                (
+                                    tca,
+                                    created,
+                                ) = TrainessClassicTestAnswers.objects.get_or_create(
                                     user=request.user.userprofile, question=question
                                 )
                                 tca.answer = answer
                                 tca.save()
-                    if not UserProfileOPS.is_instructor(request.user.userprofile) and ACCOMODATION_PREFERENCE_LIMIT:
-                        prefs = UserAccomodationPref.objects.filter(user=request.user.userprofile)
+                    if (
+                        not UserProfileOPS.is_instructor(request.user.userprofile)
+                        and ACCOMODATION_PREFERENCE_LIMIT
+                    ):
+                        prefs = UserAccomodationPref.objects.filter(
+                            user=request.user.userprofile
+                        )
                         if prefs:
                             prefs.delete()
                         if "tercih1" in request.POST.keys():
                             try:
-                                if request.site.update_accommodation_end_date < datetime.now().date():
+                                if (
+                                    request.site.update_accommodation_end_date
+                                    < datetime.now().date()
+                                ):
                                     data[
                                         "note"
                                     ] = "Profiliniz kaydedildi ancak konaklama tercihleriniz kaydedilemedi. Konaklama tercih değişikliği süresi geçti."
@@ -197,11 +235,15 @@ def createprofile(request):
                                         "Kullanıcı profilini ve konaklama tercihini güncellenmedi.",
                                         extra=request.log_extra,
                                     )
-                                    return render(request, "userprofile/user_profile.html", data)
+                                    return render(
+                                        request, "userprofile/user_profile.html", data
+                                    )
                                 else:
                                     uaccpref = UserAccomodationPref(
                                         user=request.user.userprofile,
-                                        accomodation=Accommodation.objects.get(pk=request.POST.get("tercih1")),
+                                        accomodation=Accommodation.objects.get(
+                                            pk=request.POST.get("tercih1")
+                                        ),
                                         usertype="stu",
                                         preference_order=1,
                                     )
@@ -214,27 +256,46 @@ def createprofile(request):
                                     if data["userproformbysite"].is_valid():
                                         data["userproformbysite"].save()
                                         if "document" in request.FILES:
-                                            log.info("Kullanıcı evrakını güncelledi.", extra=request.log_extra)
+                                            log.info(
+                                                "Kullanıcı evrakını güncelledi.",
+                                                extra=request.log_extra,
+                                            )
                                     else:
-                                        data["note"] = "Profiliniz aşağıdaki sebeplerden dolayı kaydedilemedi"
-                                        return render(request, "userprofile/user_profile.html", data)
+                                        data[
+                                            "note"
+                                        ] = "Profiliniz aşağıdaki sebeplerden dolayı kaydedilemedi"
+                                        return render(
+                                            request,
+                                            "userprofile/user_profile.html",
+                                            data,
+                                        )
                             except Exception as e:
                                 log.error(str(e), extra=request.log_extra)
                                 data["note"] = (
                                     "Profiliniz kaydedildi ancak konaklama tercihleriniz kaydedilemedi."
                                     " Sistem yöneticisi ile görüşün!"
                                 )
-                                return render(request, "userprofile/user_profile.html", data)
+                                return render(
+                                    request, "userprofile/user_profile.html", data
+                                )
                     data["note"] = (
-                        "Profiliniz başarılı bir şekilde kaydedildi. Kurs tercihleri adımından" " devam edebilirsiniz"
+                        "Profiliniz başarılı bir şekilde kaydedildi. Kurs tercihleri adımından"
+                        " devam edebilirsiniz"
                     )
                     return render(request, "userprofile/user_profile.html", data)
                 except Exception as e:
-                    log.error("Error on line {}".format(sys.exc_info()[-1].tb_lineno), extra=request.log_extra)
+                    log.error(
+                        "Error on line {}".format(sys.exc_info()[-1].tb_lineno),
+                        extra=request.log_extra,
+                    )
                     log.error(str(e), extra=request.log_extra)
-                    data["note"] = "Profiliniz kaydedilirken hata oluştu lütfen sayfayı yeniden yükleyip tekrar deneyin"
+                    data[
+                        "note"
+                    ] = "Profiliniz kaydedilirken hata oluştu lütfen sayfayı yeniden yükleyip tekrar deneyin"
                     return render(request, "userprofile/user_profile.html", data)
-        data["note"] = "Profiliniz aşağıdaki sebeplerden dolayı oluşturulamadı ya da güncelleme süresi doldu"
+        data[
+            "note"
+        ] = "Profiliniz aşağıdaki sebeplerden dolayı oluşturulamadı ya da güncelleme süresi doldu"
     elif "cancel" in request.POST:
         return redirect("createprofile")
     return render(request, "userprofile/user_profile.html", data)
@@ -250,14 +311,21 @@ def instructor_information_view(request):
     if not UserProfileOPS.is_instructor(request.user.userprofile):
         data["note"] = _("You are not authorized to access here")
     else:
-        data["note"] = _("Please enter your transformation, arrival date, departure date information")
+        data["note"] = _(
+            "Please enter your transformation, arrival date, departure date information"
+        )
         try:
-            instructorinformation = InstructorInformation.objects.get(user=request.user.userprofile, site=request.site)
-            form = InstructorInformationForm(instance=instructorinformation, site=request.site, request=request)
+            instructorinformation = InstructorInformation.objects.get(
+                user=request.user.userprofile, site=request.site
+            )
+            form = InstructorInformationForm(
+                instance=instructorinformation, site=request.site, request=request
+            )
 
         except ObjectDoesNotExist as e:
             log.debug(
-                "Egitmen bilgileri bulunamadi, yeni bilgiler olusturulmak icin form acilacak", extra=request.log_extra
+                "Egitmen bilgileri bulunamadi, yeni bilgiler olusturulmak icin form acilacak",
+                extra=request.log_extra,
             )
             log.error(str(e), extra=request.log_extra)
             form = InstructorInformationForm(site=request.site, request=request)
@@ -266,16 +334,22 @@ def instructor_information_view(request):
         if request.POST:
             if instructorinformation is not None:
                 form = InstructorInformationForm(
-                    request.POST, instance=instructorinformation, site=request.site, request=request
+                    request.POST,
+                    instance=instructorinformation,
+                    site=request.site,
+                    request=request,
                 )
             else:
-                form = InstructorInformationForm(request.POST, site=request.site, request=request)
+                form = InstructorInformationForm(
+                    request.POST, site=request.site, request=request
+                )
             if form.is_valid():
                 try:
                     instructor_info = form.save(commit=True)
                     data["note"] = _("Your information saved successfully")
                     log.info(
-                        "%s egitmeni ek bilgilerini guncelledi" % instructor_info.user.user.username,
+                        "%s egitmeni ek bilgilerini guncelledi"
+                        % instructor_info.user.user.username,
                         extra=request.log_extra,
                     )
                 except Exception as e:
@@ -315,7 +389,9 @@ def alluserview(request):
                     "gender": up.gender,
                     "job": up.job,
                     "title": up.title,
-                    "accomodation": up.useraccomodationpref_set.filter(accomodation__site=request.site),
+                    "accomodation": up.useraccomodationpref_set.filter(
+                        accomodation__site=request.site
+                    ),
                     "courserecordid": "0",
                 }
                 try:
@@ -371,7 +447,9 @@ def active_resend(request):
     if request.POST:
         domain = request.site.home_url
         data["domain"] = domain.rstrip("/")
-        user_verification, created = UserVerification.objects.get_or_create(user=request.user)
+        user_verification, created = UserVerification.objects.get_or_create(
+            user=request.user
+        )
         user_verification.activation_key = create_verification_link(request.user)
         user_verification.save()
         data["activation_key"] = user_verification.activation_key
@@ -408,8 +486,12 @@ def password_reset_key(request):
         if email and email != "":
             try:
                 user = User.objects.get(email=request.POST["email"])
-                user_verification, created = UserVerification.objects.get_or_create(user=user)
-                user_verification.activation_key_expires = datetime.now() + timedelta(days=1)
+                user_verification, created = UserVerification.objects.get_or_create(
+                    user=user
+                )
+                user_verification.activation_key_expires = datetime.now() + timedelta(
+                    days=1
+                )
                 if request.POST.get("issms") == "on":
                     password = User.objects.make_random_password()
                     user_verification.temporary_code = password
@@ -420,22 +502,45 @@ def password_reset_key(request):
                         return redirect("password_reset_by_sms")
                     else:
                         data["note"] = "sms gonderilemedi: " + note
-
+                elif not user.is_active:
+                    user.is_active = False
+                    user_verification, created = UserVerification.objects.get_or_create(
+                        user=user
+                    )
+                    user_verification.activation_key = create_verification_link(user)
+                    user_verification.save()
+                    context = {
+                        "user": user,
+                        "activation_key": user_verification.activation_key,
+                        "site": Site.objects.get(is_active=True),
+                        "recipientlist": [user.username],
+                    }
+                    context["domain"] = context["site"].home_url.rstrip("/")
+                    send_email_by_operation_name(context, "send_activation_key")
+                    data["note"] = _(
+                        """Your account still deactivated. Please check your email for activation link"""
+                    )
                 else:
-                    user_verification.password_reset_key = create_verification_link(user)
+                    user_verification.password_reset_key = create_verification_link(
+                        user
+                    )
                     user_verification.save()
                     data["ruser"] = user
                     data["activation_key"] = user_verification.password_reset_key
                     domain = request.site.home_url
                     data["domain"] = domain.rstrip("/")
                     data["recipientlist"] = [user.username]
-                    data["note"] = send_email_by_operation_name(data, "send_reset_password_key")
+                    data["note"] = send_email_by_operation_name(
+                        data, "send_reset_password_key"
+                    )
                 if data["note"]:
                     data["note"] = "Parola sıfırlama e-postası adresinize gönderildi."
                 else:
                     data["note"] = "E-posta gönderilemedi"
             except ObjectDoesNotExist:
-                data["note"] = _("""There isn't any user record with this e-mail on the system""")
+                data["note"] = _(
+                    """There isn't any user record with this e-mail on the system"""
+                )
                 log.error(data["note"], extra=request.log_extra)
             # except Exception as e:
             #    data['note'] = _("""Password reset operation failed""")
@@ -485,7 +590,9 @@ def password_reset_by_sms(request):
         form = ChangePasswordWithSMSForm(request.POST)
         if form.is_valid():
             try:
-                user_verification = UserVerification.objects.get(temporary_code=form.cleaned_data.get("key"))
+                user_verification = UserVerification.objects.get(
+                    temporary_code=form.cleaned_data.get("key")
+                )
                 if user_verification:
                     user = user_verification.user
                     user.is_authenticated = False
@@ -516,7 +623,9 @@ def showuserprofile(request, userid, courserecordid):
             courserecord = TrainessCourseRecord.objects.get(
                 pk=courserecordid, trainess=UserProfile.objects.get(pk=userid)
             )
-            if not UserProfileOPS.is_user_trainer_ofcourse_or_staff(request.user, courserecord.course):
+            if not UserProfileOPS.is_user_trainer_ofcourse_or_staff(
+                request.user, courserecord.course
+            ):
                 return redirect("selectcoursefcp")
         except Exception as e:
             log.warning(str(e), extra=request.log_extra)
@@ -530,9 +639,14 @@ def showuserprofile(request, userid, courserecordid):
         if user:
             userprofilebysite = None
             try:
-                userprofilebysite = UserProfileBySite.objects.get(user=user.user, site=request.site)
+                userprofilebysite = UserProfileBySite.objects.get(
+                    user=user.user, site=request.site
+                )
                 data["userprofilebysiteform"] = UserProfileBySiteForStaffForm(
-                    instance=userprofilebysite, ruser=request.user, site=request.site, user=user.user
+                    instance=userprofilebysite,
+                    ruser=request.user,
+                    site=request.site,
+                    user=user.user,
                 )
             except UserProfileBySite.DoesNotExist as e:
                 data["userprofilebysiteform"] = UserProfileBySiteForStaffForm(
@@ -550,17 +664,26 @@ def showuserprofile(request, userid, courserecordid):
                     )
                 else:
                     data["userprofilebysiteform"] = UserProfileBySiteForStaffForm(
-                        request.POST, request.FILES, ruser=request.user, site=request.site, user=user.user
+                        request.POST,
+                        request.FILES,
+                        ruser=request.user,
+                        site=request.site,
+                        user=user.user,
                     )
                 if data["userprofilebysiteform"].is_valid():
                     data["userprofilebysiteform"].save()
-                    log.info("%s kullanıcısı için etkinlik bazlı profil kaydedildi", extra=request.log_extra)
+                    log.info(
+                        "%s kullanıcısı için etkinlik bazlı profil kaydedildi",
+                        extra=request.log_extra,
+                    )
                     data["note"] = "Etkinlik bazlı profil kaydedildi."
                 else:
                     data["note"] = "Kullanici bazlı profil formu doğrulanamadı."
             if request.user.is_staff and "cancelall" in request.POST:
                 cancelnote = request.POST.get("trainesscancelnotetext", "")
-                res = cancel_all_prefs(user, cancelnote, request.site, request.user, request.log_extra)
+                res = cancel_all_prefs(
+                    user, cancelnote, request.site, request.user, request.log_extra
+                )
                 if res == 1:
                     data["note"] = "Kullanıcının Tüm Başvuruları Silindi"
                 else:
@@ -578,10 +701,16 @@ def showuserprofile(request, userid, courserecordid):
                 data["courseid"] = courserecord.course.pk
                 if request.user.is_staff and courserecord.consentemailsent:
                     try:
-                        data["forms"] = getparticipationforms(request.site, courserecord)
+                        data["forms"] = getparticipationforms(
+                            request.site, courserecord
+                        )
                         if "save" in request.POST:
-                            data["note"] = UserProfileOPS.saveparticipation(request, courserecord)
-                            data["forms"] = getparticipationforms(request.site, courserecord)
+                            data["note"] = UserProfileOPS.saveparticipation(
+                                request, courserecord
+                            )
+                            data["forms"] = getparticipationforms(
+                                request.site, courserecord
+                            )
                     except Exception as e:
                         log.error(str(e), extra=request.log_extra)
         else:
