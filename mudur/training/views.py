@@ -212,7 +212,7 @@ def approve_course_preference(request):
                     data['note'] = "Kurslara kabul dönemi bitmiş olup başvurularınıza kabul edilmediniz ancak" \
                                    " kurs başlangıç tarihine kadar kabul edilme şansınız hala devam ediyor." \
                                    " Takip etmeye devam edin."
-                elif request.site.event_start_date - 1 <= now:
+                elif request.site.event_start_date - timedelta(days=1) <= date.today():
                     data['note'] = "Başvurularınız kabul edilmemiştir. Bir sonraki etkinlikte görüşmek dileğiyle."
             else:
                 data["note"] = "Aşağıdaki Kursa Kabul Edildiniz"
