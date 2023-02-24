@@ -2,7 +2,7 @@ import sys
 import json
 import logging
 import itertools
-from datetime import datetime
+from datetime import datetime, timedelta, date
 
 from django.shortcuts import render, redirect
 from django.http.response import HttpResponse
@@ -208,11 +208,11 @@ def approve_course_preference(request):
                 if first_start_date_inst.start_date <= now < last_end_date_inst.end_date:
                     data['note'] = "Başvurular değerlendirilmektedir. En geç %s tarihine kadar sonuçları burada" \
                                    " görebilirsiniz." % last_end_date_inst.end_date.strftime("%d-%m-%Y")
-                elif request.site.event_start_date - 1 > now > last_end_date_inst.end_date:
+                elif request.site.event_start_date - timedelta(days=1) > date.today() > last_end_date_inst.end_date.date():
                     data['note'] = "Kurslara kabul dönemi bitmiş olup başvurularınıza kabul edilmediniz ancak" \
                                    " kurs başlangıç tarihine kadar kabul edilme şansınız hala devam ediyor." \
                                    " Takip etmeye devam edin."
-                elif request.site.event_start_date - 1 <= now:
+                elif request.site.event_start_date - timedelta(days=1) <= date.today():
                     data['note'] = "Başvurularınız kabul edilmemiştir. Bir sonraki etkinlikte görüşmek dileğiyle."
             else:
                 data["note"] = "Aşağıdaki Kursa Kabul Edildiniz"
