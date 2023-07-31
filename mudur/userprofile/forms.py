@@ -313,18 +313,18 @@ class StuProfileForm(ModelForm):
                                                    "your TC identity number, your name, your last name (with Turkish"
                                                    "characters if exist) and your birth date precisely")))
 
-            if cleaned_data["mobilephonenumber"] and not cleaned_data["filled_mobile_phone_number"]:
-                raise forms.ValidationError(
-                    "Bir telefon numarası girdiyseniz, lütfen doğru onay maddesi işaretleyin."
-                )
-            if not cleaned_data["mobilephonenumber"] and not cleaned_data["empty_mobile_phone_number"]:
-                raise forms.ValidationError(
-                    "Bir telefon numarası girmediyseniz, lütfen doğru onay maddesi işaretleyin."
-                )
-            if cleaned_data["filled_mobile_phone_number"] and cleaned_data["empty_mobile_phone_number"]:
-                raise forms.ValidationError(
-                    "Telefon numarası ile ilgili doğru onay maddesini işaretleyin."
-                )
+            if cleaned_data["mobilephonenumber"]:
+                if not cleaned_data["filled_mobile_phone_number"]:
+                    raise forms.ValidationError(
+                        "Bir telefon numarası girdiyseniz, lütfen doğru onay maddesi işaretleyin."
+                    )
+                cleaned_data["empty_mobile_phone_number"] = False
+            else:
+                if not cleaned_data["empty_mobile_phone_number"]:
+                    raise forms.ValidationError(
+                        "Bir telefon numarası girmediyseniz, lütfen doğru onay maddesi işaretleyin."
+                    )
+                cleaned_data["filled_mobile_phone_number"] = False
 
         else:
             raise forms.ValidationError(_("User not found"))
