@@ -200,6 +200,25 @@ class UserProfileBySiteForm(ModelForm):
 
 
 class StuProfileForm(ModelForm):
+    empty_mobile_phone_number = forms.BooleanField(label='Telefon numaramı paylaşmak istemiyorum. Telefon numarası '
+                                                         'paylaşmayarak kamp esnasında gerekli ve acil durumlarda '
+                                                         'anlık olarak ulaşılamayabileceğimi, SMS yoluyla iletilen '
+                                                         'duyuruları ve parola sıfırlama bağlantılarını alamayacağımı '
+                                                         'biliyor ve bu sebeple yaşanabilecek her türlü durumda '
+                                                         'sorumluluğun bana ait olduğunu kabul ediyorum.')
+    filled_mobile_phone_number = forms.BooleanField(label='Telefon numaramı doğru girdim. Telefon numaramın doğru '
+                                                          'olmaması halinde, kamp esnasında gerekli ve acil '
+                                                          'durumlarda anlık olarak ulaşılamayabileceğimi, SMS yoluyla '
+                                                          'iletilen duyuruları ve parola sıfırlama bağlantılarını '
+                                                          'alamayacağımı biliyor ve bu sebeple yaşanabilecek her '
+                                                          'türlü durumda sorumluluğun bana ait olduğunu kabul '
+                                                          'ediyorum.')
+
+    field_order = [
+        'tckimlikno', 'ykimlikno', 'gender', 'mobilephonenumber', 'empty_mobile_phone_number',
+        'filled_mobile_phone_number'
+    ]
+
     class Meta:
         dyncf = DynmcFields()
         model = UserProfile
@@ -210,7 +229,11 @@ class StuProfileForm(ModelForm):
             'gender': forms.Select(
                 attrs={'placeholder': _('Gender'), 'class': 'form-control', 'onChange': 'genderchanged()'}),
             'mobilephonenumber': forms.TextInput(
-                    attrs={'placeholder': _('Mobile Phone Number'), 'class': 'form-control'}),
+                attrs={
+                    'placeholder': _('Mobile Phone Number'), 'class': 'form-control',
+                    'onChange': 'mobilephonenumberchanged();'
+                }
+            ),
             'address': forms.Textarea(attrs={'placeholder': _('Address'), 'class': 'form-control'}),
             'job': forms.TextInput(attrs={'placeholder': _('Job'), 'class': 'form-control'}),
             'country': CountrySelectWidget(attrs={'placeholder': _('Nationality'), 'onChange': 'countrychanged();'}),
@@ -241,8 +264,11 @@ class StuProfileForm(ModelForm):
         self.ruser = kwargs.pop('ruser', None)
         super(StuProfileForm, self).__init__(*args, **kwargs)
         for field in self.fields:
-            if field in ['tckimlikno', 'ykimlikno', 'university', 'user', 'website', 'experience',
-                         'emergency_contact_information']:
+            if field in [
+                'tckimlikno', 'ykimlikno', 'university', 'user', 'website', 'experience',
+                'emergency_contact_information', 'mobilephonenumber', 'empty_mobile_phone_number',
+                'filled_mobile_phone_number'
+            ]:
                 self.fields[field].required = False
             else:
                 self.fields[field].required = True
@@ -286,6 +312,20 @@ class StuProfileForm(ModelForm):
                     raise forms.ValidationError(_(("Your identity information can not be verified, Please enter"
                                                    "your TC identity number, your name, your last name (with Turkish"
                                                    "characters if exist) and your birth date precisely")))
+
+            if cleaned_data["mobilephonenumber"] and not cleaned_data["filled_mobile_phone_number"]:
+                raise forms.ValidationError(
+                    "Bir telefon numarası girdiyseniz, lütfen doğru onay maddesi işaretleyin."
+                )
+            if not cleaned_data["mobilephonenumber"] and not cleaned_data["empty_mobile_phone_number"]:
+                raise forms.ValidationError(
+                    "Bir telefon numarası girmediyseniz, lütfen doğru onay maddesi işaretleyin."
+                )
+            if cleaned_data["filled_mobile_phone_number"] and cleaned_data["empty_mobile_phone_number"]:
+                raise forms.ValidationError(
+                    "Telefon numarası ile ilgili doğru onay maddesini işaretleyin."
+                )
+
         else:
             raise forms.ValidationError(_("User not found"))
         return cleaned_data

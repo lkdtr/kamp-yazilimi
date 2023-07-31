@@ -39,6 +39,20 @@ function countrychanged(selectbox){
         $("#id_ykimlikno").parent().parent().find('div').first().append("<span class='required'></span>");
     }
 }
+
+function mobilephonenumberchanged(){
+    var mobile = document.getElementById('id_mobilephonenumber').value;
+
+    if (mobile.trim() === "") {
+        $("#id_filled_mobile_phone_number").parent().parent().find('span').hide();
+        $("#id_empty_mobile_phone_number").parent().parent().find('div').first().append("<span class='required'></span>");
+    } else {
+        $("#id_empty_mobile_phone_number").parent().parent().find('span').hide();
+        $("#id_filled_mobile_phone_number").parent().parent().find('div').first().append("<span class='required'></span>");
+    }
+
+}
+
 function genderchanged(){
     if($(".accomodations_pref_div select").length){
       $("#field-row-container").html("");

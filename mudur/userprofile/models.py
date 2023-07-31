@@ -56,7 +56,7 @@ class UserProfile(models.Model):
     gender = models.CharField(
         choices={"E": _("Male"), "K": _("Female")}.items(), verbose_name=_("Gender"), max_length=1
     )
-    mobilephonenumber = models.CharField(verbose_name=_("Mobile Phone Number"), max_length=14)
+    mobilephonenumber = models.CharField(verbose_name=_("Mobile Phone Number"), max_length=14, blank=True)
     address = models.TextField(verbose_name=_("Home Address"))
     job = models.CharField(verbose_name=_("Job"), max_length=40, null=True, blank=True)
     city = models.CharField(verbose_name=_("Current City"), max_length=40)
@@ -76,6 +76,8 @@ class UserProfile(models.Model):
         verbose_name=_("Emergency Contact Information"), null=True, blank=True
     )
     last_feedback_date = models.DateTimeField(auto_now_add=True)
+    empty_mobile_phone_number = models.BooleanField(default=True)
+    filled_mobile_phone_number = models.BooleanField(default=False)
 
     def __str__(self):
         if self.user.get_full_name():
