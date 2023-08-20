@@ -45,7 +45,7 @@ def manuallyaddtrainess(site, user):
 @register.simple_tag(name="authorizedforelection", takes_context=True)
 def authorizedforelection(context, site, user, course):
     now = datetime.date(datetime.now())
-    approvaldates = ApprovalDate.objects.filter(site=context['request'].site).order_by("start_date")
+    approvaldates = ApprovalDate.objects.filter(for_instructor=True, site=context['request'].site).order_by("start_date")
     if approvaldates:
         if site.event_start_date > now and approvaldates[0].start_date <= datetime.now() <= approvaldates[
             0].end_date and UserProfileOPS.is_authorized_inst(user.userprofile, course=course):
