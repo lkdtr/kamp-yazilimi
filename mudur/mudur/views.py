@@ -6,7 +6,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
 
+from mudur.forms import CustomAuthenticationForm
 from mudur.models import Menu, Content, Question, Answer
 from userprofile.models import UserProfileBySite
 log = logging.getLogger(__name__)
@@ -90,3 +92,7 @@ def auth_logout(request):
     else:
         from django.shortcuts import redirect
         return redirect("/")
+
+
+class CustomLoginView(LoginView):
+    authentication_form = CustomAuthenticationForm
