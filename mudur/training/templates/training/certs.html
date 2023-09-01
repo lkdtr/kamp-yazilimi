@@ -1,0 +1,24 @@
+{% extends "base/dashboard.html" %}
+{% load i18n %}
+{% block content %}
+{% load static %}
+<script src="{% static 'training/js/datatable_init.js' %}"></script>
+
+<div class="container-fluid">
+<table id="list_table" class="table table-hover table-striped">
+	<tbody>
+	<h2>Katılım Belgeleri</h2>
+	{% for cert in certs%}
+		<tr>
+			<th>{{cert.id}}</th>
+			<th>{{cert.course_name}} - {{cert.camp_year}}</th>
+            <th>
+				<a href="https://kayit.linux.org.tr/media/{{cert.camp_year}}/certs/{{cert.signature}}.png">Katılım Belgesini Görüntüle</a>
+			</th>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+</div>
+
+{%endblock%}

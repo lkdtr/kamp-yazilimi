@@ -34,6 +34,8 @@ from training.tutils import get_approved_trainess, get_trainess_by_course, is_tr
     gettestsofcourses, cancel_all_prefs, get_approve_first_start_last_end_dates_for_inst, daterange, \
     getparticipationforms_by_date, calculate_participations
 
+from training.models import Certificate
+
 log = logging.getLogger(__name__)
 
 DATETIME_FORMAT = "%d/%m/%Y %H:%M"
@@ -693,3 +695,9 @@ def submitandregister(request):
     data['curinstprofform'] = curinstprofform
     data['forms'] = forms
     return render(request, "training/submitandregister.html", data)
+
+@login_required
+def get_certificates(request):
+    user_profile = UserProfile.objects.get(user=request.user)
+    data = {'certs': Certificate.objects.filter(user_profile=user_profile)}
+    return render(request, "training/certs.html", data)
