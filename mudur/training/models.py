@@ -92,7 +92,6 @@ class Certificate(models.Model):
     course_name = models.TextField(max_length=200)
     camp_year = models.IntegerField(default=0)
     signature = models.CharField(max_length=200)
-    file_name = models.CharField(max_length=200)
 
     def save(self, *args, **kwargs):
         if self.id is None:
@@ -101,6 +100,4 @@ class Certificate(models.Model):
             sign = user.first_name + user.last_name + str(user.id) + str(self.camp_year)
             sign = sign.encode()
             self.signature = hashlib.sha256(sign).hexdigest()
-            # Generate File Name
-            self.file_name = str(self.camp_year) + '_' + str(user.id)
         super(Certificate, self).save(*args, **kwargs)
