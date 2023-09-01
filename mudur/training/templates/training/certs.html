@@ -7,13 +7,13 @@
 <div class="container-fluid">
 <table id="list_table" class="table table-hover table-striped">
 	<tbody>
-	<h2>Sertifikalar</h2>
+	<h2>Katılım Belgeleri</h2>
 	{% for cert in certs%}
 		<tr>
 			<th>{{cert.id}}</th>
 			<th>{{cert.course_name}} - {{cert.camp_year}}</th>
             <th>
-				<a href="https://kayit.linux.org.tr/media/certs/{{cert.signature}}.png">Sertifikayı Görüntüle</a>
+				<a href="https://kayit.linux.org.tr/media/certs/{{cert.signature}}.png">Katılım Belgesini Görüntüle</a>
 			</th>
 		</tr>
 	{% endfor %}
