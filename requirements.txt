@@ -8,7 +8,7 @@ django-extensions==2.0.7
 django-recaptcha==1.4.0
 
 # Django remotely related
-Pillow==5.1.0
+Pillow==8.4.0
 psycopg2-binary==2.7.4
 pytz  # Don't fix the version
 
