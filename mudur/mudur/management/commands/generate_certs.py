@@ -34,34 +34,23 @@ class Command(BaseCommand):
             # Prepare the text
             start_date = site.event_start_date.strftime("%d") + " Ağustos"
             end_date = site.event_end_date.strftime("%d") + " Eylül"
-            first_sentence = "{start_date} - {end_date} tarihleri arasında Bolu Abant İzzet Baysal Üniversitesi'nde\n".format(
-                start_date=start_date,
-                end_date=end_date,
+            first_sentence = "{start_date} - {end_date} {camp_year} tarihleri arasında Bolu Abant İzzet Baysal Üniversitesi'nde düzenlenen".format(
+                start_date=start_date, end_date=end_date, camp_year=camp_year
             )
-            second_sentence = "düzenlenen 12. Mustafa Akgül Özgür Yazılım {camp_year} Yaz Kampı'ndaki\n".format(
-                camp_year=camp_year
-            )
-            course_name = course_name + "\n"
-            last_sentence = "kursunun {total_course_hour} saatlik programının {total_course_hour} saatlık kısmına katılmıştır.".format(
+            second_sentence = "Mustafa Akgül Özgür Yazılım {camp_year} Yaz Kampı'ndaki ".format(
+                camp_year=camp_year,
+            ) + '"' + course_name + '"'
+            last_sentence = "kursunun {total_course_hour} saatlik programının {total_course_hour} saatlik kısmına katılmıştır.".format(
                 total_course_hour=TOTAL_COURSE_HOUR,
             )
             first_name_and_last_name = user_profile.user.first_name.title() + " " + user_profile.user.last_name.title()
 
             # Write text
             draw = ImageDraw.Draw(img)
-            draw.text((width / 2, 1100), first_name_and_last_name, font=big_font, anchor="mm", fill="black")
+            draw.text((width / 2, 1150), first_name_and_last_name, font=big_font, anchor="mm", fill="black")
             draw.text((width / 2, height / 2), first_sentence, font=small_font, anchor="mm", fill="black")
             draw.text((width / 2, height / 2 + 75), second_sentence, font=small_font, anchor="mm", fill="black")
-            draw.text(
-                (width / 2, height / 2 + 150),
-                course_name,
-                font=small_font,
-                anchor="mm",
-                fill="black",
-                stroke_width=1,
-                stroke_fill="black",
-            )
-            draw.text((width / 2, height / 2 + 200), last_sentence, font=small_font, anchor="mm", fill="black")
+            draw.text((width / 2, height / 2 + 150), last_sentence, font=small_font, anchor="mm", fill="black")
 
             # Generate and write the signature
             new_cert = Certificate.objects.create(
