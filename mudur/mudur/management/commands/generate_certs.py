@@ -7,6 +7,7 @@ import qrcode
 
 from training.models import Certificate, TrainessCourseRecord
 from mudur.models import Site
+from training.models import TrainessParticipation
 
 TOTAL_COURSE_HOUR = 72
 
@@ -81,4 +82,5 @@ class Command(BaseCommand):
 
         for record in records:
             user_profile = record.trainess
+            tp = TrainessParticipation.objects.filter(courserecord=record)
             self.generate_cert(active_site, user_profile, record.course.name)
