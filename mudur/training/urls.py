@@ -21,4 +21,5 @@ urlpatterns = [
                        url(r'^participationstatuses/$', training_views.participationstatuses, name='participationstatuses'),
                        url(r'^editparticipationstatus/(?P<courseid>[0-9]+)/(?P<date>[0-9]+)/$', training_views.editparticipationstatusebycourse, name='editparticipationstatusebycourse'),
                        url(r'^printparticipationpages/$', training_views.printparticipationpages, name='printparticipationpages'),
+                       url(r'^certificates/$', training_views.get_certificates, name='get_certificates'),
 ]
