@@ -87,7 +87,7 @@ class TrainessTestAnswers(models.Model):
         verbose_name_plural = _('Trainess Test Answer')
 
 
-class Certificate:
+class Certificate(models.Model):
     user_profile = models.ForeignKey(UserProfile, on_delete=models.DO_NOTHING)
     course_name = models.TextField(max_length=200)
     camp_year = models.IntegerField(default=0)
@@ -99,8 +99,8 @@ class Certificate:
             user = self.user_profile.user
             # Generate Signature
             sign = user.first_name + user.last_name + str(user.id) + str(self.camp_year)
-            sign = sign.decode()
+            sign = sign.encode()
             self.signature = hashlib.sha256(sign).hexdigest()
             # Generate File Name
-            self.file_name = str(self.camp_year) + '_' + str(self.user.id)
+            self.file_name = str(self.camp_year) + '_' + str(user.id)
         super(Certificate, self).save(*args, **kwargs)
