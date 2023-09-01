@@ -34,7 +34,7 @@ from training.tutils import get_approved_trainess, get_trainess_by_course, is_tr
     gettestsofcourses, cancel_all_prefs, get_approve_first_start_last_end_dates_for_inst, daterange, \
     getparticipationforms_by_date, calculate_participations
 
-from mudur.training.models import Certificate
+from training.models import Certificate
 
 log = logging.getLogger(__name__)
 
