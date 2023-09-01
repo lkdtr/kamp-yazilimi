@@ -3,8 +3,9 @@ import os
 
 from django.core.management.base import BaseCommand
 from PIL import Image, ImageDraw, ImageFont
-from training.models import Certificate, TrainessCourseRecord
+import qrcode
 
+from training.models import Certificate, TrainessCourseRecord
 from mudur.models import Site
 
 TOTAL_COURSE_HOUR = 72
@@ -44,7 +45,9 @@ class Command(BaseCommand):
             width, height = img.size
             # Set fonts
             small_font = ImageFont.truetype(os.getcwd() + "/mudur/management/commands/arial.ttf", 55)
-            big_font = ImageFont.truetype(os.getcwd() + "/mudur/management/commands/arial.ttf", 75)
+            big_font = ImageFont.truetype(os.getcwd() + "/mudur/management/commands/arial.ttf", 85)
+            signature_font = ImageFont.truetype(os.getcwd() + "/mudur/management/commands/arial.ttf", 35)
+
             # Write text
             draw = ImageDraw.Draw(img)
             draw.text((width / 2, 1100), first_name_and_last_name, font=big_font, anchor="mm", fill="black")
@@ -52,6 +55,19 @@ class Command(BaseCommand):
             # Save the cert
             new_cert = Certificate.objects.create(user_profile=user_profile, course_name=course_name, camp_year=camp_year)
             cert_file_name =  new_cert.signature + ".png"
+
+            # Generate QRCode
+            qr = qrcode.QRCode(box_size=3)
+            qr.add_data(site.home_url + "/media/" + str(camp_year) + "/certs/" + cert_file_name)
+            qr.make()
+            img_qr = qr.make_image()
+            pos = (img.size[0] - img_qr.size[0] - 80, img.size[1] - img_qr.size[1] - 80)
+            img.paste(img_qr, pos)
+
+            # write the signature
+            draw.text((int(width//2 - 40), height - 40), new_cert.signature, anchor="mm", font=signature_font, fill="black")
+
+            # Save the image
             img.save(cert_path + cert_file_name)
         except Exception as err:
             logging.error("User Profile: " + str(user_profile.id) + " Error Occurred: " + str(err))
