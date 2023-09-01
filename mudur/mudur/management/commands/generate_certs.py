@@ -24,23 +24,6 @@ class Command(BaseCommand):
         self.create_cert_dir(cert_path)
 
         try:
-            # Prepare the text
-            start_date = site.event_start_date.strftime("%d") + " Ağustos"
-            end_date = site.event_end_date.strftime("%d") + " Eylül"
-            text = (
-                "{start_date} - {end_date} tarihleri arasında Bolu Abant İzzet Baysal Üniversitesi'nde düzenlenen\n"
-                "12. Mustafa Akgül Özgür Yazılım {camp_year} Yaz Kampı'ndaki {course_name}\n"
-                "kursunun {total_course_hour} saatlik programının {total_course_hour} saatlık kısmına katılmıştır."
-            )
-            text = text.format(
-                total_course_hour=TOTAL_COURSE_HOUR,
-                start_date=start_date,
-                end_date=end_date,
-                camp_year=camp_year,
-                course_name=course_name,
-            )
-            first_name_and_last_name = user_profile.user.first_name.title() + " " + user_profile.user.last_name.title()
-
             img = Image.open(os.getcwd() + "/mudur/management/commands/empty_cert.png")
             width, height = img.size
             # Set fonts
@@ -48,24 +31,54 @@ class Command(BaseCommand):
             big_font = ImageFont.truetype(os.getcwd() + "/mudur/management/commands/arial.ttf", 85)
             signature_font = ImageFont.truetype(os.getcwd() + "/mudur/management/commands/arial.ttf", 35)
 
+            # Prepare the text
+            start_date = site.event_start_date.strftime("%d") + " Ağustos"
+            end_date = site.event_end_date.strftime("%d") + " Eylül"
+            first_sentence = "{start_date} - {end_date} tarihleri arasında Bolu Abant İzzet Baysal Üniversitesi'nde\n".format(
+                start_date=start_date,
+                end_date=end_date,
+            )
+            second_sentence = "düzenlenen 12. Mustafa Akgül Özgür Yazılım {camp_year} Yaz Kampı'ndaki\n".format(
+                camp_year=camp_year
+            )
+            course_name = course_name + "\n"
+            last_sentence = "kursunun {total_course_hour} saatlik programının {total_course_hour} saatlık kısmına katılmıştır.".format(
+                total_course_hour=TOTAL_COURSE_HOUR,
+            )
+            first_name_and_last_name = user_profile.user.first_name.title() + " " + user_profile.user.last_name.title()
+
             # Write text
             draw = ImageDraw.Draw(img)
             draw.text((width / 2, 1100), first_name_and_last_name, font=big_font, anchor="mm", fill="black")
-            draw.text((width / 2, height / 2), text, font=small_font, anchor="mm", fill="black")
-            # Save the cert
-            new_cert = Certificate.objects.create(user_profile=user_profile, course_name=course_name, camp_year=camp_year)
-            cert_file_name =  new_cert.signature + ".png"
+            draw.text((width / 2, height / 2), first_sentence, font=small_font, anchor="mm", fill="black")
+            draw.text((width / 2, height / 2 + 75), second_sentence, font=small_font, anchor="mm", fill="black")
+            draw.text(
+                (width / 2, height / 2 + 150),
+                course_name,
+                font=small_font,
+                anchor="mm",
+                fill="black",
+                stroke_width=1,
+                stroke_fill="black",
+            )
+            draw.text((width / 2, height / 2 + 200), last_sentence, font=small_font, anchor="mm", fill="black")
 
-            # Generate QRCode
+            # Generate and write the signature
+            new_cert = Certificate.objects.create(
+                user_profile=user_profile, course_name=course_name, camp_year=camp_year
+            )
+            cert_file_name = new_cert.signature + ".png"
+            draw.text(
+                (int(width // 2 - 40), height - 40), new_cert.signature, anchor="mm", font=signature_font, fill="black"
+            )
+
+            # Generate the QRCode
             qr = qrcode.QRCode(box_size=3)
             qr.add_data(site.home_url + "/media/" + str(camp_year) + "/certs/" + cert_file_name)
             qr.make()
             img_qr = qr.make_image()
             pos = (img.size[0] - img_qr.size[0] - 80, img.size[1] - img_qr.size[1] - 80)
             img.paste(img_qr, pos)
-
-            # write the signature
-            draw.text((int(width//2 - 40), height - 40), new_cert.signature, anchor="mm", font=signature_font, fill="black")
 
             # Save the image
             img.save(cert_path + cert_file_name)
