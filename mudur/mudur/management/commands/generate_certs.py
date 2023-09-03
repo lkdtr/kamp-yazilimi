@@ -82,18 +82,21 @@ class Command(BaseCommand):
         logging.warning("Total Participation: " + str(records.count()))
 
         for record in records:
-            user_profile = record.trainess
-            morning_sum,afternoon_sum, evening_sum = 0, 0, 0
-            tp_instances = TrainessParticipation.objects.filter(courserecord=record)
+            try:
+                user_profile = record.trainess
+                morning_sum,afternoon_sum, evening_sum = 0, 0, 0
+                tp_instances = TrainessParticipation.objects.filter(courserecord=record)
 
-            for tp in tp_instances:
-                morning_value = 3 if tp.morning == "2" else 0
-                afternoon_value = 3 if tp.afternoon == "2" else 0
-                evening_value = 1.5 if tp.evening == "2" else 0
-                morning_sum += morning_value
-                afternoon_sum += afternoon_value
-                evening_sum += evening_value
+                for tp in tp_instances:
+                    morning_value = 3 if tp.morning == "2" else 0
+                    afternoon_value = 3 if tp.afternoon == "2" else 0
+                    evening_value = 1.5 if tp.evening == "2" else 0
+                    morning_sum += morning_value
+                    afternoon_sum += afternoon_value
+                    evening_sum += evening_value
 
-            attendance_time = morning_sum + afternoon_sum + evening_sum
-            if attendance_time > MIN_TIME_TO_GET_CERTIFICATE:
-                self.generate_cert(active_site, user_profile, record.course.name,  attendance_time)
+                attendance_time = morning_sum + afternoon_sum + evening_sum
+                if attendance_time > MIN_TIME_TO_GET_CERTIFICATE:
+                    self.generate_cert(active_site, user_profile, record.course.name,  attendance_time)
+            except Exception as err:
+                logging.error("User Profile: " + str(user_profile.id) + " Error Occurred: " + str(err))
