@@ -28,8 +28,8 @@ class Command(BaseCommand):
             img = Image.open(os.getcwd() + "/mudur/management/commands/empty_cert.png")
             width, height = img.size
             # Set fonts
-            small_font = ImageFont.truetype(os.getcwd() + "/mudur/management/commands/arial.ttf", 55)
-            big_font = ImageFont.truetype(os.getcwd() + "/mudur/management/commands/arial.ttf", 85)
+            small_font = ImageFont.truetype(os.getcwd() + "/mudur/management/commands/OpenSans-Regular.ttf", 55)
+            big_font = ImageFont.truetype(os.getcwd() + "/mudur/management/commands/DancingScript-Regular.ttf", 135)
             signature_font = ImageFont.truetype(os.getcwd() + "/mudur/management/commands/arial.ttf", 35)
 
             # Prepare the text
@@ -49,7 +49,7 @@ class Command(BaseCommand):
 
             # Write text
             draw = ImageDraw.Draw(img)
-            draw.text((width / 2, 1150), first_name_and_last_name, font=big_font, anchor="mm", fill="black")
+            draw.text((width / 2, 1150), first_name_and_last_name.title(), font=big_font, anchor="mm", fill="black")
             draw.text((width / 2, height / 2), first_sentence, font=small_font, anchor="mm", fill="black")
             draw.text((width / 2, height / 2 + 75), second_sentence, font=small_font, anchor="mm", fill="black")
             draw.text((width / 2, height / 2 + 150), last_sentence, font=small_font, anchor="mm", fill="black")
@@ -73,6 +73,7 @@ class Command(BaseCommand):
 
             # Save the image
             img.save(cert_path + cert_file_name)
+            logging.warning("Cert Generated: " + cert_file_name)
         except Exception as err:
             logging.error("User Profile: " + str(user_profile.id) + " Error Occurred: " + str(err))
 
