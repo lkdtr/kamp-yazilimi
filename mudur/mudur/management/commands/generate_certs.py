@@ -9,8 +9,8 @@ from training.models import Certificate, TrainessCourseRecord
 from mudur.models import Site
 from training.models import TrainessParticipation
 
-TOTAL_COURSE_HOUR = 72
-
+TOTAL_COURSE_HOUR = 66
+MIN_TIME_TO_GET_CERTIFICATE = 15.0
 
 class Command(BaseCommand):
     help = "Generates the certificate of participation"
@@ -19,7 +19,7 @@ class Command(BaseCommand):
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
 
-    def generate_cert(self, site, user_profile, course_name):
+    def generate_cert(self, site, user_profile, course_name, attendance_time):
         camp_year = site.event_start_date.year
         cert_path = os.getcwd() + "/media/" + str(camp_year) + "/certs/"
         self.create_cert_dir(cert_path)
@@ -41,8 +41,9 @@ class Command(BaseCommand):
             second_sentence = "Mustafa Akgül Özgür Yazılım {camp_year} Yaz Kampı'ndaki ".format(
                 camp_year=camp_year,
             ) + '"' + course_name + '"'
-            last_sentence = "kursunun {total_course_hour} saatlik programının {total_course_hour} saatlik kısmına katılmıştır.".format(
+            last_sentence = "kursunun {total_course_hour} saatlik programının {attendance_time} saatlik kısmına katılmıştır.".format(
                 total_course_hour=TOTAL_COURSE_HOUR,
+                attendance_time=attendance_time
             )
             first_name_and_last_name = user_profile.user.first_name.title() + " " + user_profile.user.last_name.title()
 
@@ -63,7 +64,7 @@ class Command(BaseCommand):
             )
 
             # Generate the QRCode
-            qr = qrcode.QRCode(box_size=3)
+            qr = qrcode.QRCode(box_size=5)
             qr.add_data(site.home_url + "/media/" + str(camp_year) + "/certs/" + cert_file_name)
             qr.make()
             img_qr = qr.make_image()
@@ -82,5 +83,17 @@ class Command(BaseCommand):
 
         for record in records:
             user_profile = record.trainess
-            tp = TrainessParticipation.objects.filter(courserecord=record)
-            self.generate_cert(active_site, user_profile, record.course.name)
+            morning_sum,afternoon_sum, evening_sum = 0, 0, 0
+            tp_instances = TrainessParticipation.objects.filter(courserecord=record)
+
+            for tp in tp_instances:
+                morning_value = 3 if tp.morning == "2" else 0
+                afternoon_value = 3 if tp.afternoon == "2" else 0
+                evening_value = 1.5 if tp.evening == "2" else 0
+                morning_sum += morning_value
+                afternoon_sum += afternoon_value
+                evening_sum += evening_value
+
+            attendance_time = morning_sum + afternoon_sum + evening_sum
+            if attendance_time > MIN_TIME_TO_GET_CERTIFICATE:
+                self.generate_cert(active_site, user_profile, record.course.name,  attendance_time)
