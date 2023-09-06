@@ -39,6 +39,47 @@ function countrychanged(selectbox){
         $("#id_ykimlikno").parent().parent().find('div').first().append("<span class='required'></span>");
     }
 }
+
+function mobilephonenumberchanged(){
+    var mobile = document.getElementById('id_mobilephonenumber').value;
+    var filledMobilePhoneNumberCheckbox = document.getElementById("id_filled_mobile_phone_number");
+    var EmptyMobilePhoneNumberCheckbox = document.getElementById("id_empty_mobile_phone_number");
+
+    if (mobile.trim() === "") {
+        $("#id_filled_mobile_phone_number").parent().parent().find('span').hide();
+        $("#id_empty_mobile_phone_number").parent().parent().find('div').first().append("<span class='required'></span>");
+        filledMobilePhoneNumberCheckbox.style.display = "none";
+        EmptyMobilePhoneNumberCheckbox.style.display = "block";
+    } else {
+        filledMobilePhoneNumberCheckbox.style.display = "block";
+        EmptyMobilePhoneNumberCheckbox.style.display = "none";
+        $("#id_empty_mobile_phone_number").parent().parent().find('span').hide();
+        $("#id_filled_mobile_phone_number").parent().parent().find('div').first().append("<span class='required'></span>");
+    }
+
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    mobile_checkboxes_hide_show();
+});
+
+function mobile_checkboxes_hide_show() {
+    var mobilePhoneNumberInput = document.getElementById("id_mobilephonenumber");
+    var EmptyMobilePhoneNumberCheckbox = document.getElementById("id_empty_mobile_phone_number");
+    var filledMobilePhoneNumberCheckbox = document.getElementById("id_filled_mobile_phone_number");
+
+    if (mobilePhoneNumberInput.value.trim() === "") {
+        EmptyMobilePhoneNumberCheckbox.style.display = "block";
+        filledMobilePhoneNumberCheckbox.style.display = "none";
+        $("#id_empty_mobile_phone_number").parent().parent().find('div').first().append("<span class='required'></span>");
+    } else {
+        EmptyMobilePhoneNumberCheckbox.style.display = "none";
+        filledMobilePhoneNumberCheckbox.style.display = "block";
+        $("#id_filled_mobile_phone_number").parent().parent().find('div').first().append("<span class='required'></span>");
+    }
+}
+
+
 function genderchanged(){
     if($(".accomodations_pref_div select").length){
       $("#field-row-container").html("");
@@ -61,3 +102,4 @@ $(document).ready(function(){
       }
     });
 });
+
