@@ -58,7 +58,7 @@ class Command(BaseCommand):
 
             # Write text
             draw = ImageDraw.Draw(img)
-            draw.text((width / 2, 1150), first_name_and_last_name.title(), font=big_font, anchor="mm", fill="black")
+            draw.text((width / 2, 1050), first_name_and_last_name.title(), font=big_font, anchor="mm", fill="black")
             draw.text((width / 2, height / 2), first_sentence, font=small_font, anchor="mm", fill="black")
             draw.text((width / 2, height / 2 + 75), second_sentence, font=small_font, anchor="mm", fill="black")
             draw.text((width / 2, height / 2 + 150), last_sentence, font=small_font, anchor="mm", fill="black")
