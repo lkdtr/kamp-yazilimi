@@ -64,7 +64,7 @@ REPORT_RECIPIENT_LIST = ["kamp-gelismeler@linux.org.tr"]
 """
     PREFERENCE_LIMIT: Kurs tercih limiti
 """
-PREFERENCE_LIMIT = 5
+PREFERENCE_LIMIT = 2
 
 """
     ADDITION_PREFERENCE_LIMIT: Ek kurs tercih limiti
