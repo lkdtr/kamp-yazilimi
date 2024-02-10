@@ -115,7 +115,7 @@ def getoperationsmenu(uprofile):
             <a href="/egitim/approve_course_preference"><i class="fa fa-thumbs-o-up fa-fw"></i> Başvuru Durum/Onayla</a>
         </li>
         <li>
-            <a href="/egitim/certificates"><i class="fa fa-book fa-fw"></i>Sertifikalar</a>
+            <a href="/egitim/certificates"><i class="fa fa-book fa-fw"></i>Katılım Belgeleri</a>
         </li>
         """
 
