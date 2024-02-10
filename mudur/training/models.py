@@ -91,13 +91,14 @@ class Certificate(models.Model):
     user_profile = models.ForeignKey(UserProfile, on_delete=models.DO_NOTHING)
     course_name = models.TextField(max_length=200)
     camp_year = models.IntegerField(default=0)
+    camp_semester = models.CharField(max_length=5)
     signature = models.CharField(max_length=200)
 
     def save(self, *args, **kwargs):
         if self.id is None:
             user = self.user_profile.user
             # Generate Signature
-            sign = user.first_name + user.last_name + str(user.id) + str(self.camp_year)
+            sign = user.first_name + user.last_name + str(user.id) + str(self.camp_year) + str(self.camp_semester)
             sign = sign.encode()
             self.signature = hashlib.sha256(sign).hexdigest()
         super(Certificate, self).save(*args, **kwargs)

@@ -9,7 +9,7 @@ from training.models import Certificate, TrainessCourseRecord
 from mudur.models import Site
 from training.models import TrainessParticipation
 
-TOTAL_COURSE_HOUR = 66
+TOTAL_COURSE_HOUR = 24
 MIN_TIME_TO_GET_CERTIFICATE = 15.0
 
 class Command(BaseCommand):
@@ -21,7 +21,8 @@ class Command(BaseCommand):
 
     def generate_cert(self, site, user_profile, course_name, attendance_time):
         camp_year = site.event_start_date.year
-        cert_path = os.getcwd() + "/media/" + str(camp_year) + "/certs/"
+        camp_semester = "kis"
+        cert_path = os.getcwd() + "/media/" + str(camp_year) + "/" + str(camp_semester) + "/certs/"
         self.create_cert_dir(cert_path)
 
         try:
@@ -33,13 +34,21 @@ class Command(BaseCommand):
             signature_font = ImageFont.truetype(os.getcwd() + "/mudur/management/commands/arial.ttf", 35)
 
             # Prepare the text
-            start_date = site.event_start_date.strftime("%d") + " Ağustos"
-            end_date = site.event_end_date.strftime("%d") + " Eylül"
-            first_sentence = "{start_date} - {end_date} {camp_year} tarihleri arasında Bolu Abant İzzet Baysal Üniversitesi'nde düzenlenen".format(
+            start_date = site.event_start_date.strftime("%d") + " Ocak"
+            end_date = site.event_end_date.strftime("%d") + " Şubat"
+            first_sentence = "{start_date} - {end_date} {camp_year} tarihleri arasında Anadolu Üniversitesi'nde düzenlenen".format(
                 start_date=start_date, end_date=end_date, camp_year=camp_year
             )
-            second_sentence = "Mustafa Akgül Özgür Yazılım {camp_year} Yaz Kampı'ndaki ".format(
-                camp_year=camp_year,
+
+            camp_semester_label = 'Yaz'
+
+            if camp_semester == "kis":
+                camp_semester_label = "Kış"
+            else:
+                camp_semester_label = "Yaz"
+
+            second_sentence = "Mustafa Akgül Özgür Yazılım {camp_year} {camp_semester_label} Kampı'ndaki ".format(
+                camp_year=camp_year, camp_semester_label=camp_semester_label
             ) + '"' + course_name + '"'
             last_sentence = "kursunun {total_course_hour} saatlik programının {attendance_time} saatlik kısmına katılmıştır.".format(
                 total_course_hour=TOTAL_COURSE_HOUR,
@@ -56,7 +65,7 @@ class Command(BaseCommand):
 
             # Generate and write the signature
             new_cert = Certificate.objects.create(
-                user_profile=user_profile, course_name=course_name, camp_year=camp_year
+                user_profile=user_profile, course_name=course_name, camp_year=camp_year, camp_semester=camp_semester
             )
             cert_file_name = new_cert.signature + ".png"
             draw.text(
@@ -65,7 +74,7 @@ class Command(BaseCommand):
 
             # Generate the QRCode
             qr = qrcode.QRCode(box_size=5)
-            qr.add_data(site.home_url + "/media/" + str(camp_year) + "/certs/" + cert_file_name)
+            qr.add_data(site.home_url + "/media/" + str(camp_year) + "/" + str(camp_semester) + "/certs/" + cert_file_name)
             qr.make()
             img_qr = qr.make_image()
             pos = (img.size[0] - img_qr.size[0] - 80, img.size[1] - img_qr.size[1] - 80)
