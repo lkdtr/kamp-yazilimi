@@ -20,7 +20,12 @@
                 </div>
 
                 <dl class="dl-horizontal">
-                    <dt>Profil Foto:</dt><dd><img src="{{ tuser.profilephoto.url }}" style="width: 200px; heigth:200px;border:5px solid #000000;"></dd>
+                    <dt>Profil Foto:</dt>
+                    {% if show_profile_photo %}
+                        <dd><img src="{{ tuser.profilephoto.url }}" style="width: 200px; heigth:200px;border:5px solid #000000;"></dd>
+                    {% else %}
+                        <dd>&#128100;</dd>
+                    {% endif %}
                     <dt>Adı Soyadı:</dt><dd>{{ tuser.user.first_name }} {{ tuser.user.last_name }}</dd>
                     <dt>E-posta:</dt><dd>{{ tuser.user.username }}</dd>
                     <dt>Şehir:</dt><dd>{{ tuser.city }}</dd>
