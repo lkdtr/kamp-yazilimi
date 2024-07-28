@@ -16,7 +16,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Count
 from django.utils import timezone
 
-from mudur.models import ApprovalDate, Answer
+from mudur.models import ApprovalDate, Answer, Site
 from mudur.decorators import active_required
 from mudur.settings import PREFERENCE_LIMIT, ADDITION_PREFERENCE_LIMIT, REQUIRE_TRAINESS_APPROVE, \
     UNIVERSITIES
@@ -284,6 +284,15 @@ def control_panel(request, courseid):
         data['trainess'] = {}
         data['notesavedsuccessful'] = False
         data['count_accepted'] = get_approved_by_course_trainess_count(course)
+
+        site = Site.objects.first()
+        current_date = date.today()
+
+        if current_date >= site.event_start_date:
+            data["show_profile_detail_link"] = False
+        else:
+            data["show_profile_detail_link"] = True
+
         if data['dates']:
             if now <= data['dates'].get(1).end_date:
                 data['trainess'][course] = get_trainess_by_course(course, request.log_extra)
