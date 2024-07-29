@@ -288,10 +288,16 @@ def control_panel(request, courseid):
         site = Site.objects.first()
         current_date = date.today()
 
+        logging.warning(f"Suanki tarih: {current_date}")
+        logging.warning(f"Kamp baslama tarihi: {site.event_start_date}")
+        logging.warning(f"if current_date >= site.event_start_date: {current_date >= site.event_start_date}")
+
         if current_date >= site.event_start_date:
             data["show_profile_detail_link"] = False
         else:
             data["show_profile_detail_link"] = True
+
+        logging.warning(f"profil linkini goster: {data['show_profile_detail_link']}")
 
         if data['dates']:
             if now <= data['dates'].get(1).end_date:
