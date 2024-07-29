@@ -634,7 +634,7 @@ def showuserprofile(request, userid, courserecordid):
             log.warning("Staff user show user profile", extra=request.log_extra)
         user = UserProfile.objects.get(pk=userid)
 
-        site = Site.objects.first()
+        site = Site.objects.filter(is_active=True).first()
         current_date = date.today()
 
         if site.event_start_date > current_date:
