@@ -24,7 +24,7 @@
                     {% if show_profile_photo %}
                         <dd><img src="{{ tuser.profilephoto.url }}" style="width: 200px; heigth:200px;border:5px solid #000000;"></dd>
                     {% else %}
-                        <dd>&#128100;</dd>
+                        <dd><img src="/static/base/images/no-image.svg" style="width: 200px; heigth:200px;border:5px solid #000000;"></dd>
                     {% endif %}
                     <dt>Adı Soyadı:</dt><dd>{{ tuser.user.first_name }} {{ tuser.user.last_name }}</dd>
                     <dt>E-posta:</dt><dd>{{ tuser.user.username }}</dd>
