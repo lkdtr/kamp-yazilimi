@@ -1,7 +1,7 @@
 import json
 import logging
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import login, logout
@@ -633,6 +633,15 @@ def showuserprofile(request, userid, courserecordid):
                 return redirect("selectcoursefcp")
             log.warning("Staff user show user profile", extra=request.log_extra)
         user = UserProfile.objects.get(pk=userid)
+
+        site = Site.objects.first()
+        current_date = date.today()
+
+        if site.event_start_date > current_date:
+            data["show_profile_photo"] = False
+        else:
+            data["show_profile_photo"] = True
+
         data["tuser"] = user
         data["ruser"] = request.user
         data["note"] = "Detaylı kullanıcı bilgileri"
