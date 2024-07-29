@@ -285,7 +285,7 @@ def control_panel(request, courseid):
         data['notesavedsuccessful'] = False
         data['count_accepted'] = get_approved_by_course_trainess_count(course)
 
-        site = Site.objects.first()
+        site = Site.objects.filter(is_active=True).first()
         current_date = date.today()
 
         logging.warning(f"Suanki tarih: {current_date}")
