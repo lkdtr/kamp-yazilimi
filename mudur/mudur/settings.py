@@ -21,7 +21,7 @@ BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 """
 DJANGO_ROOT = BASE_DIR
 PROJECT_ROOT = os.path.dirname(DJANGO_ROOT)
-VIRTUAL_ENV_PATH = os.getenv("VIRTUAL_ENV", os.path.join(PROJECT_ROOT, ".venv"))
+VIRTUAL_ENV_PATH = os.getenv("VIRTUAL_ENV", os.path.join(PROJECT_ROOT, "venv"))
 
 sys.path.insert(0, os.path.join(BASE_DIR, "mudur"))
 
