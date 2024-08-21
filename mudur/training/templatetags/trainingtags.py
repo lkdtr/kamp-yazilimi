@@ -9,8 +9,9 @@ from userprofile.models import TrainessClassicTestAnswers, TrainessNote, UserPro
 from userprofile.userprofileops import UserProfileOPS
 from training.tutils import getparticipationforms, getparticipationforms_by_date
 
-register = template.Library()
+from userprofile.uutils import calculate_age
 
+register = template.Library()
 
 @register.simple_tag(name="mod")
 def mod(num):
@@ -250,3 +251,8 @@ def potentialinstform(tuser):
     except UserProfileBySite.DoesNotExist:
         html += "<input type='checkbox' id='potential-%s' name='potential-%s' />" % (tuser.pk, tuser.pk)
         return mark_safe(html)
+
+
+@register.filter()
+def age(value):
+    return calculate_age(value)
