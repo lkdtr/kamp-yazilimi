@@ -14,6 +14,7 @@
 	        <th>{% trans "Current City" %}</th>
 	        <th>{% trans "Tel No" %}</th>
 	        <th>{% trans "E-mail" %}</th>
+			<th>{% trans "Birth Date" %}</th>
 	        <th>{% trans "Gender" %}</th>
 	        <th>{% trans "Organisation" %}</th>
 	        <th>{% trans "University" %}</th>
@@ -34,6 +35,7 @@
 			<th>{{data.trainess.city}}</th>
 			<th>{{data.trainess.mobilephonenumber}}</th>
 			<th>{{data.trainess.user.email}}</th>
+			<th>{{ data.trainess.birthdate.day }}/{{ data.trainess.birthdate.month }}/{{ data.trainess.birthdate.year }}</th>
 			<th>{{data.trainess.gender}}</th>
 			<th>{{data.trainess.organization}}</th>
 			<th>{{data.trainess.university}}</th>
