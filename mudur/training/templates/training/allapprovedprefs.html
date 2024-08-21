@@ -11,6 +11,7 @@
 	        <th>{% trans "Application No" %}</th>
 	        <th>{% trans "First Name" %}</th>
 	        <th>{% trans "Last Name" %}</th>
+			<th>{% trans "Birthdate" %}</th>
 	        <th>{% trans "E-mail" %}</th>
 	        <th>{% trans "Gender" %}</th>
 	        <th>{% trans "TC Identity Number / Foreign Identity Number" %}</th>
@@ -28,6 +29,7 @@
 			<th>{{ tcr.trainess.user.first_name }}</th>
 			<th>{{ tcr.trainess.user.last_name }}</th>
 			<th>{{ tcr.trainess.user.email }}</th>
+			<th>{{ tcr.trainess.birthdate.year }} ({{ tcr.trainess.birthdate|age }})</th>
 			<th>{{ tcr.trainess.gender }}</th>
             <th>{{ tcr.trainess.tckimlikno }}{{ tcr.trainess.ykimlikno }}</th>
 			<th>{{ tcr.preference_order }}</th>
