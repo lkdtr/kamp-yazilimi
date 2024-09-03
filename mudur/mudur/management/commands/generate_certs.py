@@ -99,8 +99,8 @@ class Command(BaseCommand):
 
                 for tp in tp_instances:
                     morning_value = 3 if tp.morning == "2" else 0
-                    afternoon_value = 3 if tp.afternoon == "2" else 0
-                    evening_value = 1.5 if tp.evening == "2" else 0
+                    afternoon_value = 3.5 if tp.afternoon == "2" else 0
+                    evening_value = 2 if tp.evening == "2" else 0
                     morning_sum += morning_value
                     afternoon_sum += afternoon_value
                     evening_sum += evening_value
