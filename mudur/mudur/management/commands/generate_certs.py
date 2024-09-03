@@ -35,7 +35,7 @@ class Command(BaseCommand):
 
             # Prepare the text
             start_date = site.event_start_date.strftime("%d")
-            end_date = site.event_end_date.strftime("%d") + " Ağustos"
+            end_date = "31 Ağustos" # site.event_end_date.strftime("%d") + 
             first_sentence = "{start_date} - {end_date} {camp_year} tarihleri arasında Bolu Abant İzzet Baysal Üniversitesi'nde düzenlenen".format(
                 start_date=start_date, end_date=end_date, camp_year=camp_year
             )
