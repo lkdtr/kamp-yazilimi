@@ -9,7 +9,7 @@ from training.models import Certificate, TrainessCourseRecord
 from mudur.models import Site
 from training.models import TrainessParticipation
 
-TOTAL_COURSE_HOUR = 66
+TOTAL_COURSE_HOUR = 66.0
 MIN_TIME_TO_GET_CERTIFICATE = 30.0
 
 class Command(BaseCommand):
