@@ -9,7 +9,7 @@ from training.models import Certificate, TrainessCourseRecord
 from mudur.models import Site
 from training.models import TrainessParticipation
 
-TOTAL_COURSE_HOUR = 66.0
+TOTAL_COURSE_HOUR = 66
 MIN_TIME_TO_GET_CERTIFICATE = 30.0
 
 class Command(BaseCommand):
@@ -107,6 +107,6 @@ class Command(BaseCommand):
 
                 attendance_time = morning_sum + afternoon_sum + evening_sum
                 if attendance_time > MIN_TIME_TO_GET_CERTIFICATE:
-                    self.generate_cert(active_site, user_profile, record.course.name,  attendance_time)
+                    self.generate_cert(active_site, user_profile, record.course.name,  round(attendance_time))
             except Exception as err:
                 logging.error("User Profile: " + str(user_profile.id) + " Error Occurred: " + str(err))
