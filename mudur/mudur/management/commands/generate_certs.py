@@ -21,12 +21,12 @@ class Command(BaseCommand):
 
     def generate_cert(self, site, user_profile, course_name, attendance_time):
         camp_year = site.event_start_date.year
-        camp_semester = "yaz"
+        camp_semester = "kis"
         cert_path = os.getcwd() + "/media/" + str(camp_year) + "/" + str(camp_semester) + "/certs/"
         self.create_cert_dir(cert_path)
 
         try:
-            img = Image.open(os.getcwd() + "/mudur/management/commands/empty_cert.png")
+            img = Image.open(os.getcwd() + "/mudur/management/commands/empty_cert_2025_kis.png")
             width, height = img.size
             # Set fonts
             small_font = ImageFont.truetype(os.getcwd() + "/mudur/management/commands/OpenSans-Regular.ttf", 55)
@@ -35,8 +35,8 @@ class Command(BaseCommand):
 
             # Prepare the text
             start_date = site.event_start_date.strftime("%d")
-            end_date = "31 Ağustos" # site.event_end_date.strftime("%d") + 
-            first_sentence = "{start_date} - {end_date} {camp_year} tarihleri arasında Bolu Abant İzzet Baysal Üniversitesi'nde düzenlenen".format(
+            end_date = "13 Şubat" # site.event_end_date.strftime("%d") + 
+            first_sentence = "{start_date} - {end_date} {camp_year} tarihleri arasında Anadolu Üniversitesi'nde düzenlenen".format(
                 start_date=start_date, end_date=end_date, camp_year=camp_year
             )
 
