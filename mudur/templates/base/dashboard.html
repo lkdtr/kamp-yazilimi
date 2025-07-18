@@ -114,6 +114,9 @@
                 <a href="{% url 'authlogin' %}" class="btn btn-primary btn-lg">{% trans "Login" %}</a>
                 <a href="{% url 'account_reset_password_key' %}" class="btn btn-warning btn-lg">
                     {% trans "Forgot Password" %}</a>
+                 <a href="{% url 'account_resend_activation_email' %}" class="btn btn-info btn-lg">
+                     {% trans "Resend Activation E-mail" %}
+                 </a>
             </div>
             {% endif %}
             <!-- END ANONYMOUS USER -->
