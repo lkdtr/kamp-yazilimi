@@ -954,9 +954,9 @@ msgstr "Parola sıfırlama işlemi başarısız"
 #~ msgstr "Giriş"
 
 #: login
-msgid "Login"
-msgstr "Giriş"
+#msgid "Login"
+#msgstr "Giriş"
 
 #: şifre sıfırlama
-msgid "Forgot Password"
-msgstr "Şifremi Unuttum"
+#msgid "Forgot Password"
+#msgstr "Şifremi Unuttum"
