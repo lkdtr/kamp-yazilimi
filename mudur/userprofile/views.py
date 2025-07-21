@@ -552,6 +552,40 @@ def password_reset_key(request):
     return render(request, "userprofile/change_password_key_request.html", data)
 
 
+def resend_activation_email(request):
+    data = {"note": _("Please enter your registered email")}
+
+    if "create" in request.POST:
+        email = request.POST["email"]
+        if email and email != "":
+            try:
+                user = User.objects.get(email=request.POST["email"])
+                if user.is_active:
+                    data["note"] = _("Your email address has already been verified!")
+                    return render(request, "userprofile/resend_activation_email.html", data)
+                else:
+                    user_verification, created = UserVerification.objects.get_or_create(user=user)
+                    user_verification.activation_key_expires = datetime.now() + timedelta(days=1)
+                    user_verification.activation_key = create_verification_link(user)
+                    user_verification.save()
+                    context = {
+                        "user": user,
+                        "activation_key": user_verification.activation_key,
+                        "site": Site.objects.get(is_active=True),
+                        "recipientlist": [user.username],
+                    }
+                    context["domain"] = context["site"].home_url.rstrip("/")
+                    send_email_by_operation_name(context, "send_activation_key")
+                    data["note"] = _("Please check your email for activation link")
+            except ObjectDoesNotExist:
+                data["note"] = _("There isn't any user record with this e-mail on the system")
+                log.error(data["note"], extra=request.log_extra)
+        else:
+            data["note"] = _("Email field can not be empty")
+            log.error(data["note"], extra=request.log_extra)
+
+    return render(request, "userprofile/resend_activation_email.html", data)
+
 def password_reset_key_done(request, key=None):
     data = {"note": _("Change your password")}
     form = ChangePasswordForm()

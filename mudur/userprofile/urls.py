@@ -16,6 +16,10 @@ urlpatterns = [
     # email verification
     url(r"^active/done/(?P<key>[\w,-]+)/$", userprofile_views.active, name="active"),
     url(r"^active/resend/$", userprofile_views.active_resend, name="active_resend"),
+    url(
+        r"^resend_activation_email/$", userprofile_views.resend_activation_email,
+        name="account_resend_activation_email"
+    ),
     # for admins
     url(r"^tumkullanicilar", userprofile_views.alluserview, name="alluser"),
     url(r"^tumegitmenler", userprofile_views.get_all_trainers_view, name="alltrainers"),
