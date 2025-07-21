@@ -953,10 +953,10 @@ msgstr "Parola sıfırlama işlemi başarısız"
 #~ msgid "Login"
 #~ msgstr "Giriş"
 
-#: login
-#msgid "Login"
-#msgstr "Giriş"
+#~ login
+#~ msgid "Login"
+#~ msgstr "Giriş"
 
-#: şifre sıfırlama
-#msgid "Forgot Password"
-#msgstr "Şifremi Unuttum"
+#~ şifre sıfırlama
+#~ msgid "Forgot Password"
+#~ msgstr "Şifremi Unuttum"
