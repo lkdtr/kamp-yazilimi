@@ -950,5 +950,13 @@ msgstr "Parola sıfırlama işlemi başarısız"
 #~ msgid "Email adress"
 #~ msgstr "E-posta adresi"
 
-#~ msgid "Log in"
+#~ msgid "Login"
 #~ msgstr "Giriş"
+
+#: login
+msgid "Login"
+msgstr "Giriş"
+
+#: şifre sıfırlama
+msgid "Forgot Password"
+msgstr "Şifremi Unuttum"
