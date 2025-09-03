@@ -9,8 +9,8 @@ from training.models import Certificate, TrainessCourseRecord
 from mudur.models import Site
 from training.models import TrainessParticipation
 
-TOTAL_COURSE_HOUR = 26
-MIN_TIME_TO_GET_CERTIFICATE = 10
+TOTAL_COURSE_HOUR = 74.5
+MIN_TIME_TO_GET_CERTIFICATE = 40
 
 class Command(BaseCommand):
     help = "Generates the certificate of participation"
@@ -21,12 +21,12 @@ class Command(BaseCommand):
 
     def generate_cert(self, site, user_profile, course_name, attendance_time):
         camp_year = site.event_start_date.year
-        camp_semester = "kis"
+        camp_semester = "yaz"
         cert_path = os.getcwd() + "/media/" + str(camp_year) + "/" + str(camp_semester) + "/certs/"
         self.create_cert_dir(cert_path)
 
         try:
-            img = Image.open(os.getcwd() + "/mudur/management/commands/empty_cert_2025_kis.png")
+            img = Image.open(os.getcwd() + "/mudur/management/commands/empty_cert_2025_yaz.png")
             width, height = img.size
             # Set fonts
             small_font = ImageFont.truetype(os.getcwd() + "/mudur/management/commands/OpenSans-Regular.ttf", 55)
@@ -36,7 +36,7 @@ class Command(BaseCommand):
             # Prepare the text
             start_date = site.event_start_date.strftime("%d")
             end_date = "13 Şubat" # site.event_end_date.strftime("%d") + 
-            first_sentence = "{start_date} - {end_date} {camp_year} tarihleri arasında Anadolu Üniversitesi'nde düzenlenen".format(
+            first_sentence = "{start_date} - {end_date} {camp_year} tarihleri arasında Bolu Abant İzzet Baysal Üniversitesinde düzenlenen".format(
                 start_date=start_date, end_date=end_date, camp_year=camp_year
             )
 
