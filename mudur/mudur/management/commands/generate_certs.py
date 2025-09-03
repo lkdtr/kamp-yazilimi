@@ -9,7 +9,7 @@ from training.models import Certificate, TrainessCourseRecord
 from mudur.models import Site
 from training.models import TrainessParticipation
 
-TOTAL_COURSE_HOUR = 74.5
+TOTAL_COURSE_HOUR = 74
 MIN_TIME_TO_GET_CERTIFICATE = 40
 
 class Command(BaseCommand):
@@ -35,7 +35,7 @@ class Command(BaseCommand):
 
             # Prepare the text
             start_date = site.event_start_date.strftime("%d")
-            end_date = site.event_end_date.strftime("%d") + " Ağustos"
+            end_date = "31 Ağustos" # site.event_end_date.strftime("%d") + " Ağustos"
             first_sentence = "{start_date} - {end_date} {camp_year} tarihleri arasında Bolu Abant İzzet Baysal Üniversitesinde düzenlenen".format(
                 start_date=start_date, end_date=end_date, camp_year=camp_year
             )
