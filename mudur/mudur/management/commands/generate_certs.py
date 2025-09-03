@@ -51,7 +51,7 @@ class Command(BaseCommand):
                 camp_year=camp_year, camp_semester_label=camp_semester_label
             ) + '"' + course_name + '"'
             last_sentence = "kursunun {total_course_hour} saatlik programının {attendance_time} saatlik kısmına katılmıştır.".format(
-                total_course_hour=TOTAL_COURSE_HOUR,
+                total_course_hour=round(TOTAL_COURSE_HOUR),
                 attendance_time=attendance_time
             )
             first_name_and_last_name = user_profile.user.first_name.title() + " " + user_profile.user.last_name.title()
