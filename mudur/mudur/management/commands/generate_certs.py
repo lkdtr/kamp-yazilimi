@@ -106,6 +106,8 @@ class Command(BaseCommand):
                     evening_sum += evening_value
 
                 attendance_time = morning_sum + afternoon_sum + evening_sum
+                if attendance_time > 74:
+                    attendance_time = 74
                 if attendance_time > MIN_TIME_TO_GET_CERTIFICATE:
                     self.generate_cert(active_site, user_profile, record.course.name,  round(attendance_time))
             except Exception as err:
