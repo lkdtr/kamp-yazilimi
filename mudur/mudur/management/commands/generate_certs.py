@@ -26,6 +26,14 @@ class Command(BaseCommand):
         self.create_cert_dir(cert_path)
 
         try:
+
+            if Certificate.objects.filter(
+                    user_profile=user_profile,
+                    camp_year=camp_year,
+                    camp_semester=camp_semester
+                ).exists():
+                    continue  # Kayıt varsa bu iterasyonu atla
+
             img = Image.open(os.getcwd() + "/mudur/management/commands/empty_cert_2025_yaz.png")
             width, height = img.size
             # Set fonts
@@ -67,6 +75,7 @@ class Command(BaseCommand):
             new_cert = Certificate.objects.create(
                 user_profile=user_profile, course_name=course_name, camp_year=camp_year, camp_semester=camp_semester
             )
+
             cert_file_name = new_cert.signature + ".png"
             draw.text(
                 (int(width // 2 - 40), height - 40), new_cert.signature, anchor="mm", font=signature_font, fill="black"
@@ -82,7 +91,7 @@ class Command(BaseCommand):
 
             # Save the image
             img.save(cert_path + cert_file_name)
-            logging.warning("Cert Generated: " + cert_file_name)
+            logging.warning("Cert Generated (" + first_name_and_last_name + "): " + cert_file_name)
         except Exception as err:
             logging.error("User Profile: " + str(user_profile.id) + " Error Occurred: " + str(err))
 
