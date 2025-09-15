@@ -27,12 +27,9 @@ class Command(BaseCommand):
 
         try:
 
-            if Certificate.objects.filter(
-                    user_profile=user_profile,
-                    camp_year=camp_year,
-                    camp_semester=camp_semester
-                ).exists():
-                    continue  # Kayıt varsa bu iterasyonu atla
+            if Certificate.objects.filter(user_profile=user_profile, camp_year=camp_year, camp_semester=camp_semester).exists():
+                print(f"Certificate already exists for user {user_profile.user.username}, {camp_year} {camp_semester}.")
+                return  # Fonksiyondan çık
 
             img = Image.open(os.getcwd() + "/mudur/management/commands/empty_cert_2025_yaz.png")
             width, height = img.size
