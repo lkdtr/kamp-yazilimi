@@ -54,7 +54,7 @@ class UserProfileOPS:
                                                 Soyad=surname.replace('i', 'İ').upper(), DogumYili=year)
             return response['TCKimlikNoDogrulaResult']
         except Exception as e:
-            log.error(str(e), extra={'name': name, 'surname': surname})
+            log.error(str(e), extra={'tc_name': name, 'tc_surname': surname})
             return -1
 
     @staticmethod
