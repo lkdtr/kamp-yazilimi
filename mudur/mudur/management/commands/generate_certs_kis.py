@@ -41,7 +41,7 @@ class Command(BaseCommand):
             # Prepare the text
             start_date = site.event_start_date.day
             end_date = "8 Şubat" # site.event_end_date.strftime("%d") + " Ağustos"
-            first_sentence = "{start_date} - {end_date} {camp_year} tarihleri arasında Afyon Karahisar Üniversitesinde düzenlenen".format(
+            first_sentence = "{start_date} - {end_date} {camp_year} tarihleri arasında Afyon Karahisar Üniversitesinde düzenlenen, Mustafa Akgül".format(
                 start_date=start_date, end_date=end_date, camp_year=camp_year
             )
 
@@ -52,7 +52,7 @@ class Command(BaseCommand):
             else:
                 camp_semester_label = "Yaz"
 
-            second_sentence = "Mustafa Akgül Özgür Yazılım {camp_year} {camp_semester_label} Kampı'ndaki ".format(
+            second_sentence = "Özgür Yazılım {camp_year} {camp_semester_label} Kampı'ndaki ".format(
                 camp_year=camp_year, camp_semester_label=camp_semester_label
             ) + '"' + course_name + '"'
             last_sentence = "kursunun {total_course_hour} saatlik programının {attendance_time} saatlik kısmına katılmıştır.".format(
