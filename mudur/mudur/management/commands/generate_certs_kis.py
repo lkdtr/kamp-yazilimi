@@ -39,7 +39,7 @@ class Command(BaseCommand):
             signature_font = ImageFont.truetype(os.getcwd() + "/mudur/management/commands/arial.ttf", 35)
 
             # Prepare the text
-            start_date = site.event_start_date.strftime("%d")
+            start_date = site.event_start_date.day
             end_date = "8 Şubat" # site.event_end_date.strftime("%d") + " Ağustos"
             first_sentence = "{start_date} - {end_date} {camp_year} tarihleri arasında Afyon Karahisar Üniversitesinde düzenlenen".format(
                 start_date=start_date, end_date=end_date, camp_year=camp_year
