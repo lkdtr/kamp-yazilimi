@@ -9,8 +9,8 @@ from training.models import Certificate, TrainessCourseRecord
 from mudur.models import Site
 from training.models import TrainessParticipation
 
-TOTAL_COURSE_HOUR = 24
-MIN_TIME_TO_GET_CERTIFICATE = 20
+TOTAL_COURSE_HOUR = 74
+MIN_TIME_TO_GET_CERTIFICATE = 40
 
 class Command(BaseCommand):
     help = "Generates the certificate of participation"
@@ -21,7 +21,7 @@ class Command(BaseCommand):
 
     def generate_cert(self, site, user_profile, course_name, attendance_time):
         camp_year = site.event_start_date.year
-        camp_semester = "kis"
+        camp_semester = "yaz"
         cert_path = os.getcwd() + "/media/" + str(camp_year) + "/" + str(camp_semester) + "/certs/"
         self.create_cert_dir(cert_path)
 
@@ -31,7 +31,7 @@ class Command(BaseCommand):
                 print(f"Certificate already exists for user {user_profile.user.username}, {camp_year} {camp_semester}.")
                 return  # Fonksiyondan çık
 
-            img = Image.open(os.getcwd() + "/mudur/management/commands/empty_cert_2026_kis.png")
+            img = Image.open(os.getcwd() + "/mudur/management/commands/empty_cert_2025_yaz.png")
             width, height = img.size
             # Set fonts
             small_font = ImageFont.truetype(os.getcwd() + "/mudur/management/commands/OpenSans-Regular.ttf", 55)
@@ -40,12 +40,12 @@ class Command(BaseCommand):
 
             # Prepare the text
             start_date = site.event_start_date.strftime("%d")
-            end_date = "8 Şubat" # site.event_end_date.strftime("%d") + " Ağustos"
-            first_sentence = "{start_date} - {end_date} {camp_year} tarihleri arasında Afyon Karahisar Üniversitesinde düzenlenen".format(
+            end_date = "31 Ağustos" # site.event_end_date.strftime("%d") + " Ağustos"
+            first_sentence = "{start_date} - {end_date} {camp_year} tarihleri arasında Bolu Abant İzzet Baysal Üniversitesinde düzenlenen".format(
                 start_date=start_date, end_date=end_date, camp_year=camp_year
             )
 
-            camp_semester_label = 'Kış'
+            camp_semester_label = 'Yaz'
 
             if camp_semester == "kis":
                 camp_semester_label = "Kış"
@@ -112,8 +112,8 @@ class Command(BaseCommand):
                     evening_sum += evening_value
 
                 attendance_time = morning_sum + afternoon_sum + evening_sum
-                if attendance_time > 24:
-                    attendance_time = 24
+                if attendance_time > 74:
+                    attendance_time = 74
                 if attendance_time > MIN_TIME_TO_GET_CERTIFICATE:
                     self.generate_cert(active_site, user_profile, record.course.name,  round(attendance_time))
             except Exception as err:
