@@ -1,10 +1,6 @@
 #!/usr/bin/python
 from django.contrib import admin
 from mudur.models import Site, Content, Menu, Answer, Question, TextBoxQuestions, ApprovalDate
-from ckeditor.widgets import CKEditorWidget
-from django import forms
-
-
 class ApprovalDateInline(admin.StackedInline):
     model = ApprovalDate
     extra = 0
@@ -18,7 +14,6 @@ class SiteAdmin(admin.ModelAdmin):
 
 
 class ContentInline(admin.TabularInline):
-    content = forms.CharField(widget=CKEditorWidget())
     model = Content
 
 

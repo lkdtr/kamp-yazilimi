@@ -4,7 +4,6 @@ from datetime import datetime
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from ckeditor.fields import RichTextField
 
 
 def make_choices(choices):
@@ -52,7 +51,7 @@ class Menu(models.Model):
 
 class Content(models.Model):
     name = models.CharField(verbose_name=_("Content Name"), max_length=255)
-    content = RichTextField(verbose_name=_("HTML Content"))
+    content = models.TextField(verbose_name=_("HTML Content"))
     menu = models.OneToOneField(Menu, related_name="+", null=True)
 
     def __str__(self):
