@@ -16,7 +16,15 @@
       </div>
     </div>
   </div>
-  <input type="submit" name="create" class="btn btn-primary" value="{% trans 'Resend Activation E-mail' %}">
+  <div class="row" style="margin-top:10px;">
+    <div class="col-md-2">
+      <b>WhatsApp ile de gönder</b>
+    </div>
+    <div class="col-md-2">
+      <input id="iswhatsapp" name="iswhatsapp" type="checkbox" value="on">
+    </div>
+  </div>
+  <input type="submit" name="create" class="btn btn-primary" value="{% trans 'Resend Activation E-mail' %}" style="margin-top:10px;">
 </form>
 
 {% endblock %}

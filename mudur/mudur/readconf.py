@@ -127,6 +127,24 @@ class SMSSettings:
         return self.msgheader
 
 
+class WhatsAppSettings:
+    url = None
+    api_key = None
+
+    def __init__(self):
+        config = ConfigParser.ConfigParser()
+        config.read(MUDUR_CONFIG)
+        section = "WHATSAPP"
+        self.url = config.get(section, "url")
+        self.api_key = config.get(section, "api_key")
+
+    def get_url(self):
+        return self.url
+
+    def get_api_key(self):
+        return self.api_key
+
+
 class CaptchaSettings:
     publickey = None
     privatekey = None

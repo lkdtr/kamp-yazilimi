@@ -21,6 +21,10 @@ usercode: <usercode>
 password: <password>
 msgheader: <msgheader>
 
+[WHATSAPP]
+url: <whatsapp bridge url, örn: http://localhost:3000>
+api_key: <WA_API_KEY>
+
 [CAPTCHA]
 publickey: <https://www.google.com/recaptcha account public key>
 privatekey: <https://www.google.com/recaptcha account private key>

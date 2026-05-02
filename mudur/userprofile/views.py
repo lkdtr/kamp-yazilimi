@@ -502,6 +502,16 @@ def password_reset_key(request):
                         return redirect("password_reset_by_sms")
                     else:
                         data["note"] = "sms gonderilemedi: " + note
+                elif request.POST.get("iswhatsapp") == "on":
+                    password = User.objects.make_random_password()
+                    user_verification.temporary_code = password
+                    user_verification.save()
+                    ok = UserProfileOPS.send_whatsapp(request, user, password)
+                    if ok:
+                        data["note"] = "WhatsApp mesaji basarili bir sekilde gonderildi"
+                        return redirect("password_reset_by_sms")
+                    else:
+                        data["note"] = "WhatsApp mesaji gonderilemedi"
                 elif not user.is_active:
                     user.is_active = False
                     user_verification, created = UserVerification.objects.get_or_create(
@@ -576,7 +586,16 @@ def resend_activation_email(request):
                     }
                     context["domain"] = context["site"].home_url.rstrip("/")
                     send_email_by_operation_name(context, "send_activation_key")
-                    data["note"] = _("Please check your email for activation link")
+                    if request.POST.get("iswhatsapp") == "on":
+                        ok = UserProfileOPS.send_whatsapp_activation(
+                            request, user, user_verification.activation_key, context["domain"]
+                        )
+                        if ok:
+                            data["note"] = _("Please check your email and WhatsApp for activation link")
+                        else:
+                            data["note"] = _("Please check your email for activation link (WhatsApp gonderilemedi)")
+                    else:
+                        data["note"] = _("Please check your email for activation link")
             except ObjectDoesNotExist:
                 data["note"] = _("There isn't any user record with this e-mail on the system")
                 log.error(data["note"], extra=request.log_extra)

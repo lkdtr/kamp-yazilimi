@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 from pysimplesoap.client import SoapClient
 
-from mudur.settings import TCKIMLIK_SORGULAMA_WS, EMAIL_FROM_ADDRESS, SMS_URL, SMS_USERCODE, SMS_PASSWORD, SMS_MSGHEADER
+from mudur.settings import TCKIMLIK_SORGULAMA_WS, EMAIL_FROM_ADDRESS, SMS_URL, SMS_USERCODE, SMS_PASSWORD, SMS_MSGHEADER, WHATSAPP_URL, WHATSAPP_API_KEY
 from training.models import Course, TrainessParticipation
 from userprofile.models import TrainessNote, TrainessClassicTestAnswers
 from mudur.models import TextBoxQuestions
@@ -148,4 +148,33 @@ class UserProfileOPS:
         r = requests.get(smsurl)
         log.info("%s kullanicisi icin sms gonderildi. cevap: %s" % (user.username, r.text), extra=request.log_extra)
         return r.text
+
+    @staticmethod
+    def _whatsapp_send(user, message, log_extra):
+        mobilephonenumber = user.userprofile.mobilephonenumber.replace(' ', '').replace('(', '').replace(')', '').replace('-', '')
+        if mobilephonenumber:
+            mobilephonenumber = mobilephonenumber[-10:]
+            mobilephonenumber = "90" + mobilephonenumber
+        headers = {
+            "Authorization": "Bearer %s" % WHATSAPP_API_KEY,
+            "Content-Type": "application/json",
+        }
+        payload = {"to": mobilephonenumber, "text": message}
+        r = requests.post("%s/send" % WHATSAPP_URL.rstrip("/"), json=payload, headers=headers)
+        log.info("%s kullanicisi icin whatsapp gonderildi. cevap: %s" % (user.username, r.text), extra=log_extra)
+        try:
+            return r.json().get("ok", False)
+        except Exception:
+            return False
+
+    @staticmethod
+    def send_whatsapp(request, user, key):
+        message = "%s - %s parola gucelleme icin gecici parola: %s" % (request.site.name, request.site.year, key)
+        return UserProfileOPS._whatsapp_send(user, message, request.log_extra)
+
+    @staticmethod
+    def send_whatsapp_activation(request, user, activation_key, domain):
+        message = "%s - %s hesap aktivasyonu icin link: %s/accounts/active/done/%s/" % (
+            request.site.name, request.site.year, domain, activation_key)
+        return UserProfileOPS._whatsapp_send(user, message, request.log_extra)
 

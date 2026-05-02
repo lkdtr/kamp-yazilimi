@@ -314,6 +314,10 @@ SMS_USERCODE = sms_settings.get_usercode()
 SMS_PASSWORD = sms_settings.get_password()
 SMS_MSGHEADER = sms_settings.get_msgheader()
 
+whatsapp_settings = WhatsAppSettings()
+WHATSAPP_URL = whatsapp_settings.get_url()
+WHATSAPP_API_KEY = whatsapp_settings.get_api_key()
+
 UNIVERSITIES = [
     ("Abdullah Gül Üniversitesi (Kayseri)", "Abdullah Gül Üniversitesi (Kayseri)"),
     ("Acıbadem Mehmet Ali Aydınlar Üniversitesi (İstanbul)", "Acıbadem Mehmet Ali Aydınlar Üniversitesi (İstanbul)"),
