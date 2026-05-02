@@ -366,7 +366,7 @@ class ChangePasswordWithSMSForm(ModelForm):
                                  widget=forms.PasswordInput(
                                          attrs={'placeholder': _('Confirm Password'), 'class': 'form-control'}))
 
-    key = forms.CharField(label="SMS ile gonderilen kod",
+    key = forms.CharField(label="SMS / WhatsApp ile gonderilen kod",
                                  max_length=30,
                                  widget=forms.TextInput(
                                      attrs={'placeholder': "Kod", 'class': 'form-control'}))
