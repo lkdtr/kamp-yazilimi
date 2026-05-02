@@ -160,7 +160,10 @@ class UserProfileOPS:
             "Content-Type": "application/json",
         }
         payload = {"to": mobilephonenumber, "text": message}
-        r = requests.post("%s/send" % WHATSAPP_URL.rstrip("/"), json=payload, headers=headers)
+        base_url = WHATSAPP_URL.rstrip("/")
+        if not base_url.startswith("http"):
+            base_url = "http://" + base_url
+        r = requests.post("%s/send" % base_url, json=payload, headers=headers)
         log.info("%s kullanicisi icin whatsapp gonderildi. cevap: %s" % (user.username, r.text), extra=log_extra)
         try:
             return r.json().get("ok", False)
