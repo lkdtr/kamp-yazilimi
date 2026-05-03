@@ -1,76 +1,52 @@
-# Docker compose run 
+# Docker ile Çalıştırma
 
-## Prerequisities
+## Gereksinimler
 
-- Docker should be installed and ready. Check your distro  https://docs.docker.com/engine/install/
-- docker-compose should be installed.  https://docs.docker.com/compose/install/linux/
-- You should be familiar with bash shell 
-After this: 
+- [Docker](https://docs.docker.com/engine/install/)
+- [docker-compose](https://docs.docker.com/compose/install/linux/)
 
-### Steps to run this babe
+---
 
-Needless to say, you should be in the same directory where you cloned this git repo.
-1.  ```cp .env.example .env```
-change values 
+## Adımlar
 
-### Example .env file
+### 1. `.env` dosyasını oluştur
 
-MUDUR_CONFIG=/app/kampyazilim.conf
-MUDUR_DEBUG=True
-MUDUR_HTTPS=True
+```bash
+cp .env.example .env
+```
 
-POSTGRES_PASSWORD=mudur
-POSTGRES_USER=mudur
-POSTGRES_DB=mudur
+### 2. `kampyazilim.conf` dosyasını oluştur
 
-2. ``` cp kampyazilim.conf.example kampyazilim.conf```
+```bash
+cp kampyazilim.conf.example kampyazilim.conf
+```
 
-### Example kampyazilim.conf
-[DB]
-host: 192.168.1.15 # localhost or 127.0.0.1 not works. Run ```ip -br a``` ans use the taken ip.
-port: 5433
-database: mudur
-dbuser: mudur
-pass: mudur
+> **Önemli:** Docker içinde veritabanı host'u `postgresql` olmalı (`localhost` çalışmaz).
+> WhatsApp bridge ayrı çalışıyorsa `[WHATSAPP]` bölümündeki `url`'i o sunucunun adresiyle doldur.
 
-[DJANGO]
-secret_key:HOLA_LKD_coRrECTBATteRyhoRSesTAple💩🍆💦🦴🍒🍑 ¶¼ËßñĆ
+### 3. Başlat
 
-[EMAIL]
-from:<from address>
-host:<smtp server>
-port:<smtp port>
-username:<smtp username>
-password:<smtp password>
+```bash
+docker-compose -f docker-compose.yaml up
+```
 
-[SMS]
-url: <api url>
-usercode: <usercode>
-password: <password>
-msgheader: <msgheader>
+Uygulama `http://localhost:8080` adresinde çalışır.
 
-3. And then the last step. In the same directory with docker-compose.yaml
-```docker-compose -f docker-compose.yaml up```
+---
 
-If all goes well you should see mudur is running at 8080 
+## Yardımcı Komutlar
 
-## Helper docker commands
+```bash
+# Durdur
+docker-compose -f docker-compose.yaml down
 
-Terminate containers
-```docker-compose -f docker-compose.yaml down``` 
+# Logları izle
+docker-compose -f docker-compose.yaml logs -f
 
-Sometimes postgresql container keeps running. Check with 
-```docker ps``` 
- 
-See the pg container id and 
-```docker kill container_id ``` and ``` deocker rm container_id```
+# Django yönetim komutu çalıştır
+docker-compose -f docker-compose.yaml exec mudur entrypoint.sh managepy <komut>
 
-If you need to delete volumes check with this
-``` docker volume ls```
-
-You can delete anything starts with kamp-yazilimi_
-``` docker volume rm kamp-yazilimi_*```
-
-Good luck.
-
-
+# Volume listele / sil (dikkatli! veri silinir)
+docker volume ls
+docker volume rm kamp-yazilimi_postgres_data
+```

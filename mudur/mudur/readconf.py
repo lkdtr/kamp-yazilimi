@@ -109,10 +109,10 @@ class SMSSettings:
         config = ConfigParser.ConfigParser()
         config.read(MUDUR_CONFIG)
         section = "SMS"
-        self.url = config.get(section, "url")
-        self.usercode = config.get(section, "usercode")
-        self.password = config.get(section, "password")
-        self.msgheader = config.get(section, "msgheader")
+        self.url = config.get(section, "url", fallback=None)
+        self.usercode = config.get(section, "usercode", fallback=None)
+        self.password = config.get(section, "password", fallback=None)
+        self.msgheader = config.get(section, "msgheader", fallback=None)
 
     def get_url(self):
         return self.url
@@ -135,8 +135,8 @@ class WhatsAppSettings:
         config = ConfigParser.ConfigParser()
         config.read(MUDUR_CONFIG)
         section = "WHATSAPP"
-        self.url = config.get(section, "url")
-        self.api_key = config.get(section, "api_key")
+        self.url = config.get(section, "url", fallback=None)
+        self.api_key = config.get(section, "api_key", fallback=None)
 
     def get_url(self):
         return self.url
