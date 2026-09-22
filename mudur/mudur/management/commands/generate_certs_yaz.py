@@ -9,7 +9,7 @@ from training.models import Certificate, TrainessCourseRecord
 from mudur.models import Site
 from training.models import TrainessParticipation
 
-TOTAL_COURSE_HOUR = 74
+TOTAL_COURSE_HOUR = 58.5
 MIN_TIME_TO_GET_CERTIFICATE = 40
 
 class Command(BaseCommand):
@@ -31,7 +31,7 @@ class Command(BaseCommand):
                 print(f"Certificate already exists for user {user_profile.user.username}, {camp_year} {camp_semester}.")
                 return  # Fonksiyondan çık
 
-            img = Image.open(os.getcwd() + "/mudur/management/commands/empty_cert_2025_yaz.png")
+            img = Image.open(os.getcwd() + "/mudur/management/commands/empty_cert_2026_yaz.png")
             width, height = img.size
             # Set fonts
             small_font = ImageFont.truetype(os.getcwd() + "/mudur/management/commands/OpenSans-Regular.ttf", 55)
@@ -112,8 +112,8 @@ class Command(BaseCommand):
                     evening_sum += evening_value
 
                 attendance_time = morning_sum + afternoon_sum + evening_sum
-                if attendance_time > 74:
-                    attendance_time = 74
+                if attendance_time > 58:
+                    attendance_time = 58.5
                 if attendance_time > MIN_TIME_TO_GET_CERTIFICATE:
                     self.generate_cert(active_site, user_profile, record.course.name,  round(attendance_time))
             except Exception as err:
