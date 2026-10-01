@@ -117,6 +117,6 @@ class Command(BaseCommand):
                 if attendance_time > MIN_TIME_TO_GET_CERTIFICATE:
                     self.generate_cert(active_site, user_profile, record.course.name,  round(attendance_time))
                 else:
-                    logging.warning("User Profile: " + str(user_profile.id) + " Attendance Time: " + str(attendance_time) + " Not Enough to Generate Certificate")
+                    logging.warning("User Profile: " +  str(user_profile.user.username) + " Attendance Time: " + str(attendance_time) + " Not Enough to Generate Certificate")
             except Exception as err:
                 logging.error("User Profile: " + str(user_profile.id) + " Error Occurred: " + str(err))
