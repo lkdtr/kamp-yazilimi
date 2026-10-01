@@ -9,8 +9,8 @@ from training.models import Certificate, TrainessCourseRecord
 from mudur.models import Site
 from training.models import TrainessParticipation
 
-TOTAL_COURSE_HOUR = 30
-MIN_TIME_TO_GET_CERTIFICATE = 40
+TOTAL_COURSE_HOUR = 58.5
+MIN_TIME_TO_GET_CERTIFICATE = 35
 
 class Command(BaseCommand):
     help = "Generates the certificate of participation"
