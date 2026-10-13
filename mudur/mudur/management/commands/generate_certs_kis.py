@@ -27,8 +27,10 @@ class Command(BaseCommand):
 
         try:
 
-            if Certificate.objects.filter(user_profile=user_profile, camp_year=camp_year, camp_semester=camp_semester).exists():
-                print(f"Certificate already exists for user {user_profile.user.username}, {camp_year} {camp_semester}.")
+            if Certificate.objects.filter(user_profile=user_profile, camp_year=camp_year, camp_semester=camp_semester).exists():                
+                sign = user_profile.user.first_name + user_profile.user.last_name + str(user_profile.user.id) + str(camp_year) + str(camp_semester)
+                sign = sign.encode()
+                print(f"Certificate already exists for user {user_profile.user.username}, {camp_year} {camp_semester} {hashlib.sha256(sign).hexdigest()}.")
                 return  # Fonksiyondan çık
 
             img = Image.open(os.getcwd() + "/mudur/management/commands/empty_cert_2026_kis.png")
